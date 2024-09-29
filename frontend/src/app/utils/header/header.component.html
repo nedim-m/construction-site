@@ -10,15 +10,23 @@
                 <div class="menu-icon" (click)="openMenu()">
                     <i class="{{menu_icon}}"></i>
                 </div>
-                <div class="desktop_menu" [class.mobile_menu]="menuValue">
+               <div class="desktop_menu" [class.mobile_menu]="menuValue">  
                     <ul>
-                        <li (click)="closeMenu()">O nama</li>
-                        <li (click)="closeMenu()">Projekti</li>
-                        <li (click)="closeMenu()">Usluge</li>
-                        <li (click)="closeMenu()">Kontakt</li>
+                        <li>
+                            <a routerLink="aboutus" (click)="closeMenu() " >O nama</a>
+                        </li>
+                        <li>
+                            <a routerLink="projects" (click)="closeMenu() ">Projekti</a>
+                        </li>
+                        <li>
+                            <a routerLink="services" (click)="closeMenu() ">Usluge</a>
+                        </li>
+                        <li>
+                            <a routerLink="contactus" (click)="closeMenu() ">Kontakt</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
-    </div>
+     </div>
 </header>

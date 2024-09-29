@@ -4,7 +4,7 @@ import { HeaderComponent } from "../../utils/header/header.component";
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent],
+  imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
