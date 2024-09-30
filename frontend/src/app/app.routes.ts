@@ -4,9 +4,10 @@ import { AboutComponent } from './pages/about/about.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { HeaderComponent } from './pages/header/header.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'aboutus', pathMatch: 'full' },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
    
     {
         path:'aboutus',component:AboutComponent
@@ -20,7 +21,11 @@ export const routes: Routes = [
         
     },
     {
-        path:'contactus',component:ContactComponent
+        path:'contactus',component:HomeComponent
+        
+    },
+    {
+        path:'home',component:HomeComponent
         
     },
     

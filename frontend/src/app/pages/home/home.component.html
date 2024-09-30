@@ -1,33 +1,47 @@
 
-<header>
+<section class="hero bg-light text-center py-5">
     <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-sm-3 col-3">
-                <div class="logo">
-                    <img src="assets/logo.jpg" class="logo" alt="">
-                </div>
-            </div>
-            <div class="col-md-9 col-sm-9 col-9 text-end">
-                <div class="menu-icon" (click)="openMenu()">
-                    <i class="{{menu_icon}}"></i>
-                </div>
-               <div class="desktop_menu" [class.mobile_menu]="menuValue">  
-                    <ul>
-                        <li>
-                            <a routerLink="aboutus" (click)="closeMenu() " >O nama</a>
-                        </li>
-                        <li>
-                            <a routerLink="projects" (click)="closeMenu() ">Projekti</a>
-                        </li>
-                        <li>
-                            <a routerLink="services" (click)="closeMenu() ">Usluge</a>
-                        </li>
-                        <li>
-                            <a routerLink="contactus" (click)="closeMenu() ">Kontakt</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+      <h1 class="display-4 ">Izgradnja kuća i zgrada po najvišim standardima</h1>
+      <p class="lead text-muted mt-3">Kombinujemo tradiciju i inovacije za vrhunske rezultate u građevinskoj industriji.</p>
+      <a href="#services" class="btn btn-primary btn-lg mt-4">Pogledajte naše usluge</a>
+    </div>
+  </section>
+
+  <section id="services" class="py-5 bg-white">
+    <div class="container">
+      <h2 class="text-center  mb-4">Naše Usluge</h2>
+      <div class="row text-center">
+        <div class="col-md-4">
+          <div class="service-box p-4 shadow-sm">
+            <i class="fas fa-hard-hat fa-3x mb-3"></i>
+            <h4>Izgradnja Stambenih Objekata</h4>
+            <p class="text-muted">Specijalizovani smo za izgradnju kvalitetnih stambenih objekata prilagođenih vašim potrebama.</p>
+          </div>
         </div>
-     </div>
-</header>
+        <div class="col-md-4">
+          <div class="service-box p-4 shadow-sm">
+            <i class="fas fa-tools fa-3x mb-3"></i>
+            <h4>Renoviranje i Rekonstrukcija</h4>
+            <p class="text-muted">Kompletne usluge renoviranja i rekonstrukcije zgrada, stanova i poslovnih prostora.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="service-box p-4 shadow-sm">
+            <i class="fas fa-drafting-compass fa-3x mb-3"></i>
+            <h4>Arhitektonske Usluge</h4>
+            <p class="text-muted">Nudimo inovativna i funkcionalna arhitektonska rešenja za sve vrste projekata.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+ 
+  
+ 
+  <footer class=" text-white text-center py-4">
+    <div class="container">
+      <p>&copy; 2024 Jaric d.o.o. Sva prava zadržana.</p>
+    </div>
+  </footer>
+  
