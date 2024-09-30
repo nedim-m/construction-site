@@ -21,4 +21,7 @@
     h2, h1{
       color: #363435; 
     }
-    
+    #map {
+      height: 400px;
+      width: 100%;
+    }
