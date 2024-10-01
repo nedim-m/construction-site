@@ -13,11 +13,7 @@
     #team img {
       border: 4px solid #ffffff;
     }
-    footer {
-      background-color: #363435;
-      color: white; /* Ako želiš da tekst u footeru bude beo */
-      padding: 20px 0;
-    }
+    
     h2, h1{
       color: #363435; 
     }

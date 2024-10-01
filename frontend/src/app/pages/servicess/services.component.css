@@ -1,0 +1,18 @@
+.services-hero {
+    background-color: #f8f9fa;
+    padding: 50px 0;
+  }
+  
+  .service-details img {
+    margin-bottom: 20px;
+  }
+  
+  .service-details h2 {
+    margin-top: 20px;
+  }
+  
+  .service-details ul {
+    list-style-type: square;
+    margin-top: 10px;
+  }
+  
