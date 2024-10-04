@@ -21,7 +21,7 @@ export const routes: Routes = [
         
     },
     {
-        path:'contactus',component:HomeComponent
+        path:'contactus',component:ContactComponent
         
     },
     {
