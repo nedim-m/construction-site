@@ -1,0 +1,23 @@
+.hero {
+    background: url('/assets/background-logo2.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    height: 70vh;
+  }
+  
+    .service-box {
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+    
+    #team img {
+      border: 4px solid #ffffff;
+    }
+    
+    h2, h1{
+      color: #363435; 
+    }
+    #map {
+      height: 400px;
+      width: 100%;
+    }
