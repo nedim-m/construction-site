@@ -5,6 +5,7 @@ import { ProjectsComponent } from './pages/projects/projects.component';
 import { ServicesComponent } from './pages/servicess/services.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { HeaderComponent } from './pages/header/header.component';
+import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -26,6 +27,10 @@ export const routes: Routes = [
     },
     {
         path:'home',component:HomeComponent
+        
+    },
+    {
+        path:'loginAdmin',component:LoginComponent
         
     },
     
