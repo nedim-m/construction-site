@@ -1,0 +1,35 @@
+<div class="container">
+    <h2 class="text-center mb-4">Unos novog projekta</h2>
+  
+    <form (ngSubmit)="onSubmit()" #projectForm="ngForm">
+      <div class="form-group mb-3">
+        <label for="startDate">Datum početka</label>
+        <input type="date" id="startDate" [(ngModel)]="project.startDate" name="startDate" class="form-control" required>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="endDate">Datum završetka</label>
+        <input type="date" id="endDate" [(ngModel)]="project.endDate" name="endDate" class="form-control" required>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="location">Lokacija</label>
+        <input type="text" id="location" [(ngModel)]="project.location" name="location" class="form-control" required>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="description">Opis</label>
+        <textarea id="description" [(ngModel)]="project.description" name="description" class="form-control" required></textarea>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="images">Slike</label>
+        <input type="file" id="images" (change)="onFileChange($event)" multiple class="form-control">
+      </div>
+  
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary btn-lg w-100">Unesite projekat</button>
+      </div>
+    </form>
+  </div>
+  

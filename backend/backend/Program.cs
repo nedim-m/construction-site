@@ -23,8 +23,18 @@ builder.Services.AddSwaggerGen(options =>
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 }
-    
+
 );
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin() // Allows any origin
+                   .AllowAnyMethod() // Allows any HTTP method
+                   .AllowAnyHeader(); // Allows any header
+        });
+});
 
 builder.Services.AddTransient<IProjectServices, ProjectServices>();
 
@@ -45,7 +55,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowAll");
 app.MapIdentityApi<IdentityUser>();
 
 app.UseHttpsRedirection();

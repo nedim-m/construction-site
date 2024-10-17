@@ -9,27 +9,25 @@ namespace backend.Services
 
         public async Task<ProjectResponse> AddProject(ProjectInsertRequest insert)
         {
-     
+            // Kreiramo novi projekat na osnovu podataka iz insert requesta
             var project = new Project
             {
                 StartDate = insert.StartDate,
                 EndDate = insert.EndDate,
                 Location = insert.Location,
                 Description = insert.Description,
-                Images = new List<Image>() 
+                Images = new List<Image>() // Inicijalizujemo praznu listu za slike
             };
 
-            TestBase64Conversion("iVBORw0KGgoAAAANSUhEUgAAAAUAABAAQCAIAAA8RskP1AAAAAXNSR0IArs4c6QAAAABJRU5ErkJggg==");
+            // Obrada svake slike
             foreach (var img in insert.Images)
             {
-                if (string.IsNullOrWhiteSpace(img))
-                {
-                    throw new Exception("Jedna ili više slika je prazna ili nevalidna.");
-                }
+                // Ukloni prefiks ako postoji
+                var base64Data = img.Substring(img.IndexOf(",") + 1);
 
                 try
                 {
-                    byte[] imageBytes = Convert.FromBase64String(img);
+                    byte[] imageBytes = Convert.FromBase64String(base64Data);
                     project.Images.Add(new Image { Img = imageBytes });
                 }
                 catch (FormatException ex)
@@ -39,13 +37,11 @@ namespace backend.Services
             }
 
 
-
-
-
+            // Dodavanje projekta u bazu podataka
             _context.Projects.Add(project);
             await _context.SaveChangesAsync();
 
-          
+            // Priprema odgovora koji se vraća klijentu
             var projectResponse = new ProjectResponse
             {
                 Id = project.Id,
@@ -53,27 +49,15 @@ namespace backend.Services
                 StartDate = project.StartDate,
                 EndDate = project.EndDate,
                 Description = project.Description,
-                Images = project.Images.Select(i => Convert.ToBase64String(i.Img)).ToList() 
+                // Konverzija slika nazad u Base64 format za vraćanje klijentu (ako je potrebno)
+                Images = project.Images.Select(i => Convert.ToBase64String(i.Img)).ToList()
             };
 
             return projectResponse;
         }
 
-        public static void TestBase64Conversion(string base64String)
-        {
-            try
-            {
-                byte[] imageBytes = Convert.FromBase64String(base64String);
-                Console.WriteLine("Base64 string je validan!");
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("Base64 string nije validan!");
-            }
-        }
 
-        // Testiranje
-       
+
 
 
 
