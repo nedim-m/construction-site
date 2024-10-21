@@ -28,6 +28,38 @@ namespace backend.Controllers
                 return BadRequest(ex.Message); 
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAllProjects([FromQuery] ProjectSearchRequest? searchRequest)
+        {
+            try
+            {
+                var projects = await _services.GetAllProjects(searchRequest);
+                return Ok(projects); 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); 
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProjectById(int id)
+        {
+            try
+            {
+                var project = await _services.GetProjectById(id);
+                return Ok(project); 
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message); 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); 
+            }
+        }
+
 
     }
 }

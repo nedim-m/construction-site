@@ -1,5 +1,6 @@
 ﻿using backend.Data;
 using backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services
 {
@@ -81,14 +82,66 @@ namespace backend.Services
 
 
 
-        public Task<List<ProjectResponse>> GetAllProjects(ProjectSearchRequest? searchRequest = null)
+        public async Task<List<ProjectResponse>> GetAllProjects(ProjectSearchRequest? searchRequest = null)
         {
-            throw new NotImplementedException();
+            IQueryable<Project> query = _context.Projects.Include(p => p.Images);
+
+           
+            if (searchRequest != null)
+            {
+                
+                if (!string.IsNullOrWhiteSpace(searchRequest.ProjectLocation))
+                {
+                    query = query.Where(p => p.Location.Contains(searchRequest.ProjectLocation));
+                }
+
+               
+            }
+
+            
+            var projects = await query.ToListAsync();
+
+           
+            var projectResponses = projects.Select(p => new ProjectResponse
+            {
+                Id = p.Id,
+                Location = p.Location,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate,
+                Description = p.Description,
+                Images = p.Images.Select(i => Convert.ToBase64String(i.Img)).ToList()
+            }).ToList();
+
+            return projectResponses;
         }
 
-        public Task<ProjectResponse> GetProjectById(int id)
+
+        public async Task<ProjectResponse> GetProjectById(int id)
         {
-            throw new NotImplementedException();
+            
+            var project = await _context.Projects
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+           
+            if (project == null)
+            {
+                throw new KeyNotFoundException($"Projekat sa ID-om {id} nije pronađen.");
+            }
+
+           
+            var projectResponse = new ProjectResponse
+            {
+                Id = project.Id,
+                Location = project.Location,
+                StartDate = project.StartDate,
+                EndDate = project.EndDate,
+                Description = project.Description,
+                Images = project.Images.Select(i => Convert.ToBase64String(i.Img)).ToList()
+            };
+
+            return projectResponse;
         }
+
     }
 }
