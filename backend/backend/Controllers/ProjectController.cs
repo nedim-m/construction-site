@@ -16,10 +16,18 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProject(ProjectInsertRequest insert)
+        public async Task<IActionResult> AddProject(ProjectInsertRequest insert)
         {
-            var response= _services.AddProject(insert);
-            return Ok(response); 
+            try
+            {
+                var response = await _services.AddProject(insert); 
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); 
+            }
         }
+
     }
 }

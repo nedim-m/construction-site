@@ -3,45 +3,63 @@ using backend.Models;
 
 namespace backend.Services
 {
-    public class ProjectServices(DataContext context) : IProjectServices
+    public class ProjectServices : IProjectServices
     {
-        private readonly DataContext _context = context;
+        private readonly DataContext _context;
+
+        public ProjectServices(DataContext context)
+        {
+            _context = context;
+        }
 
         public async Task<ProjectResponse> AddProject(ProjectInsertRequest insert)
         {
-            // Kreiramo novi projekat na osnovu podataka iz insert requesta
             var project = new Project
             {
-                StartDate = insert.StartDate,
-                EndDate = insert.EndDate,
+                StartDate = DateTime.SpecifyKind(insert.StartDate, DateTimeKind.Utc),
+                EndDate = DateTime.SpecifyKind(insert.EndDate, DateTimeKind.Utc),
                 Location = insert.Location,
                 Description = insert.Description,
-                Images = new List<Image>() // Inicijalizujemo praznu listu za slike
             };
 
-            // Obrada svake slike
             foreach (var img in insert.Images)
             {
-                // Ukloni prefiks ako postoji
-                var base64Data = img.Substring(img.IndexOf(",") + 1);
+                if (string.IsNullOrWhiteSpace(img))
+                {
+                    throw new ArgumentException("Jedna ili više slika je prazna ili nevalidna.");
+                }
 
                 try
                 {
+                    var base64Data = img.Substring(img.IndexOf(",") + 1);
                     byte[] imageBytes = Convert.FromBase64String(base64Data);
-                    project.Images.Add(new Image { Img = imageBytes });
+
+                    var image = new Image
+                    {
+                        Img = imageBytes,
+                        Project = project
+                    };
+
+                    _context.Images.Add(image);
                 }
                 catch (FormatException ex)
                 {
-                    throw new Exception($"Jedna ili više slika nije validan Base64 format: {img}", ex);
+                    throw new Exception($"Slika nije validan Base64 format: {img}", ex);
                 }
             }
 
-
-            // Dodavanje projekta u bazu podataka
             _context.Projects.Add(project);
-            await _context.SaveChangesAsync();
 
-            // Priprema odgovora koji se vraća klijentu
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Hvatanje greške i ispisivanje detalja greške
+                throw new Exception($"Greška prilikom spremanja podataka u bazu: {ex.Message}", ex);
+            }
+
             var projectResponse = new ProjectResponse
             {
                 Id = project.Id,
@@ -49,12 +67,14 @@ namespace backend.Services
                 StartDate = project.StartDate,
                 EndDate = project.EndDate,
                 Description = project.Description,
-                // Konverzija slika nazad u Base64 format za vraćanje klijentu (ako je potrebno)
                 Images = project.Images.Select(i => Convert.ToBase64String(i.Img)).ToList()
             };
 
             return projectResponse;
         }
+
+
+
 
 
 
