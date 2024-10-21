@@ -56,7 +56,7 @@ namespace backend.Services
             }
             catch (Exception ex)
             {
-                // Hvatanje greške i ispisivanje detalja greške
+                
                 throw new Exception($"Greška prilikom spremanja podataka u bazu: {ex.Message}", ex);
             }
 
