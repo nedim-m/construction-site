@@ -7,6 +7,7 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { HeaderComponent } from './pages/header/header.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ProjectInsertComponent } from './pages/projects/projects-insert/projects-insert.component';
+import { ProjectsDetailsComponent } from './pages/projects/projects-details/projects-details.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -37,6 +38,9 @@ export const routes: Routes = [
     {
         path:'insert-projects',component:ProjectInsertComponent
         
+    },
+    {
+        path:'project/:id', component:ProjectsDetailsComponent
     },
     
 

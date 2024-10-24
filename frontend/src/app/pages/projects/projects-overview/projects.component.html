@@ -22,7 +22,8 @@
               </div>
 
               <div class="card-footer text-center">
-                  <a href="{{ project.description }}" class="btn btn-primary">Detalji projekta</a>
+                <a [routerLink]="['/project', project.id]" class="btn btn-primary">Detalji projekta</a>
+
               </div>
           </div>
       </div>

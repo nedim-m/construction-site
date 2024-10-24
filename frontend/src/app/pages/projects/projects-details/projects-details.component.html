@@ -1,0 +1,37 @@
+<div *ngIf="project" class="container my-5">
+    <h1 class="text-center mb-4">{{ project.name }}</h1>
+  
+    <div class="row">
+      <div class="col-md-6">
+   
+        <img [src]="project.images[0]" class="img-fluid img-thumbnail" alt="{{ project.name }}" (click)="openModal(0)">
+        <p *ngIf="project.images.length > 1" class="text-muted mt-2">
+          Ovaj projekat ima {{ project.images.length }} slike. Kliknite na sliku za pregled galerije.
+        </p>
+      </div>
+      
+      <div class="col-md-6">
+       
+        <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
+        <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
+        <p><strong>Lokacija:</strong> {{ project.location }}</p>
+        <p>{{ project.description }}</p>
+      </div>
+    </div>
+    
+   
+    <div class="modal" [ngClass]="{ 'show': isModalOpen }" (click)="closeModal()">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <img class="modal-image" [src]="currentImage" alt="Slika {{ currentIndex + 1 }}">
+  
+
+      <a class="prev" (click)="previousImage($event)">&#10094;</a>
+      <a class="next" (click)="nextImage($event)">&#10095;</a>
+    </div>
+  </div>
+  
+
+  <div *ngIf="!project" class="container my-5">
+    <p class="text-center">Projekat nije pronađen.</p>
+  </div>
+  
