@@ -8,9 +8,11 @@ namespace backend.Data
 
         public required byte[] Img { get; set; }
 
+       
+        [MaxLength(50)]  
+        public required string MimeType { get; set; } 
+
         public int ProjectId { get; set; }
         public virtual Project Project { get; set; }
     }
 }
-
-

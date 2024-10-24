@@ -4,6 +4,7 @@ export interface Project {
     location: string;
     description: string;
     images: string[];  
+    name:string;
   }
 
   export interface ProjectResponse {
@@ -13,4 +14,5 @@ export interface Project {
     location: string;
     description: string;
     images: string[];  
+    name:string;
   }

@@ -2,6 +2,14 @@
     <h2 class="text-center mb-4">Unos novog projekta</h2>
   
     <form (ngSubmit)="onSubmit()" #projectForm="ngForm">
+
+      <div class="form-group mb-3">
+        <label for="location">Naziv</label>
+        <input type="text" id="name" [(ngModel)]="project.name" name="name" class="form-control" required>
+      </div>
+  
+
+
       <div class="form-group mb-3">
         <label for="startDate">Datum početka</label>
         <input type="date" id="startDate" [(ngModel)]="project.startDate" name="startDate" class="form-control" required>

@@ -12,7 +12,7 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241018143922_Init")]
+    [Migration("20241024165021_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -233,6 +233,11 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("bytea");
 
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
@@ -258,6 +263,10 @@ namespace backend.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 

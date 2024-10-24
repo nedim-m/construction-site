@@ -1,18 +1,30 @@
 <div class="container my-5">
-    <h1 class="text-center mb-5">Naši Projekti</h1>
-    <div class="row">
+  <h1 class="text-center mb-5">Naši Projekti</h1>
+  <div class="row">
       <div class="col-md-4 col-sm-6 mb-4" *ngFor="let project of projects">
-        <div class="card h-100">
-          <img src="{{ project.image }}" class="card-img-top project-image" alt="{{ project.title }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ project.title }}</h5>
-            <p class="card-text">{{ project.description }}</p>
+          <div class="card h-100">
+             
+              <img 
+                  *ngIf="project.images && project.images.length > 0; else placeholderImage" 
+                  [src]="project.images[0]" 
+                  class="card-img-top project-image" 
+                  [alt]="project.name + ' - ' + project.location">
+              
+             
+              <ng-template #placeholderImage>
+                  <img src="assets/placeholder.jpg" class="card-img-top project-image" alt="Placeholder">
+              </ng-template>
+
+              <div class="card-body">
+                  <h3 class="card-title">{{ project.name }}</h3>
+                  <h5 class="card-subtitle text-muted">{{ project.location }}</h5>
+                  <p class="card-text mt-3">{{ project.description }}</p>
+              </div>
+
+              <div class="card-footer text-center">
+                  <a href="{{ project.description }}" class="btn btn-primary">Detalji projekta</a>
+              </div>
           </div>
-          <div class="card-footer text-center">
-            <a href="{{ project.link }}" class="btn btn-primary">Detalji projekta</a>
-          </div>
-        </div>
       </div>
-    </div>
   </div>
-  
+</div>

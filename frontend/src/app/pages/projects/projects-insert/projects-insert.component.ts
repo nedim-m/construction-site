@@ -16,6 +16,7 @@ export class ProjectInsertComponent {
   project: Project = {
     startDate: new Date(),
     endDate: new Date(),
+    name:'',
     location: '',
     description: '',
     images: []

@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ProjectsService } from '../projects.service';
+import { ProjectResponse } from '../projects.model';
 
 @Component({
   selector: 'app-projects',
@@ -8,26 +10,23 @@ import { Component } from '@angular/core';
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css'
 })
-export class ProjectsComponent {
-  projects = [
-    {
-      title: 'Stambeni Objekat Sarajevo',
-      description: 'Izgradnja stambenog objekta u Sarajevu.',
-      image: 'assets/project1.jpg',
-      link: '#'
-    },
-    {
-      title: 'Komercijalni Objekat Mostar',
-      description: 'Renoviranje poslovnog objekta u Mostaru.',
-      image: 'assets/project2.jpg',
-      link: '#'
-    },
-    {
-      title: 'Industrijski Objekat Tuzla',
-      description: 'Izgradnja industrijskog kompleksa u Tuzli.',
-      image: 'assets/project3.jpg',
-      link: '#'
-    }
-  ];
+export class ProjectsComponent implements OnInit  {
+
+  projects: ProjectResponse[] = [];
+  constructor(private projectService: ProjectsService) {}
+  ngOnInit(): void {
+    this.fetchProjects();
+  }
+  
+  fetchProjects(): void {
+    this.projectService.getAllProjects().subscribe(
+      (data) => {
+        this.projects = data; 
+      },
+      (error) => {
+        console.error('Došlo je do greške prilikom dohvata projekata', error);
+      }
+    );
+  }
 
 }

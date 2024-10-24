@@ -60,6 +60,7 @@ namespace backend.Migrations
                     StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Location = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -180,6 +181,7 @@ namespace backend.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Img = table.Column<byte[]>(type: "bytea", nullable: false),
+                    MimeType = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     ProjectId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

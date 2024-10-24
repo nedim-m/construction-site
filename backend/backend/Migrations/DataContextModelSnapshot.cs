@@ -230,6 +230,11 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("bytea");
 
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
@@ -255,6 +260,10 @@ namespace backend.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
