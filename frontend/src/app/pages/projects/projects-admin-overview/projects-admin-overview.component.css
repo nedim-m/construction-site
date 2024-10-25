@@ -1,0 +1,29 @@
+.table-bordered {
+    border: 1px solid #dee2e6; /* Granica tabele */
+  }
+  
+  .table-bordered th, .table-bordered td {
+    border: 1px solid #dee2e6; /* Granice između ćelija */
+    padding: 8px; /* Razmak unutar ćelija */
+    text-align: left; /* Poravnanje teksta */
+  }
+  
+  .table-bordered th {
+    background-color: #f8f9fa; /* Boja pozadine za zaglavlje */
+    font-weight: bold; /* Debeli font za zaglavlje */
+  }
+  
+  .table-bordered tr:hover {
+    background-color: #f1f1f1; /* Boja reda kada se pređe mišem */
+  }
+  
+  .edit-btn {
+    color: #007bff;
+  }
+  
+  .delete-btn {
+    color: #dc3545;
+  }
+  .p-button-success{
+    color: #008000 ;
+  }

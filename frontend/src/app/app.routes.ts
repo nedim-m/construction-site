@@ -8,6 +8,7 @@ import { HeaderComponent } from './pages/header/header.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ProjectInsertComponent } from './pages/projects/projects-insert/projects-insert.component';
 import { ProjectsDetailsComponent } from './pages/projects/projects-details/projects-details.component';
+import { ProjectsAdminOverviewComponent } from './pages/projects/projects-admin-overview/projects-admin-overview.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -32,9 +33,14 @@ export const routes: Routes = [
         
     },
     {
-        path:'loginAdmin',component:LoginComponent
+        path:'admin-login',component:LoginComponent
         
     },
+    {
+        path:'admin-projects',component:ProjectsAdminOverviewComponent
+        
+    },
+
     {
         path:'insert-projects',component:ProjectInsertComponent
         
