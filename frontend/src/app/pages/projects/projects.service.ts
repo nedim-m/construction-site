@@ -28,5 +28,9 @@ export class ProjectsService {
     return this.http.get<ProjectResponse>(`${this.baseUrl}/${id}`);
   }
 
+  deleteProject(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+}
+
 
 }

@@ -60,6 +60,15 @@ namespace backend.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProject(int id)
+        {
+            var result = await _services.DeleteProject(id);
+            if (!result) return NotFound(new { Message = "Project not found" });
+
+            return Ok(new { Message = "Project deleted successfully" });
+        }
+
 
     }
 }

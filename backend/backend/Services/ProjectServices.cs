@@ -83,6 +83,7 @@ namespace backend.Services
             return projectResponse;
         }
 
+        
         public async Task<List<ProjectResponse>> GetAllProjects(ProjectSearchRequest? searchRequest = null)
         {
             IQueryable<Project> query = _context.Projects.Include(p => p.Images);
@@ -136,5 +137,38 @@ namespace backend.Services
 
             return projectResponse;
         }
+
+
+
+        public async Task<bool> DeleteProject(int id)
+        {
+            
+            var project = await _context.Projects
+                                        .Include(p => p.Images)
+                                        .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (project == null)
+            {
+                throw new Exception("Projekat nije pronađen.");
+            }
+
+           
+            _context.Images.RemoveRange(project.Images);
+
+            
+            _context.Projects.Remove(project);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Greška prilikom brisanja podataka: {ex.Message}", ex);
+            }
+        }
+
+
     }
 }

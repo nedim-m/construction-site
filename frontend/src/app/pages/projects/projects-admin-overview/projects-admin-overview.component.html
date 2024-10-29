@@ -34,9 +34,10 @@
             <button pButton type="button" class="p-button-text p-button-sm edit-btn">
                 <i class="fa fa-pencil-alt"></i> Edit
               </button>
-              <button pButton type="button" class="p-button-text p-button-sm delete-btn">
-                <i class="fa fa-trash"></i> Delete
-              </button>
+              <button pButton type="button" class="p-button-text p-button-sm delete-btn"
+                  (click)="onDelete(project.id)">
+            <i class="fa fa-trash"></i> Delete
+          </button>
               
           </td>
         </tr>

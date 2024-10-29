@@ -9,5 +9,7 @@ namespace backend.Services
 
         Task<ProjectResponse> AddProject(ProjectInsertRequest insert);
 
+        Task<bool> DeleteProject(int id);
+
     }
 }

@@ -4,6 +4,7 @@ import { ProjectResponse } from '../projects.model';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-projects-admin-overview',
@@ -37,9 +38,36 @@ export class ProjectsAdminOverviewComponent {
     // Ovdje dodaj logiku za uređivanje
   }
 
-  onDelete(project: ProjectResponse): void {
-    console.log('Deleting project:', project);
-    // Ovdje dodaj logiku za brisanje
+  onDelete(projectId: number): void {
+    Swal.fire({
+      title: 'Jeste li sigurni?',
+      text: 'Ovaj projekat i sve njegove slike bit će trajno obrisani.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Da, obriši!',
+      cancelButtonText: 'Otkaži'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        this.projectsService.deleteProject(projectId).subscribe(() => {
+          Swal.fire(
+            'Obrisano!',
+            'Projekat je uspješno obrisan.',
+            'success'
+          );
+         
+          this.loadProjects();
+        }, error => {
+          Swal.fire(
+            'Greška!',
+            'Došlo je do problema prilikom brisanja projekta.',
+            'error'
+          );
+        });
+      }
+    });
   }
   navigateToAddProject() {
     this.router.navigate(['insert-projects']);
