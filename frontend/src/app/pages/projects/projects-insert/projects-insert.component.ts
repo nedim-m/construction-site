@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Project } from '../projects.model';
 import { ProjectsService } from '../projects.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-insert',
@@ -22,11 +24,12 @@ export class ProjectInsertComponent {
     images: []
   };
 
-  constructor(private service: ProjectsService) {}
+  @ViewChild('projectForm') projectForm!: NgForm;
+  constructor(private service: ProjectsService,private router: Router) {}
 
   onFileChange(event: any) {
     const files = event.target.files;
-    this.project.images = []; // Clear previous images if any
+    this.project.images = []; 
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -41,9 +44,33 @@ export class ProjectInsertComponent {
     }
   }
 
+  
   onSubmit() {
-    this.service.addProject(this.project).subscribe(response => {
-      console.log('Project added:', response);
-    });
+    if (this.projectForm.valid) {
+      this.service.addProject(this.project).subscribe(
+        response => {
+          console.log('Project added:', response);
+          Swal.fire({
+            icon: 'success',
+            title: 'Uspešno!',
+            text: 'Projekat je uspešno dodat.',
+            confirmButtonText: 'U redu'
+          }).then(() => {
+            
+            this.router.navigate(['/admin-projects']); 
+          });
+          this.projectForm.reset(); // Resetujte formu
+        },
+        error => {
+          console.error('Greška prilikom dodavanja projekta:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Greška!',
+            text: 'Došlo je do greške prilikom dodavanja projekta.',
+            confirmButtonText: 'U redu'
+          });
+        }
+      );
+    }
   }
 }
