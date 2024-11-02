@@ -60,6 +60,32 @@ namespace backend.Controllers
             }
         }
 
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectUpdateRequest updateRequest)
+        {
+            if (updateRequest == null)
+            {
+                return BadRequest("Podaci za ažuriranje nisu poslani.");
+            }
+
+            try
+            {
+                var updatedProject = await _services.UpdateProject(id, updateRequest);
+                return Ok(updatedProject);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Greška na serveru: {ex.Message}");
+            }
+        }
+
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {

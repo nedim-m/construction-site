@@ -1,0 +1,50 @@
+<div class="container">
+    <h2 class="text-center mb-4">Uredi Projekat</h2>
+
+    <form [formGroup]="editProjectForm" (ngSubmit)="onSave()">
+        <div class="form-group mb-4">
+            <label for="name">Naziv</label>
+            <input type="text" id="name" formControlName="name" class="form-control">
+            <div *ngIf="editProjectForm.get('name')?.invalid && editProjectForm.get('name')?.touched" class="text-danger">
+                <small *ngIf="editProjectForm.get('name')?.errors?.['required']">Naziv je obavezan.</small>
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            <label for="startDate">Datum početka</label>
+            <input type="date" id="startDate" formControlName="startDate" class="form-control">
+            <div *ngIf="editProjectForm.get('startDate')?.invalid && editProjectForm.get('startDate')?.touched" class="text-danger">
+                <small *ngIf="editProjectForm.get('startDate')?.errors?.['required']">Datum početka je obavezan.</small>
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            <label for="endDate">Datum završetka</label>
+            <input type="date" id="endDate" formControlName="endDate" class="form-control">
+            <div *ngIf="editProjectForm.get('endDate')?.invalid && editProjectForm.get('endDate')?.touched" class="text-danger">
+                <small *ngIf="editProjectForm.get('endDate')?.errors?.['required']">Datum završetka je obavezan.</small>
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            <label for="location">Lokacija</label>
+            <input type="text" id="location" formControlName="location" class="form-control">
+            <div *ngIf="editProjectForm.get('location')?.invalid && editProjectForm.get('location')?.touched" class="text-danger">
+                <small *ngIf="editProjectForm.get('location')?.errors?.['required']">Lokacija je obavezna.</small>
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            <label for="description">Opis</label>
+            <textarea id="description" formControlName="description" class="form-control"></textarea>
+            <div *ngIf="editProjectForm.get('description')?.invalid && editProjectForm.get('description')?.touched" class="text-danger">
+                <small *ngIf="editProjectForm.get('description')?.errors?.['required']">Opis je obavezan.</small>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-primary" [disabled]="editProjectForm.invalid">Sačuvaj</button>
+            <button type="button" class="btn btn-secondary" (click)="goBack()">Nazad</button>
+        </div>
+    </form>
+</div>

@@ -22,6 +22,10 @@ export class ProjectsAdminOverviewComponent {
     this.loadProjects();
   }
 
+  navigateToEdit(projectId: number) {
+    this.router.navigate(['/projects/edit', projectId]);
+  }
+
   loadProjects(): void {
     this.projectsService.getAllProjects().subscribe({
       next: (data) => {

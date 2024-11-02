@@ -9,6 +9,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { ProjectInsertComponent } from './pages/projects/projects-insert/projects-insert.component';
 import { ProjectsDetailsComponent } from './pages/projects/projects-details/projects-details.component';
 import { ProjectsAdminOverviewComponent } from './pages/projects/projects-admin-overview/projects-admin-overview.component';
+import { ProjectsAdminEditComponent } from './pages/projects/projects-admin-edit/projects-admin-edit.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -47,6 +48,9 @@ export const routes: Routes = [
     },
     {
         path:'project/:id', component:ProjectsDetailsComponent
+    },
+    { 
+        path: 'projects/edit/:id', component: ProjectsAdminEditComponent 
     },
     
 

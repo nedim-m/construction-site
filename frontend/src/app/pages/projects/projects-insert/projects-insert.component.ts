@@ -59,7 +59,7 @@ export class ProjectInsertComponent {
             
             this.router.navigate(['/admin-projects']); 
           });
-          this.projectForm.reset(); // Resetujte formu
+          this.projectForm.reset(); 
         },
         error => {
           console.error('Greška prilikom dodavanja projekta:', error);

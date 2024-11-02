@@ -11,5 +11,8 @@ namespace backend.Services
 
         Task<bool> DeleteProject(int id);
 
+        Task<ProjectResponse> UpdateProject(int id, ProjectUpdateRequest update);
+
+
     }
 }

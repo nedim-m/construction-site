@@ -169,6 +169,45 @@ namespace backend.Services
             }
         }
 
+        public async Task<ProjectResponse> UpdateProject(int id, ProjectUpdateRequest update)
+        {
+            
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == id);
+            if (project == null)
+            {
+                throw new KeyNotFoundException($"Projekat sa ID-om {id} nije pronađen.");
+            }
+
+          
+            project.StartDate = DateTime.SpecifyKind(update.StartDate, DateTimeKind.Utc);
+            project.EndDate = DateTime.SpecifyKind(update.EndDate, DateTimeKind.Utc);
+            project.Location = update.Location;
+            project.Description = update.Description;
+            project.Name = update.Name;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Greška prilikom ažuriranja projekta: {ex.Message}", ex);
+            }
+
+            
+            var projectResponse = new ProjectResponse
+            {
+                Id = project.Id,
+                Location = project.Location,
+                StartDate = project.StartDate,
+                EndDate = project.EndDate,
+                Description = project.Description,
+                Name = project.Name,
+                Images = project.Images.Select(i => $"data:{i.MimeType};base64,{Convert.ToBase64String(i.Img)}").ToList()
+            };
+
+            return projectResponse;
+        }
 
     }
 }
