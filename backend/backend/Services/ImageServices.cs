@@ -1,4 +1,5 @@
 ﻿using backend.Data;
+using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services
@@ -77,6 +78,21 @@ namespace backend.Services
             {
                 throw new Exception($"Greška prilikom brisanja slika: {ex.Message}", ex);
             }
+        }
+
+        public async Task<List<ImageResponse>> GetImagesByProjectId(int projectId)
+        {
+            var images = await _context.Images
+                .Where(img => img.ProjectId == projectId)
+                .Select(img => new ImageResponse
+                {
+                    Id = img.Id,
+                    MimeType = img.MimeType,
+                    Img = $"data:{img.MimeType};base64,{Convert.ToBase64String(img.Img)}"
+                })
+                .ToListAsync();
+
+            return images;
         }
     }
 }

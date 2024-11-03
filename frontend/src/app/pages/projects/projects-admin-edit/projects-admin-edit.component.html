@@ -41,10 +41,42 @@
                 <small *ngIf="editProjectForm.get('description')?.errors?.['required']">Opis je obavezan.</small>
             </div>
         </div>
+        <div class="text-center my-4">
+            <button type="button" class="btn btn-info" (click)="openGallery()">Galerija Slika</button>
+        </div>
 
         <div class="d-flex justify-content-between mt-4">
             <button type="submit" class="btn btn-primary" [disabled]="editProjectForm.invalid">Sačuvaj</button>
             <button type="button" class="btn btn-secondary" (click)="goBack()">Nazad</button>
         </div>
     </form>
+    <div *ngIf="isGalleryOpen" class="gallery-modal">
+        <div class="gallery-content">
+            <h3 class="text-center mb-3">Galerija Slika</h3>
+            <div class="row">
+                <div class="col-md-3 mb-3" *ngFor="let image of projectImages">
+                    <div class="image-container">
+                        <img [src]="image.img" class="img-thumbnail" alt="Project Image">
+                    </div>
+                    <div class="text-center mt-2">
+                        <button type="button" class="btn btn-danger btn-sm" (click)="deleteImage(image.id)">Obriši</button>
+                    </div>
+                </div>
+                
+                
+                
+                
+            </div>
+            
+            <div class="text-center mt-3">
+                <input type="file" (change)="onFileSelected($event)" multiple>
+                <button type="button" class="btn btn-success mt-2" (click)="addSelectedImages()">Dodaj Slike</button>
+            </div>
+            <div class="text-center mt-4">
+                <button type="button" class="btn btn-secondary" (click)="closeGallery()">Zatvori</button>
+            </div>
+        </div>
+    </div>
+    
 </div>
+

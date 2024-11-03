@@ -42,5 +42,23 @@ namespace backend.Controllers
                 return StatusCode(500, $"Greška na serveru: {ex.Message}");
             }
         }
+
+        [HttpGet("{projectId}")]
+        public async Task<IActionResult> GetImagesByProjectId(int projectId)
+        {
+            try
+            {
+                var images = await _imageService.GetImagesByProjectId(projectId);
+                return Ok(images);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ export class ProjectsService {
 
   constructor(private http:HttpClient) { }
   baseUrl=`${AppConfig.apiUrl}/project`;
+  
 
   addProject(project: Project): Observable<Project> {
     return this.http.post<Project>(this.baseUrl, project);

@@ -16,3 +16,8 @@ export interface Project {
     images: string[];  
     name:string;
   }
+  export interface ImageResponse {
+    id: number;
+    mimeType: string;
+    img: string; 
+}
