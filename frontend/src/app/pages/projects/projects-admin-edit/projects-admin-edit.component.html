@@ -69,9 +69,10 @@
             </div>
             
             <div class="text-center mt-3">
-                <input type="file" (change)="onFileSelected($event)" multiple>
-                <button type="button" class="btn btn-success mt-2" (click)="addSelectedImages()">Dodaj Slike</button>
+                <input type="file" (change)="onFileChange($event)" #fileInput multiple>
+                <button type="button" class="btn btn-success mt-2" (click)="addImages()">Dodaj Slike</button>
             </div>
+          
             <div class="text-center mt-4">
                 <button type="button" class="btn btn-secondary" (click)="closeGallery()">Zatvori</button>
             </div>

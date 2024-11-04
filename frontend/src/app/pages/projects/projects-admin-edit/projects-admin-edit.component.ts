@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -24,7 +24,7 @@ export class ProjectsAdminEditComponent implements OnInit {
   isGalleryOpen = false;
   projectImages: ImageResponse[] = [];
 
-  selectedFiles: File[] = [];
+  selectedFiles: string[] = [];
   projectId!: number;
 
   constructor(
@@ -43,6 +43,7 @@ export class ProjectsAdminEditComponent implements OnInit {
     });
   }
 
+  @ViewChild('fileInput') fileInput!: ElementRef;
   ngOnInit(): void {
     this.projectId = this.route.snapshot.params['id'];
     this.loadProjectData();
@@ -109,27 +110,47 @@ export class ProjectsAdminEditComponent implements OnInit {
     this.isGalleryOpen = false;
   }
 
-  onFileSelected(event: Event) {
-    const files = (event.target as HTMLInputElement).files;
-    if (files) {
-      this.selectedFiles = Array.from(files);
+ 
+  onFileChange(event: any) {
+    const files = event.target.files;
+    this.selectedFiles = []; 
+  
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+  
+      reader.onload = (e: any) => {
+        const base64Image = e.target.result;
+        this.selectedFiles.push(base64Image); 
+      };
+  
+      reader.readAsDataURL(file); 
     }
   }
-
-  addSelectedImages() {
-    if (this.selectedFiles.length === 0) return;
-
+  addImages() {
+    if (this.selectedFiles.length === 0) return; 
+  
     this.imageService.addImages(this.projectId, this.selectedFiles).subscribe(
       (response) => {
-        this.loadProjectImages();
+        this.loadProjectImages(); 
         this.selectedFiles = []; 
-        Swal.fire('Success', 'Images added successfully!', 'success');
+  
+        
+        if (this.fileInput) {
+          this.fileInput.nativeElement.value = ''; 
+        }
+  
+        Swal.fire('Uspjeh', 'Slike su uspješno dodate!', 'success');
       },
       (error) => {
-        Swal.fire('Error', 'Failed to add images', 'error');
+        Swal.fire('Greška', 'Dodavanje slika nije uspelo', 'error');
       }
     );
   }
+  
+  
+  
+  
 
   deleteImage(imageId: number) {
     console.log(`Ispis iz servisa ID: ${imageId}`);

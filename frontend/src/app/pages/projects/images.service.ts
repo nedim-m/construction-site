@@ -15,16 +15,10 @@ export class ImagesService {
 
 
 
-addImages(projectId: number, images: File[]): Observable<boolean> {
-  const formData = new FormData();
-  formData.append('projectId', projectId.toString());
-
-  images.forEach((image, index) => {
-    formData.append(`images[${index}]`, image);
-  });
-
-  return this.http.post<boolean>(this.baseUrl, formData);
-}
+  addImages(projectId: number, images: string[]): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${projectId}`, images);
+  }
+  
 
 
 deleteImages(projectId: number, imageIds: number[]): Observable<any> {
