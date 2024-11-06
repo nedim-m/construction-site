@@ -29,7 +29,7 @@ export class ContactComponent {
     if (this.contactForm.valid) {
       this.contactMessageService.insertMessage(this.contactForm.value).subscribe(
         () => {
-          Swal.fire('Uspeh!', 'Poruka je uspešno poslata.', 'success');
+          Swal.fire('Uspjeh!', 'Poruka je uspješno poslata.', 'success');
           this.contactForm.reset();  
         },
         () => {

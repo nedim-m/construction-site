@@ -11,6 +11,7 @@ import { ProjectsDetailsComponent } from './pages/projects/projects-details/proj
 import { ProjectsAdminOverviewComponent } from './pages/projects/projects-admin-overview/projects-admin-overview.component';
 import { ProjectsAdminEditComponent } from './pages/projects/projects-admin-edit/projects-admin-edit.component';
 import { ContactComponent } from './pages/contact/contact-insert/contact.component';
+import { ContactMessagesAdminOverviewComponent } from './pages/contact/contact-messages-admin-overview/contact-messages-admin-overview.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,7 +28,11 @@ export const routes: Routes = [
         
     },
     {
-        path:'contactus',component:ContactComponent
+        path:'contact-us',component:ContactComponent
+        
+    },
+    {
+        path:'admin-messages',component:ContactMessagesAdminOverviewComponent
         
     },
     {
