@@ -3,13 +3,14 @@ import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ProjectsComponent } from './pages/projects/projects-overview/projects.component';
 import { ServicesComponent } from './pages/servicess/services.component';
-import { ContactComponent } from './pages/contact/contact.component';
-import { HeaderComponent } from './pages/header/header.component';
+
+
 import { LoginComponent } from './pages/login/login.component';
 import { ProjectInsertComponent } from './pages/projects/projects-insert/projects-insert.component';
 import { ProjectsDetailsComponent } from './pages/projects/projects-details/projects-details.component';
 import { ProjectsAdminOverviewComponent } from './pages/projects/projects-admin-overview/projects-admin-overview.component';
 import { ProjectsAdminEditComponent } from './pages/projects/projects-admin-edit/projects-admin-edit.component';
+import { ContactComponent } from './pages/contact/contact-insert/contact.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },

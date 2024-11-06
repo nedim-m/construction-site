@@ -38,6 +38,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddTransient<IProjectServices, ProjectServices>();
 builder.Services.AddTransient<IImageServices, ImageServices>();
+builder.Services.AddTransient<IContactMessageService, ContactMessageService>();
 
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

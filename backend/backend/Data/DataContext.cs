@@ -12,5 +12,6 @@ namespace backend.Data
 
         public virtual DbSet<Project>Projects  { get; set; }
         public virtual DbSet<Image> Images { get; set; }
+        public virtual DbSet<ContactMessage> ContactMessages { get; set; }
     }
 }
