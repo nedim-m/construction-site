@@ -12,6 +12,7 @@ import { ProjectsAdminOverviewComponent } from './pages/projects/projects-admin-
 import { ProjectsAdminEditComponent } from './pages/projects/projects-admin-edit/projects-admin-edit.component';
 import { ContactComponent } from './pages/contact/contact-insert/contact.component';
 import { ContactMessagesAdminOverviewComponent } from './pages/contact/contact-messages-admin-overview/contact-messages-admin-overview.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -32,7 +33,7 @@ export const routes: Routes = [
         
     },
     {
-        path:'admin-messages',component:ContactMessagesAdminOverviewComponent
+        path:'admin-messages',canActivate: [authGuard],component:ContactMessagesAdminOverviewComponent
         
     },
     {
@@ -44,19 +45,19 @@ export const routes: Routes = [
         
     },
     {
-        path:'admin-projects',component:ProjectsAdminOverviewComponent
+        path:'admin-projects',canActivate: [authGuard],component:ProjectsAdminOverviewComponent
         
     },
 
     {
-        path:'insert-projects',component:ProjectInsertComponent
+        path:'insert-projects',canActivate: [authGuard],component:ProjectInsertComponent
         
     },
     {
         path:'project/:id', component:ProjectsDetailsComponent
     },
     { 
-        path: 'projects/edit/:id', component: ProjectsAdminEditComponent 
+        path: 'projects/edit/:id',canActivate: [authGuard], component: ProjectsAdminEditComponent 
     },
     
 
