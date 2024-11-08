@@ -8,7 +8,9 @@ namespace backend.Data
 
         public required byte[] Img { get; set; }
 
-       
+        public bool Cover { get; set; }=false;
+
+
         [MaxLength(50)]  
         public required string MimeType { get; set; } 
 

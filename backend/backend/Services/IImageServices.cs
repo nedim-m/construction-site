@@ -9,5 +9,7 @@ namespace backend.Services
 
         Task<List<ImageResponse>> GetImagesByProjectId(int id);
 
+        Task SetAsCover(int projectId, int imageId);
+
     }
 }

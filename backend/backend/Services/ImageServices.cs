@@ -1,6 +1,8 @@
 ﻿using backend.Data;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp;
 
 namespace backend.Services
 {
@@ -34,14 +36,28 @@ namespace backend.Services
                     var base64Data = img.Substring(img.IndexOf(",") + 1);
                     byte[] imageBytes = Convert.FromBase64String(base64Data);
 
-                    var image = new Image
-                    {
-                        Img = imageBytes,
-                        MimeType = mimeType,
-                        Project = project
-                    };
 
-                    _context.Images.Add(image);
+                    using (var image = SixLabors.ImageSharp.Image.Load(imageBytes))
+                    {
+
+                        image.Mutate(x => x.Resize(1920, 1024));
+
+
+                        using (var ms = new MemoryStream())
+                        {
+                            image.SaveAsJpeg(ms);
+                            var resizedImageBytes = ms.ToArray();
+
+                            var imageEntity = new Data.Image
+                            {
+                                Img = resizedImageBytes,
+                                MimeType = mimeType,
+                                Project = project
+                            };
+
+                            _context.Images.Add(imageEntity);
+                        }
+                    }
                 }
                 catch (FormatException ex)
                 {

@@ -1,6 +1,9 @@
 ﻿using backend.Data;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Processing;
 
 namespace backend.Services
 {
@@ -15,7 +18,6 @@ namespace backend.Services
 
         public async Task<ProjectResponse> AddProject(ProjectInsertRequest insert)
         {
-           
             var project = new Project
             {
                 StartDate = DateTime.SpecifyKind(insert.StartDate, DateTimeKind.Utc),
@@ -25,7 +27,6 @@ namespace backend.Services
                 Name = insert.Name,
             };
 
-      
             foreach (var img in insert.Images)
             {
                 if (string.IsNullOrWhiteSpace(img))
@@ -35,20 +36,32 @@ namespace backend.Services
 
                 try
                 {
-                   
                     var mimeType = img.Substring(5, img.IndexOf(";") - 5);
                     var base64Data = img.Substring(img.IndexOf(",") + 1);
                     byte[] imageBytes = Convert.FromBase64String(base64Data);
 
-                    
-                    var image = new Image
+                 
+                    using (var image = SixLabors.ImageSharp.Image.Load(imageBytes))  
                     {
-                        Img = imageBytes,
-                        MimeType = mimeType, 
-                        Project = project
-                    };
+                        
+                        image.Mutate(x => x.Resize(1920, 1024)); 
 
-                    _context.Images.Add(image);
+                        
+                        using (var ms = new MemoryStream())
+                        {
+                            image.SaveAsJpeg(ms);  
+                            var resizedImageBytes = ms.ToArray();  
+
+                            var imageEntity = new Data.Image
+                            {
+                                Img = resizedImageBytes,
+                                MimeType = mimeType,
+                                Project = project
+                            };
+
+                            _context.Images.Add(imageEntity);
+                        }
+                    }
                 }
                 catch (FormatException ex)
                 {
@@ -56,7 +69,6 @@ namespace backend.Services
                 }
             }
 
-           
             _context.Projects.Add(project);
 
             try
@@ -68,7 +80,6 @@ namespace backend.Services
                 throw new Exception($"Greška prilikom spremanja podataka u bazu: {ex.Message}", ex);
             }
 
-            
             var projectResponse = new ProjectResponse
             {
                 Id = project.Id,
@@ -83,7 +94,7 @@ namespace backend.Services
             return projectResponse;
         }
 
-        
+
         public async Task<List<ProjectResponse>> GetAllProjects(ProjectSearchRequest? searchRequest = null)
         {
             IQueryable<Project> query = _context.Projects.Include(p => p.Images);

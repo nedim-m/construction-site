@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../projects.service';
 import { ProjectResponse } from '../projects.model';
 import { RouterLink } from '@angular/router';
+import { TruncatePipe } from '../../../utilis/truncate.pipe';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule,RouterLink],
+  imports: [CommonModule,RouterLink,TruncatePipe],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css'
 })
