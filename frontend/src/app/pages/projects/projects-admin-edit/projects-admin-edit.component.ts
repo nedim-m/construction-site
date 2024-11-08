@@ -148,6 +148,38 @@ export class ProjectsAdminEditComponent implements OnInit {
     );
   }
   
+  setAsCover(imageId: number) {
+  Swal.fire({
+    title: 'Da li želite postaviti ovu sliku kao naslovnu?',
+    text: "Ova akcija će postaviti ovu sliku kao naslovnu za projekat.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Da, postavi!',
+    cancelButtonText: 'Otkaži'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.imageService.setAsCover(this.projectId, imageId).subscribe({
+        next: () => {
+          Swal.fire(
+            'Uspešno!',
+            'Slika je postavljena kao naslovna.',
+            'success'
+          );
+        },
+        error: (error) => {
+          console.error('Greška prilikom postavljanja naslovne slike:', error);
+          Swal.fire(
+            'Greška!',
+            'Došlo je do greške prilikom postavljanja naslovne slike.',
+            'error'
+          );
+        }
+      });
+    }
+  });
+}
   
   
   

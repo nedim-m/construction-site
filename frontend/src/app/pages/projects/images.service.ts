@@ -29,4 +29,9 @@ deleteImages(projectId: number, imageIds: number[]): Observable<any> {
 getImagesByProjectId(projectId: number): Observable<any[]> {
   return this.http.get<ImageResponse[]>(`${this.baseUrl}/${projectId}`);
 }
+setAsCover(projectId: number, imageId: number): Observable<boolean> {
+  return this.http.post<boolean>(`${this.baseUrl}/${projectId}/SetCover/${imageId}`, {});
+}
+
+
 }

@@ -40,17 +40,17 @@ namespace backend.Services
                     var base64Data = img.Substring(img.IndexOf(",") + 1);
                     byte[] imageBytes = Convert.FromBase64String(base64Data);
 
-                 
-                    using (var image = SixLabors.ImageSharp.Image.Load(imageBytes))  
-                    {
-                        
-                        image.Mutate(x => x.Resize(1920, 1024)); 
 
-                        
+                    using (var image = SixLabors.ImageSharp.Image.Load(imageBytes))
+                    {
+
+                        image.Mutate(x => x.Resize(1920, 1024));
+
+
                         using (var ms = new MemoryStream())
                         {
-                            image.SaveAsJpeg(ms);  
-                            var resizedImageBytes = ms.ToArray();  
+                            image.SaveAsJpeg(ms);
+                            var resizedImageBytes = ms.ToArray();
 
                             var imageEntity = new Data.Image
                             {
@@ -99,7 +99,7 @@ namespace backend.Services
         {
             IQueryable<Project> query = _context.Projects.Include(p => p.Images);
 
-       
+
             if (searchRequest != null && !string.IsNullOrWhiteSpace(searchRequest.ProjectLocation))
             {
                 query = query.Where(p => p.Location.Contains(searchRequest.ProjectLocation));
@@ -107,7 +107,7 @@ namespace backend.Services
 
             var projects = await query.ToListAsync();
 
-           
+
             var projectResponses = projects.Select(p => new ProjectResponse
             {
                 Id = p.Id,
@@ -116,7 +116,10 @@ namespace backend.Services
                 EndDate = p.EndDate,
                 Description = p.Description,
                 Name = p.Name,
-                Images = p.Images.Select(i => $"data:{i.MimeType};base64,{Convert.ToBase64String(i.Img)}").ToList()
+                Images = p.Images
+         .OrderByDescending(i => i.Cover)
+         .Select(i => $"data:{i.MimeType};base64,{Convert.ToBase64String(i.Img)}")
+         .ToList()
             }).ToList();
 
             return projectResponses;
@@ -124,7 +127,7 @@ namespace backend.Services
 
         public async Task<ProjectResponse> GetProjectById(int id)
         {
-            
+
             var project = await _context.Projects
                 .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -134,7 +137,7 @@ namespace backend.Services
                 throw new KeyNotFoundException($"Projekat sa ID-om {id} nije pronađen.");
             }
 
-            
+
             var projectResponse = new ProjectResponse
             {
                 Id = project.Id,
@@ -142,8 +145,11 @@ namespace backend.Services
                 StartDate = project.StartDate,
                 EndDate = project.EndDate,
                 Description = project.Description,
-                Name= project.Name,
-                Images = project.Images.Select(i => $"data:{i.MimeType};base64,{Convert.ToBase64String(i.Img)}").ToList()
+                Name = project.Name,
+                Images = project.Images
+        .OrderByDescending(i => i.Cover)  // Ovo postavlja sliku sa Cover = true na početak
+        .Select(i => $"data:{i.MimeType};base64,{Convert.ToBase64String(i.Img)}")
+        .ToList()
             };
 
             return projectResponse;
@@ -153,7 +159,7 @@ namespace backend.Services
 
         public async Task<bool> DeleteProject(int id)
         {
-            
+
             var project = await _context.Projects
                                         .Include(p => p.Images)
                                         .FirstOrDefaultAsync(p => p.Id == id);
@@ -163,10 +169,10 @@ namespace backend.Services
                 throw new Exception("Projekat nije pronađen.");
             }
 
-           
+
             _context.Images.RemoveRange(project.Images);
 
-            
+
             _context.Projects.Remove(project);
 
             try
@@ -182,14 +188,14 @@ namespace backend.Services
 
         public async Task<ProjectResponse> UpdateProject(int id, ProjectUpdateRequest update)
         {
-            
+
             var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == id);
             if (project == null)
             {
                 throw new KeyNotFoundException($"Projekat sa ID-om {id} nije pronađen.");
             }
 
-          
+
             project.StartDate = DateTime.SpecifyKind(update.StartDate, DateTimeKind.Utc);
             project.EndDate = DateTime.SpecifyKind(update.EndDate, DateTimeKind.Utc);
             project.Location = update.Location;
@@ -205,7 +211,7 @@ namespace backend.Services
                 throw new Exception($"Greška prilikom ažuriranja projekta: {ex.Message}", ex);
             }
 
-            
+
             var projectResponse = new ProjectResponse
             {
                 Id = project.Id,

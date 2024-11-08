@@ -60,5 +60,22 @@ namespace backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost("{projectId}/SetCover/{imageId}")]
+        public async Task<IActionResult> SetCoverImage(int projectId, int imageId)
+        {
+            try
+            {
+                var result = await _imageService.SetAsCover(projectId, imageId);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Greška na serveru: {ex.Message}");
+            }
+        }
     }
 }

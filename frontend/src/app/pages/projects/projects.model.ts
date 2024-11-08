@@ -20,4 +20,5 @@ export interface Project {
     id: number;
     mimeType: string;
     img: string; 
+    cover:boolean;
 }

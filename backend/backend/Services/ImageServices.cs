@@ -110,5 +110,43 @@ namespace backend.Services
 
             return images;
         }
+
+        public async Task<bool> SetAsCover(int projectId, int imageId)
+        {
+            var images = await _context.Images
+                .Where(i => i.ProjectId == projectId)
+                .ToListAsync();
+
+            if (!images.Any())
+                throw new Exception("Nema slika za navedeni projekat.");
+
+            // Resetovanje Cover statusa na false za sve slike
+            foreach (var image in images)
+            {
+                image.Cover = false;
+            }
+
+            // Pronađi sliku koja treba da postane naslovna
+            var coverImage = images.FirstOrDefault(i => i.Id == imageId);
+
+            if (coverImage == null)
+                throw new Exception("Slika sa datim ID-jem nije pronađena.");
+
+            // Postavljanje Cover na true
+            coverImage.Cover = true;
+
+            // Snimanje promena u bazu podataka
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true; // Vraćanje true ako je uspešno sačuvano
+            }
+            catch (Exception)
+            {
+                return false; // Ako dođe do greške prilikom snimanja, vraća false
+            }
+        }
+
+
     }
 }
