@@ -29,7 +29,7 @@ export class ProjectsAdminOverviewComponent {
   loadProjects(): void {
     this.projectsService.getAllProjects().subscribe({
       next: (data) => {
-        this.projects = data;
+        this.projects = data.result;
       },
       error: (err) => {
         console.error('Greška prilikom preuzimanja projekata:', err);

@@ -22,3 +22,7 @@ export interface Project {
     img: string; 
     cover:boolean;
 }
+export interface PagedResponse<T> {
+  result: T[];
+  count: number;
+}

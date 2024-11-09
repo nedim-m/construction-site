@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppConfig } from '../../app.config.prod';
-import { Project, ProjectResponse } from './projects.model';
+import { PagedResponse, Project, ProjectResponse } from './projects.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -17,13 +17,22 @@ export class ProjectsService {
     return this.http.post<Project>(this.baseUrl, project);
   }
 
-  getAllProjects(location?: string): Observable<ProjectResponse[]> {
+  getAllProjects(location?: string, page?: number, pageSize?: number): Observable<PagedResponse<ProjectResponse>> {
     let params = new HttpParams();
+  
     if (location) {
       params = params.append('location', location);
     }
-    return this.http.get<ProjectResponse[]>(this.baseUrl, { params });
+  
+    if (page !== undefined && pageSize !== undefined) {
+      params = params.append('page', page.toString());
+      params = params.append('pageSize', pageSize.toString());
+    }
+  
+    return this.http.get<PagedResponse<ProjectResponse>>(this.baseUrl, { params });
   }
+  
+  
 
   getProjectById(id: number): Observable<ProjectResponse> {
     return this.http.get<ProjectResponse>(`${this.baseUrl}/${id}`);

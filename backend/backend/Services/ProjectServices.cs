@@ -95,9 +95,11 @@ namespace backend.Services
         }
 
 
-        public async Task<List<ProjectResponse>> GetAllProjects(ProjectSearchRequest? searchRequest = null)
+        public async Task<PagedResponse<ProjectResponse>> GetAllProjects(ProjectSearchRequest? searchRequest = null)
         {
             IQueryable<Project> query = _context.Projects.Include(p => p.Images);
+
+            PagedResponse<ProjectResponse> result = new();
 
 
             if (searchRequest != null && !string.IsNullOrWhiteSpace(searchRequest.ProjectLocation))
@@ -105,7 +107,23 @@ namespace backend.Services
                 query = query.Where(p => p.Location.Contains(searchRequest.ProjectLocation));
             }
 
+            result.Count = await query.CountAsync();
+
+
+
+            if (searchRequest?.Page.HasValue == true && searchRequest?.PageSize.HasValue == true)
+            {
+                query = query
+    .Skip((searchRequest.Page.Value - 1) * searchRequest.PageSize.Value)
+    .Take(searchRequest.PageSize.Value);
+
+            }
+
+
             var projects = await query.ToListAsync();
+
+
+
 
 
             var projectResponses = projects.Select(p => new ProjectResponse
@@ -122,7 +140,9 @@ namespace backend.Services
          .ToList()
             }).ToList();
 
-            return projectResponses;
+            result.Result = projectResponses;
+
+            return result;
         }
 
         public async Task<ProjectResponse> GetProjectById(int id)
