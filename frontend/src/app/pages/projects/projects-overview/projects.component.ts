@@ -4,11 +4,12 @@ import { ProjectsService } from '../projects.service';
 import { ProjectResponse } from '../projects.model';
 import { RouterLink } from '@angular/router';
 import { TruncatePipe } from '../../../utilis/truncate.pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, RouterLink, TruncatePipe],
+  imports: [CommonModule, RouterLink, TruncatePipe,FormsModule],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css',
 })
@@ -19,6 +20,7 @@ export class ProjectsComponent implements OnInit {
   pageSize = 6;
   totalProjects: number = 0;
   totalPages: number = 0;
+  sortBy: string = 'startdate';
 
   constructor(private projectService: ProjectsService) {}
   ngOnInit(): void {
@@ -27,7 +29,7 @@ export class ProjectsComponent implements OnInit {
 
   fetchProjects(): void {
     this.projectService
-      .getAllProjects(undefined, this.page, this.pageSize)
+      .getAllProjects(undefined, this.page, this.pageSize,this.sortBy)
       .subscribe(
         (data) => {
           this.projects = data.result;
@@ -38,6 +40,11 @@ export class ProjectsComponent implements OnInit {
           console.error('Došlo je do greške prilikom dohvata projekata', error);
         }
       );
+  }
+
+  onSortChange(): void {
+    this.page = 1; 
+    this.fetchProjects();
   }
 
   nextPage() {

@@ -15,4 +15,18 @@
     font-size: 1rem;
     line-height: 1.6;
   }
+  .sort-dropdown {
+    display: flex;              
+    justify-content: flex-end;  
+    align-items: center;        
+    margin-top: 20px;           
+  }
   
+  .sort-dropdown label {
+    margin-right: 10px;         
+  }
+  
+  .sort-dropdown select {
+    max-width: 250px;           
+    padding: 5px;               
+  }

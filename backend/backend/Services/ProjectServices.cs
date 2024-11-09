@@ -101,31 +101,42 @@ namespace backend.Services
 
             PagedResponse<ProjectResponse> result = new();
 
-
+          
             if (searchRequest != null && !string.IsNullOrWhiteSpace(searchRequest.ProjectLocation))
             {
                 query = query.Where(p => p.Location.Contains(searchRequest.ProjectLocation));
             }
 
+           
+            if (!string.IsNullOrWhiteSpace(searchRequest?.SortBy))
+            {
+                query = searchRequest.SortBy.ToLower() switch
+                {
+                    "startdate" => query.OrderBy(p => p.StartDate),
+                    "startdate_desc" => query.OrderByDescending(p => p.StartDate),
+                    "enddate" => query.OrderBy(p => p.EndDate),
+                    "enddate_desc" => query.OrderByDescending(p => p.EndDate),
+                    "location" => query.OrderBy(p => p.Location),
+                    "location_desc" => query.OrderByDescending(p => p.Location),
+                    _ => query 
+                };
+            }
+
+        
             result.Count = await query.CountAsync();
 
-
-
+            
             if (searchRequest?.Page.HasValue == true && searchRequest?.PageSize.HasValue == true)
             {
                 query = query
-    .Skip((searchRequest.Page.Value - 1) * searchRequest.PageSize.Value)
-    .Take(searchRequest.PageSize.Value);
-
+                    .Skip((searchRequest.Page.Value - 1) * searchRequest.PageSize.Value)
+                    .Take(searchRequest.PageSize.Value);
             }
 
-
+       
             var projects = await query.ToListAsync();
 
-
-
-
-
+           
             var projectResponses = projects.Select(p => new ProjectResponse
             {
                 Id = p.Id,
@@ -135,15 +146,16 @@ namespace backend.Services
                 Description = p.Description,
                 Name = p.Name,
                 Images = p.Images
-         .OrderByDescending(i => i.Cover)
-         .Select(i => $"data:{i.MimeType};base64,{Convert.ToBase64String(i.Img)}")
-         .ToList()
+                    .OrderByDescending(i => i.Cover)
+                    .Select(i => $"data:{i.MimeType};base64,{Convert.ToBase64String(i.Img)}")
+                    .ToList()
             }).ToList();
 
             result.Result = projectResponses;
 
             return result;
         }
+
 
         public async Task<ProjectResponse> GetProjectById(int id)
         {
@@ -167,7 +179,7 @@ namespace backend.Services
                 Description = project.Description,
                 Name = project.Name,
                 Images = project.Images
-        .OrderByDescending(i => i.Cover)  // Ovo postavlja sliku sa Cover = true na početak
+        .OrderByDescending(i => i.Cover)  
         .Select(i => $"data:{i.MimeType};base64,{Convert.ToBase64String(i.Img)}")
         .ToList()
             };

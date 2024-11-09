@@ -17,7 +17,7 @@ export class ProjectsService {
     return this.http.post<Project>(this.baseUrl, project);
   }
 
-  getAllProjects(location?: string, page?: number, pageSize?: number): Observable<PagedResponse<ProjectResponse>> {
+  getAllProjects(location?: string, page?: number, pageSize?: number,sortBy?: string): Observable<PagedResponse<ProjectResponse>> {
     let params = new HttpParams();
   
     if (location) {
@@ -28,7 +28,9 @@ export class ProjectsService {
       params = params.append('page', page.toString());
       params = params.append('pageSize', pageSize.toString());
     }
-  
+    if(sortBy){
+      params=params.append('sortBy',sortBy);
+    }  
     return this.http.get<PagedResponse<ProjectResponse>>(this.baseUrl, { params });
   }
   
