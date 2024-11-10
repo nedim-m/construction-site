@@ -94,6 +94,13 @@ namespace backend.Services
 
             return true;
         }
+
+        public async Task<int> GeUnreadMessageCount()
+        {
+            return await _context.ContactMessages
+                             .Where(m => !m.Read)
+                             .CountAsync();
+        }
     }
 }
 

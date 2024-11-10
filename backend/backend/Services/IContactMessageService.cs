@@ -9,5 +9,6 @@ namespace backend.Services
         Task<ContactMessageResponse?> GetByIdAsync(int id);
         Task<bool> DeleteAsync(int id);
         Task<bool> UpdateStatusAsync(int id, bool isRead);
+        Task<int> GeUnreadMessageCount();
     }
 }

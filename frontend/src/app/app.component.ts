@@ -1,16 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HomeComponent } from "./pages/home/home.component";
+
 import { HeaderComponent } from "./pages/header/header.component";
+import { ContactService } from './pages/contact/contact.service';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HomeComponent, HeaderComponent],
+  imports: [RouterOutlet,  HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
+
+  constructor(private contactService: ContactService) {}
+
+  ngOnInit(): void {
+    this.contactService.loadUnreadCountFromStorage();
+    this.contactService.refreshUnreadMessageCount();
+  }
   title = 'Jaric doo';
 }

@@ -61,6 +61,12 @@ namespace backend.Controllers
 
             return NoContent();
         }
+        [HttpGet("unread-message-count")]
+        public async Task<ActionResult<int>> GetUnreadMessageCount()
+        {
+            int unreadCount = await _contactMessageService.GeUnreadMessageCount();
+            return Ok(unreadCount);
+        }
 
     }
 }

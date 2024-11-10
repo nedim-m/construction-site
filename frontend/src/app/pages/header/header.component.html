@@ -1,35 +1,42 @@
 <header>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3 col-sm-3 col-3">
-          <div class="logo">
-            <img src="assets/logo.jpg" class="logo" alt="" />
-          </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-sm-3 col-3">
+        <div class="logo">
+          <img src="assets/logo.jpg" class="logo" alt="" />
         </div>
-        <div class="col-md-9 col-sm-9 col-9 text-end">
-          <div class="menu-icon" (click)="openMenu()">
-            <i class="{{ menu_icon }}"></i>
-          </div>
-          <div class="desktop_menu" [class.mobile_menu]="menuValue">
-            <ul>
-              <li><a routerLink="home" (click)="closeMenu()">Pocetna</a></li>
-              <li><a routerLink="aboutus" (click)="closeMenu()">O nama</a></li>
-              <li><a routerLink="projects" (click)="closeMenu()">Projekti</a></li>
-              <li><a routerLink="services" (click)="closeMenu()">Usluge</a></li>
-              <li *ngIf="isLoggedIn">
-                <a routerLink="admin-projects" (click)="closeMenu()">Evidencija projekata</a>
-              </li>
-              <li><a routerLink="contact-us" (click)="closeMenu()">Kontakt</a></li>
-              <li *ngIf="isLoggedIn">
-                <a routerLink="admin-messages" (click)="closeMenu()">Evidencija Poruka</a>
-              </li>
-              <li *ngIf="isLoggedIn">
-                <a (click)="logout(); closeMenu()">Logout</a>
-              </li>
-            </ul>
-          </div>
+      </div>
+      <div class="col-md-9 col-sm-9 col-9 text-end">
+        <div class="menu-icon" (click)="openMenu()">
+          <i class="{{ menu_icon }}"></i>
+        </div>
+        <div class="desktop_menu" [class.mobile_menu]="menuValue">
+          <ul>
+            <li><a routerLink="home" (click)=" handleMenuClick();closeMenu()">Pocetna</a></li>
+            <li><a routerLink="aboutus" (click)=" handleMenuClick();closeMenu()">O nama</a></li>
+            <li><a routerLink="projects" (click)=" handleMenuClick();closeMenu()">Projekti</a></li>
+            <li><a routerLink="services" (click)=" handleMenuClick();closeMenu()">Usluge</a></li>
+            <li *ngIf="isLoggedIn">
+              <a routerLink="admin-projects" (click)=" handleMenuClick();closeMenu()">Evidencija projekata</a>
+            </li>
+            <li><a routerLink="contact-us" (click)=" handleMenuClick();closeMenu()">Kontakt</a></li>
+            <!-- header.component.html -->
+            <li *ngIf="isLoggedIn">
+              <a routerLink="admin-messages" (click)=" handleMenuClick();closeMenu()">Evidencija Poruka
+                <span *ngIf="unreadMessageCount$ | async as unreadMessageCount" 
+          class="notification-badge">
+      {{ unreadMessageCount }}
+    </span>
+              </a>
+            </li>
+
+
+            <li *ngIf="isLoggedIn">
+              <a (click)="logout();  handleMenuClick();closeMenu()">Logout</a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-  </header>
-  
+  </div>
+</header>

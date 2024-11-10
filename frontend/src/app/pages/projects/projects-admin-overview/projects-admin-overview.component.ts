@@ -5,16 +5,18 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-projects-admin-overview',
   standalone: true,
-  imports: [CommonModule, TableModule],
+  imports: [CommonModule, TableModule,FormsModule],
   templateUrl: './projects-admin-overview.component.html',
   styleUrl: './projects-admin-overview.component.css',
 })
 export class ProjectsAdminOverviewComponent {
   projects: ProjectResponse[] = [];
+  searchLocation: string = '';
 
   constructor(private projectsService: ProjectsService, private router: Router) {}
 
@@ -37,10 +39,17 @@ export class ProjectsAdminOverviewComponent {
     });
   }
 
-  onEdit(project: ProjectResponse): void {
-    console.log('Editing project:', project);
-    // Ovdje dodaj logiku za uređivanje
+  onSearchChange() {
+    if (this.searchLocation) {
+      this.projects = this.projects.filter(project =>
+        project.location.toLowerCase().includes(this.searchLocation.toLowerCase())
+      );
+    } else {
+      this.loadProjects(); 
+    }
   }
+
+ 
 
   onDelete(projectId: number): void {
     Swal.fire({

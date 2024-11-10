@@ -5,48 +5,52 @@
 </section>
 
 <div class="container">
-    <div class="text-right mb-3">
-        <button pButton type="button" class="p-button-success" (click)="navigateToAddProject()">
-          <i class="fa fa-plus"></i> Dodaj Projekat
-        </button>
-      </div>
-      
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <!-- Dugme za dodavanje projekta -->
+    <button pButton type="button" class="p-button-success" (click)="navigateToAddProject()">
+      <i class="fa fa-plus"></i> Dodaj Projekat
+    </button>
 
-    <p-table 
-      [value]="projects" 
-      [paginator]="true" 
-      [rows]="10" 
-      [responsiveLayout]="'scroll'"
-      class="table-bordered">
-      
-      <ng-template pTemplate="header">
-        <tr>
-          <th>ID</th>
-          <th>Naziv</th>
-          <th>Datum početka i kraja</th>
-          <th>Lokacija</th>
-          <th>Akcije</th> 
-        </tr>
-      </ng-template>
-  
-      <ng-template pTemplate="body" let-project>
-        <tr>
-          <td>{{ project.id }}</td>
-          <td>{{ project.name }}</td>
-          <td>{{ project.startDate | date: 'shortDate' }} - {{ project.endDate | date: 'shortDate' }}</td>
-          <td>{{ project.location }}</td>
-          <td>
-            <button pButton type="button" class="p-button-text p-button-sm edit-btn" (click)="navigateToEdit(project.id)">
-              <i class="fa fa-pencil-alt"></i> Edit
-            </button>
-              <button pButton type="button" class="p-button-text p-button-sm delete-btn"
-                  (click)="onDelete(project.id)">
-            <i class="fa fa-trash"></i> Delete
-          </button>
-              
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+    <!-- Input za pretragu po lokaciji -->
+    <div class="d-flex align-items-center">
+      <label for="locationSearch" class="mr-2">Pretraga po lokaciji:</label>
+      <input id="locationSearch" type="text" class="form-control" [(ngModel)]="searchLocation" (input)="onSearchChange()" placeholder="Unesite lokaciju" />
+    </div>
   </div>
-  
+
+  <p-table 
+    [value]="projects" 
+    [paginator]="true" 
+    [rows]="10" 
+    [responsiveLayout]="'scroll'"
+    class="table-bordered">
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Naziv</th>
+        <th>Datum početka i kraja</th>
+        <th>Lokacija</th>
+        <th>Akcije</th> 
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-project>
+      <tr>
+        <td>{{ project.id }}</td>
+        <td>{{ project.name }}</td>
+        <td>{{ project.startDate | date: 'shortDate' }} - {{ project.endDate | date: 'shortDate' }}</td>
+        <td>{{ project.location }}</td>
+        <td>
+          <button pButton type="button" class="p-button-text p-button-sm edit-btn" (click)="navigateToEdit(project.id)">
+            <i class="fa fa-pencil-alt"></i> Edit
+          </button>
+          <button pButton type="button" class="p-button-text p-button-sm delete-btn"
+            (click)="onDelete(project.id)">
+            <i class="fa fa-trash"></i> Obriši
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

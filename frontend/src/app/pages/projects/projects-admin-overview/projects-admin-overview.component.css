@@ -27,3 +27,27 @@
   .p-button-success{
     color: #008000 ;
   }
+
+
+  /* Stil za input i dugme da budu u istom redu */
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.mr-2 {
+  margin-right: 10px;
+}
+
+
+#locationSearch {
+  width: 200px;
+  padding: 5px;
+}

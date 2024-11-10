@@ -75,6 +75,7 @@ export class ContactMessagesAdminOverviewComponent implements OnInit{
     this.contactService.updateMessageStatus(message.id,true).subscribe({
       next: () => {
         console.log('Poruka označena kao pročitana.');
+        this.contactService.refreshUnreadMessageCount();
       },
       error: (err) => {
         console.error('Greška prilikom ažuriranja statusa poruke', err);

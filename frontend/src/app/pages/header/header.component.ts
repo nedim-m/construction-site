@@ -3,7 +3,8 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../utilis/auth.service';
 import { CommonModule } from '@angular/common';
 import { UserstatusService } from '../../utilis/userstatus.service';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { ContactService } from '../contact/contact.service';
 
 @Component({
   selector: 'app-header',
@@ -14,13 +15,19 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;
+  unreadMessageCount$ = new BehaviorSubject<number>(0);
+
   private userStatusSubscription!: Subscription;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private userStatusService: UserstatusService  
-  ) {}
+    private userStatusService: UserstatusService, 
+    private contactService: ContactService
+  ) {
+    
+
+  }
 
   ngOnInit() {
   
@@ -29,6 +36,10 @@ export class HeaderComponent implements OnInit {
         this.isLoggedIn = status;  
       }
     );
+    this.loadUnreadMessageCount();
+   
+ 
+    
   }
 
   ngOnDestroy() {
@@ -44,12 +55,40 @@ export class HeaderComponent implements OnInit {
   openMenu() {
     this.menuValue = !this.menuValue;
     this.menu_icon = this.menuValue ? 'bi bi-x' : 'bi bi-list';
+    this.refreshUnreadMessageCount();
+    console.log("Ispis iz openMenu!!");
+   
   }
 
+  loadUnreadMessageCount(): void {
+    this.contactService.getUnreadMessageCount().subscribe({
+      next: (count) => {
+        console.log('Inicijalni broj poruka:', count);  // Proverite inicijalnu vrednost
+        this.unreadMessageCount$.next(count);  
+      },
+      error: (err) => console.error('Greška prilikom učitavanja broja poruka', err)
+    });
+  }
+
+  refreshUnreadMessageCount(): void {
+    this.contactService.getUnreadMessageCount().subscribe({
+      next: (count) => {
+        console.log('Osveženi broj poruka:', count);  
+        this.unreadMessageCount$.next(count);  
+      },
+      error: (err) => console.error('Greška prilikom osvežavanja broja poruka', err)
+    });
+  }
+ 
   closeMenu() {
     this.menuValue = false;
     this.menu_icon = 'bi bi-list';
   }
+
+  handleMenuClick() {
+    this.refreshUnreadMessageCount(); 
+  }
+
 
   logout() {
     this.userStatusService.logout();
