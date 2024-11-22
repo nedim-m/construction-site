@@ -89,6 +89,11 @@ export class HeaderComponent implements OnInit {
     this.refreshUnreadMessageCount(); 
   }
 
+  goHome() {
+    this.router.navigate(['/home']);
+  }
+
+
 
   logout() {
     this.userStatusService.logout();
