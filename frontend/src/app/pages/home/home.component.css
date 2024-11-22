@@ -21,6 +21,10 @@
       height: 400px;
       width: 100%;
     }
+    
+    .number-text-color{
+      color: #363435; 
+    }
 
     .social-icons a {
       color: #555;
@@ -33,5 +37,25 @@
     
     .social-icons i {
       margin-right: 10px;
+    }
+    
+
+    .stat-box {
+      background-color: #fff;
+      padding: 20px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-box h3 {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #363435;
+    }
+    
+    .stat-box p {
+      font-size: 1.25rem;
+      color: #6c757d;
     }
     

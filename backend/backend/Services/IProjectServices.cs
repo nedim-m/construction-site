@@ -13,6 +13,8 @@ namespace backend.Services
 
         Task<ProjectResponse> UpdateProject(int id, ProjectUpdateRequest update);
 
+        Task<int> GetProjectNumber();
+
 
     }
 }

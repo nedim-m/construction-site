@@ -258,5 +258,9 @@ namespace backend.Services
             return projectResponse;
         }
 
+        public async Task<int> GetProjectNumber()
+        {
+            return await _context.Projects.CountAsync();
+        }
     }
 }

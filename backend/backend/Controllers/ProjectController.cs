@@ -6,7 +6,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProjectController:ControllerBase
+    public class ProjectController : ControllerBase
     {
         private readonly IProjectServices _services;
 
@@ -20,12 +20,12 @@ namespace backend.Controllers
         {
             try
             {
-                var response = await _services.AddProject(insert); 
+                var response = await _services.AddProject(insert);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message);
             }
         }
         [HttpGet]
@@ -34,11 +34,11 @@ namespace backend.Controllers
             try
             {
                 var projects = await _services.GetAllProjects(searchRequest);
-                return Ok(projects); 
+                return Ok(projects);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message);
             }
         }
 
@@ -48,15 +48,15 @@ namespace backend.Controllers
             try
             {
                 var project = await _services.GetProjectById(id);
-                return Ok(project); 
+                return Ok(project);
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message); 
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message);
             }
         }
 
@@ -94,6 +94,24 @@ namespace backend.Controllers
 
             return Ok(new { Message = "Project deleted successfully" });
         }
+        [HttpGet("projectNumber")]
+        public async Task<ActionResult<int>> GetProjectNumber()
+        {
+            try
+            {
+                
+                int projectCount = await _services.GetProjectNumber();
+
+                
+                return Ok(projectCount);
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, $"Greška pri dobijanju broja projekata: {ex.Message}");
+            }
+        }
+
 
 
     }

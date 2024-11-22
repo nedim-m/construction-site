@@ -47,5 +47,9 @@ updateProject(id: number, project: Project): Observable<Project> {
   return this.http.put<Project>(`${this.baseUrl}/${id}`, project);
 }
 
+getProjectNumber(): Observable<number> {
+  return this.http.get<number>(`${this.baseUrl}/projectNumber`);
+}
+
 
 }
