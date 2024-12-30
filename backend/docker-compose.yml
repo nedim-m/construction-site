@@ -12,8 +12,35 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./dump-mydatabase-202412301709.sql:/docker-entrypoint-initdb.d/dump.sql
     networks:
       - my_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile 
+    container_name: dotnet_backend
+    ports:
+      - "7233:7233"
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=db;Database=mydatabase;Username=db_user;Password=Test123*"
+    depends_on:
+      - db
+    networks:
+      - my_network
+
+  frontend:
+    build:
+      context: ../frontend  
+      dockerfile: ./Dockerfile  
+    container_name: angular_frontend
+    ports:
+      - "80:80"  
+    networks:
+      - my_network
+    depends_on:
+      - backend  
 
 networks:
   my_network:
