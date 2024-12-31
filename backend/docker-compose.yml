@@ -3,6 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres:latest
+    restart: unless-stopped
     container_name: postgres_db
     environment:
       POSTGRES_USER: db_user
@@ -12,7 +13,7 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./dump-mydatabase-202412301709.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./dump-mydatabase-202412312321.sql:/docker-entrypoint-initdb.d/dump.sql
     networks:
       - my_network
 
