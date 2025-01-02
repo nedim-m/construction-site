@@ -1,6 +1,6 @@
 # Pokretanje Full Aplikacije
 
-Ovdje su upute za pokretanje backend dijela aplikacije:
+Ovdje su upute za pokretanje full aplikacije:
 1. Otvorite **Command Prompt (CMD)**.
 2. Pozicionirajte se u direktorij pod nazivom `backend`:   ```   cd /putanja/do/backend   ```
 3. Pokrenite Docker kompoziciju s komandom:   ```  docker-compose up --build   ```
