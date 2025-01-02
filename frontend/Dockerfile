@@ -1,31 +1,32 @@
+# Step 1: Base image
+FROM node:18
 
-FROM node:18 AS build
-
-
+# Step 2: Set working directory
 WORKDIR /app
 
-
+# Step 3: Copy package files
 COPY package*.json ./
 
+# Step 4: Clear cache and remove old files
+RUN rm -rf node_modules package-lock.json
+RUN npm cache clean --force
 
-RUN npm install
+# Step 5: Install dependencies
+RUN npm install --production --legacy-peer-deps --no-optional
 
-
+# Step 6: Copy application files
 COPY . .
 
+# Step 7: Rebuild and install additional dependencies
+RUN npm rebuild
+RUN npm install rollup --save-dev
 
-RUN npm run build --prod
-
-
-FROM nginx:alpine
-
-
-COPY --from=build /app/dist/frontend /usr/share/nginx/html
+# Step 8: Build the application
+RUN npm run build
 
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Step 9: Expose SSR port
+EXPOSE 4000
 
-EXPOSE 80
-
-
-CMD ["nginx", "-g", "daemon off;"]
+# Step 10: Start SSR server
+CMD ["npm", "run", "serve:ssr:frontend"]

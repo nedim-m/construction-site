@@ -23,25 +23,26 @@ export class ContactService {
     return this.http.get<ContactMessageResponse[]>(this.baseUrl);
   }
 
-
   getMessageById(id: number): Observable<ContactMessageResponse> {
     return this.http.get<ContactMessageResponse>(`${this.baseUrl}/${id}`);
   }
-
 
   deleteMessage(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-
   updateMessageStatus(id: number, isRead: boolean): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/${id}/status`, isRead);
   }
+
   getUnreadMessageCount(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/unread-message-count`).pipe(
       tap(count => {
         this.unreadMessageCountSubject.next(count);
-        localStorage.setItem('unreadMessageCount', count.toString());
+        // Provjera da li se kod pokreće u browseru
+        if (typeof window !== 'undefined' && window.localStorage) {
+          localStorage.setItem('unreadMessageCount', count.toString());
+        }
       })
     );
   }
@@ -51,11 +52,12 @@ export class ContactService {
   }
 
   loadUnreadCountFromStorage(): void {
-    const storedCount = localStorage.getItem('unreadMessageCount');
-    if (storedCount !== null) {
-      this.unreadMessageCountSubject.next(Number(storedCount));
+    // Provjera da li je kod u browseru prije nego što pristupite localStorage
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const storedCount = localStorage.getItem('unreadMessageCount');
+      if (storedCount !== null) {
+        this.unreadMessageCountSubject.next(Number(storedCount));
+      }
     }
   }
 }
-
-

@@ -37,7 +37,7 @@ services:
       dockerfile: ./Dockerfile  
     container_name: angular_frontend
     ports:
-      - "80:80"  
+      - "4000:4000"  
     networks:
       - my_network
     depends_on:
