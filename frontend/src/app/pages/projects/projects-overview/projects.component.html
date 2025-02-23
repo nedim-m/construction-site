@@ -1,25 +1,31 @@
 
-<section class="about-us-hero bg-light text-center py-5">
+
+<section class="project-hero text-center animate-hero">
+  <div class="overlay"></div>
   <div class="container">
-    <h1 class="display-4">Naši projekti</h1>
-    <p class="lead text-muted mt-3">
-      Naša misija je da svaki projekat, bez obzira na veličinu, obavimo s maksimalnim kvalitetom, pažnjom i inovacijom,
-      osiguravajući dugoročnu vrednost za naše klijente.
-    </p>
-    <div class="sort-dropdown mt-3 d-flex justify-content-end align-items-center">
-      <label for="sortOptions" class="mr-3">Sortiraj po:</label>
-      <select id="sortOptions" class="form-control d-inline-block w-auto" [(ngModel)]="sortBy" (change)="onSortChange()">
-        <option value="startdate">Početni datum (najstariji)</option>
-        <option value="startdate_desc">Početni datum (najnoviji)</option>
-        <option value="enddate">Završni datum (najstariji)</option>
-        <option value="enddate_desc">Završni datum (najnoviji)</option>
-        <option value="location">Lokacija (A-Z)</option>
-        <option value="location_desc">Lokacija (Z-A)</option>
-      </select>
-    </div>
+      <h1 class="display-4 text-white animate-fade-in">Naši projekti</h1>
+      <p class="lead text-white mt-3 animate-fade-in">Naša misija je da svaki projekat, bez obzira na veličinu, obavimo s maksimalnim kvalitetom, pažnjom i inovacijom,
+        osiguravajući dugoročnu vrednost za naše klijente.</p>
   </div>
 </section>
 
+
+
+
+
+<div class="container">
+<div class="sort-dropdown mt-3 d-flex justify-content-end align-items-center">
+  <label for="sortOptions" class="mr-3">Sortiraj po:</label>
+  <select id="sortOptions" class="form-control d-inline-block w-auto" [(ngModel)]="sortBy" (change)="onSortChange()">
+    <option value="startdate">Početni datum (najstariji)</option>
+    <option value="startdate_desc">Početni datum (najnoviji)</option>
+    <option value="enddate">Završni datum (najstariji)</option>
+    <option value="enddate_desc">Završni datum (najnoviji)</option>
+    <option value="location">Lokacija (A-Z)</option>
+    <option value="location_desc">Lokacija (Z-A)</option>
+  </select>
+</div>
+</div>
 <div class="container my-5">
   <div class="row">
     <div class="col-md-4 col-sm-6 mb-4" *ngFor="let project of projects">
