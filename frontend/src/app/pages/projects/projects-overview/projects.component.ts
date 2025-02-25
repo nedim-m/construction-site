@@ -42,6 +42,10 @@ export class ProjectsComponent implements OnInit {
       );
   }
 
+
+ 
+  
+
   onSortChange(): void {
     this.page = 1; 
     this.fetchProjects();

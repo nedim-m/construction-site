@@ -19,7 +19,7 @@ export interface Project {
   export interface ImageResponse {
     id: number;
     mimeType: string;
-    img: string; 
+    imgUrl: string; 
     cover:boolean;
 }
 export interface PagedResponse<T> {

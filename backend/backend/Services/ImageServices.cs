@@ -1,18 +1,27 @@
 ﻿using backend.Data;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
-using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace backend.Services
 {
     public class ImageServices : IImageServices
     {
         private readonly DataContext _context;
+        private readonly HttpClient _httpClient;
+        private const string BunnyCdnStorageZone = "jaric-storage"; // testni
+        private const string BunnyCdnApiKey = "27700f23-8334-4a95-bb85901c637b-6bf8-43ef"; // testni
+        private const string BunnyCdnBaseUrl = "https://storage.bunnycdn.com/jaric-storage/"; //testni
+
 
         public ImageServices(DataContext context)
         {
             _context = context;
+            _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Add("AccessKey", BunnyCdnApiKey);
         }
 
         public async Task<bool> AddImages(int projectId, List<string> images)
@@ -36,22 +45,30 @@ namespace backend.Services
                     var base64Data = img.Substring(img.IndexOf(",") + 1);
                     byte[] imageBytes = Convert.FromBase64String(base64Data);
 
-
                     using (var image = SixLabors.ImageSharp.Image.Load(imageBytes))
                     {
-
                         image.Mutate(x => x.Resize(1920, 1024));
-
 
                         using (var ms = new MemoryStream())
                         {
                             image.SaveAsJpeg(ms);
                             var resizedImageBytes = ms.ToArray();
 
+                            
+                            var fileName = $"{Guid.NewGuid()}.jpg";
+                            var uploadUrl = BunnyCdnBaseUrl + fileName;
+                            var content = new ByteArrayContent(resizedImageBytes);
+                            content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+
+                            var response = await _httpClient.PutAsync(uploadUrl, content);
+                            if (!response.IsSuccessStatusCode)
+                            {
+                                throw new Exception("Greška pri otpremanju slike na BunnyCDN");
+                            }
+
                             var imageEntity = new Data.Image
                             {
-                                Img = resizedImageBytes,
-                                MimeType = mimeType,
+                                ImgUrl = $"https://{BunnyCdnStorageZone}.b-cdn.net/{fileName}",
                                 Project = project
                             };
 
@@ -66,7 +83,7 @@ namespace backend.Services
             }
 
             await _context.SaveChangesAsync();
-            return true; // Vraća true ako su slike uspešno dodate
+            return true;
         }
 
         public async Task<bool> DeleteImages(int projectId, List<int> imageIds)
@@ -78,22 +95,23 @@ namespace backend.Services
             }
 
             var imagesToDelete = project.Images.Where(i => imageIds.Contains(i.Id)).ToList();
-            if (imagesToDelete.Count == 0)
+            if (!imagesToDelete.Any())
             {
                 throw new Exception("Nema slika za brisanje.");
             }
 
-            _context.Images.RemoveRange(imagesToDelete);
+            foreach (var image in imagesToDelete)
+            {
+                var fileName = image.ImgUrl.Split('/').Last();
+                var deleteUrl = BunnyCdnBaseUrl + fileName;
+                var request = new HttpRequestMessage(HttpMethod.Delete, deleteUrl);
+                request.Headers.Add("AccessKey", BunnyCdnApiKey);
+                await _httpClient.SendAsync(request);
+            }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-                return true; // Vraća true ako su slike uspešno obrisane
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Greška prilikom brisanja slika: {ex.Message}", ex);
-            }
+            _context.Images.RemoveRange(imagesToDelete);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<List<ImageResponse>> GetImagesByProjectId(int projectId)
@@ -103,8 +121,8 @@ namespace backend.Services
                 .Select(img => new ImageResponse
                 {
                     Id = img.Id,
-                    MimeType = img.MimeType,
-                    Img = $"data:{img.MimeType};base64,{Convert.ToBase64String(img.Img)}"
+                    ImgUrl = img.ImgUrl,
+                    Cover=img.Cover
                 })
                 .ToListAsync();
 
@@ -113,40 +131,29 @@ namespace backend.Services
 
         public async Task<bool> SetAsCover(int projectId, int imageId)
         {
-            var images = await _context.Images
-                .Where(i => i.ProjectId == projectId)
-                .ToListAsync();
-
-            if (!images.Any())
-                throw new Exception("Nema slika za navedeni projekat.");
-
-            // Resetovanje Cover statusa na false za sve slike
-            foreach (var image in images)
-            {
-                image.Cover = false;
-            }
-
-            // Pronađi sliku koja treba da postane naslovna
-            var coverImage = images.FirstOrDefault(i => i.Id == imageId);
+            var coverImage = await _context.Images
+                .FirstOrDefaultAsync(i => i.ProjectId == projectId && i.Id == imageId);
 
             if (coverImage == null)
                 throw new Exception("Slika sa datim ID-jem nije pronađena.");
 
-            // Postavljanje Cover na true
+            await _context.Images
+                .Where(i => i.ProjectId == projectId)
+                .ExecuteUpdateAsync(setters => setters.SetProperty(i => i.Cover, false));
+
             coverImage.Cover = true;
 
-            // Snimanje promena u bazu podataka
             try
             {
                 await _context.SaveChangesAsync();
-                return true; // Vraćanje true ako je uspešno sačuvano
+                return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false; // Ako dođe do greške prilikom snimanja, vraća false
+                Console.WriteLine($"Greška pri čuvanju: {ex.Message}");
+                return false;
             }
         }
-
 
     }
 }
