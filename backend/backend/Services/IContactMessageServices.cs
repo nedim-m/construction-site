@@ -2,7 +2,7 @@
 
 namespace backend.Services
 {
-    public interface IContactMessageService
+    public interface IContactMessageServices
     {
         Task<ContactMessageResponse> InsertAsync(ContactMessageInsertRequest request);
         Task<List<ContactMessageResponse>> GetAllAsync();

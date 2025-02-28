@@ -38,7 +38,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddTransient<IProjectServices, ProjectServices>();
 builder.Services.AddTransient<IImageServices, ImageServices>();
-builder.Services.AddTransient<IContactMessageService, ContactMessageService>();
+builder.Services.AddTransient<IContactMessageServices, ContactMessageServices>();
+builder.Services.AddTransient<IImageProcessingServices, ImageProcessingServices>();
 builder.Services.AddHttpClient();
 
 

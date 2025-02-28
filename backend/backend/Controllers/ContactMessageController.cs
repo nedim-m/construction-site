@@ -10,10 +10,10 @@ namespace backend.Controllers
     [Route("[controller]")]
     public class ContactMessageController : ControllerBase
     {
-        private readonly IContactMessageService _contactMessageService;
+        private readonly IContactMessageServices _contactMessageService;
 
 
-        public ContactMessageController(IContactMessageService contactMessageService)
+        public ContactMessageController(IContactMessageServices contactMessageService)
         {
             _contactMessageService = contactMessageService;
         }

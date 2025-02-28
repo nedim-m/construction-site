@@ -36,6 +36,13 @@ export class HomeComponent implements OnInit {
     );
     this.yearsOfExpirience=this.todayYear-2023;
     
+
+
+    if (this.isBrowser) {
+      
+      this.animateElements();
+    }
+  
     
 
   }

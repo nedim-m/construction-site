@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services
 {
-    public class ContactMessageService:IContactMessageService
+    public class ContactMessageServices:IContactMessageServices
     {
         private readonly DataContext _context;
 
-        public ContactMessageService(DataContext context)
+        public ContactMessageServices(DataContext context)
         {
             _context=context;
         }

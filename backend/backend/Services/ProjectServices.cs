@@ -10,15 +10,17 @@ namespace backend.Services
     {
         private readonly DataContext _context;
         private readonly HttpClient _httpClient;
+        private readonly IImageProcessingServices _imageProcessingServices;
         private const string BunnyCdnStorageZone = "jaric-storage"; // testni
         private const string BunnyCdnApiKey = "27700f23-8334-4a95-bb85901c637b-6bf8-43ef"; // testni
         private const string BunnyCdnBaseUrl = "https://storage.bunnycdn.com/jaric-storage/"; //testni
 
-        public ProjectServices(DataContext context, HttpClient httpClient)
+        public ProjectServices(DataContext context, HttpClient httpClient, IImageProcessingServices imageProcessingServices)
         {
             _context = context;
             _httpClient = httpClient;
             _httpClient.DefaultRequestHeaders.Add("AccessKey", BunnyCdnApiKey);
+            _imageProcessingServices=imageProcessingServices;
         }
 
         public async Task<ProjectResponse> AddProject(ProjectInsertRequest insert)
@@ -47,10 +49,13 @@ namespace backend.Services
                     var base64Data = img.Substring(img.IndexOf(",") + 1);
                     byte[] imageBytes = Convert.FromBase64String(base64Data);
 
+                    byte[] optimizedImage = _imageProcessingServices.OptimizeImage(imageBytes);
+
+
                     string fileName = $"{Guid.NewGuid()}.jpg";
                     string uploadUrl = BunnyCdnBaseUrl + fileName;
 
-                    using (var content = new ByteArrayContent(imageBytes))
+                    using (var content = new ByteArrayContent(optimizedImage))
                     {
                         content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
                         var response = await _httpClient.PutAsync(uploadUrl, content);

@@ -3,6 +3,7 @@ using backend.Models;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -12,16 +13,18 @@ namespace backend.Services
     {
         private readonly DataContext _context;
         private readonly HttpClient _httpClient;
+        private readonly IImageProcessingServices _imageProcessingServices;
         private const string BunnyCdnStorageZone = "jaric-storage"; // testni
         private const string BunnyCdnApiKey = "27700f23-8334-4a95-bb85901c637b-6bf8-43ef"; // testni
         private const string BunnyCdnBaseUrl = "https://storage.bunnycdn.com/jaric-storage/"; //testni
 
 
-        public ImageServices(DataContext context)
+        public ImageServices(DataContext context, IImageProcessingServices imageProcessingServices)
         {
             _context = context;
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Add("AccessKey", BunnyCdnApiKey);
+            _imageProcessingServices=imageProcessingServices;
         }
 
         public async Task<bool> AddImages(int projectId, List<string> images)
@@ -36,49 +39,42 @@ namespace backend.Services
             {
                 if (string.IsNullOrWhiteSpace(img))
                 {
-                    throw new ArgumentException("Jedna ili više slika su prazne ili nevalidne.");
+                    throw new ArgumentException("Jedna ili više slika je prazna ili nevalidna.");
                 }
 
                 try
                 {
-                    var mimeType = img.Substring(5, img.IndexOf(";") - 5);
                     var base64Data = img.Substring(img.IndexOf(",") + 1);
                     byte[] imageBytes = Convert.FromBase64String(base64Data);
 
-                    using (var image = SixLabors.ImageSharp.Image.Load(imageBytes))
+                    byte[] optimizedImage = _imageProcessingServices.OptimizeImage(imageBytes);
+
+
+                    string fileName = $"{Guid.NewGuid()}.jpg";
+                    string uploadUrl = BunnyCdnBaseUrl + fileName;
+
+                    using (var content = new ByteArrayContent(optimizedImage))
                     {
-                        image.Mutate(x => x.Resize(1920, 1024));
+                        content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+                        var response = await _httpClient.PutAsync(uploadUrl, content);
 
-                        using (var ms = new MemoryStream())
+                        if (!response.IsSuccessStatusCode)
                         {
-                            image.SaveAsJpeg(ms);
-                            var resizedImageBytes = ms.ToArray();
-
-                            
-                            var fileName = $"{Guid.NewGuid()}.jpg";
-                            var uploadUrl = BunnyCdnBaseUrl + fileName;
-                            var content = new ByteArrayContent(resizedImageBytes);
-                            content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-
-                            var response = await _httpClient.PutAsync(uploadUrl, content);
-                            if (!response.IsSuccessStatusCode)
-                            {
-                                throw new Exception("Greška pri otpremanju slike na BunnyCDN");
-                            }
-
-                            var imageEntity = new Data.Image
-                            {
-                                ImgUrl = $"https://{BunnyCdnStorageZone}.b-cdn.net/{fileName}",
-                                Project = project
-                            };
-
-                            _context.Images.Add(imageEntity);
+                            throw new Exception("Greška prilikom otpremanja slike na BunnyCDN.");
                         }
                     }
+
+                    var imageEntity = new Data.Image
+                    {
+                        ImgUrl = $"https://{BunnyCdnStorageZone}.b-cdn.net/{fileName}",
+                        Project = project
+                    };
+
+                    _context.Images.Add(imageEntity);
                 }
                 catch (FormatException ex)
                 {
-                    throw new Exception($"Slika nije validan Base64 format: {img}", ex);
+                    throw new Exception("Slika nije validan Base64 format.", ex);
                 }
             }
 
