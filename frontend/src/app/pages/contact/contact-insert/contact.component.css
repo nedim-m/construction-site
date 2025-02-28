@@ -91,8 +91,12 @@
   }
   
   @media (max-width: 768px) {
-    .about-us-hero h1 {
-      font-size: 2.5rem;
+    .contact-us-hero,
+    .contact-us-hero .container,
+    .animate-hero,
+    .animate-fade-in,
+    .animate-slide-up {
+      animation: none !important;
     }
   }
   

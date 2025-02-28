@@ -38,10 +38,10 @@ export class HomeComponent implements OnInit {
     
 
 
-    if (this.isBrowser) {
-      
+    if (this.isBrowser && window.innerWidth > 900) {
       this.animateElements();
     }
+    
   
     
 

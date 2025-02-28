@@ -69,7 +69,10 @@
 
 /* Responsivnost */
 @media (max-width: 768px) {
-  .about-us-hero {
+  /*.about-us-hero {
     height: 50vh;
+  }*/
+  .animate-hero {
+    animation: none !important;
   }
 }

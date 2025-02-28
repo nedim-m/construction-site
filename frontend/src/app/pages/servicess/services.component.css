@@ -1,7 +1,6 @@
-
 .services-hero {
   position: relative;
-  background: url('/assets/background-logo.jpg')  center/cover no-repeat;
+  background: url('/assets/background-logo.jpg') center/cover no-repeat;
   height: 70vh; /* Fiksna visina */
   display: flex;
   align-items: center;
@@ -11,7 +10,6 @@
   overflow: hidden;
   animation: scaleIn 1s ease-in-out;
 }
-
 
 .services-hero .overlay {
   position: absolute;
@@ -23,13 +21,11 @@
   z-index: 1;
 }
 
-
 .services-hero .container {
   position: relative;
   z-index: 2;
   animation: fadeIn 1.5s ease-in-out;
 }
-
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -45,6 +41,11 @@
   from { transform: scale(1.05); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+/* Klasa za prikazivanje animacija */
+.show {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
 
 .animate-hero {
   animation: scaleIn 1.2s ease-in-out;
@@ -59,7 +60,6 @@
   animation: slideUp 1s ease-out forwards;
   animation-delay: 0.5s;
 }
-
 
 .service-details {
   padding: 80px 0;
@@ -109,9 +109,16 @@
   transform: scale(1.05);
 }
 
-/* Responsivnost */
+
 @media (max-width: 768px) {
-  .services-hero {
-      height: 50vh; /* Manja visina na mobilnim uređajima */
+
+  .services-hero,
+  .services-hero .container,
+  .animate-hero,
+  .animate-fade-in,
+  .animate-slide-up {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
   }
 }

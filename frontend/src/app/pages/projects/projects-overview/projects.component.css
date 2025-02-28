@@ -99,3 +99,16 @@
     max-width: 250px;           
     padding: 5px;               
   }
+
+  @media (max-width: 768px) {
+    /* Isključivanje animacije na mobilnim uređajima */
+    .project-hero,
+    .project-hero .container,
+    .animate-hero,
+    .animate-fade-in,
+    .animate-slide-up {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+  }
