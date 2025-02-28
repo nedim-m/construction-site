@@ -135,19 +135,41 @@ namespace backend.Services
         public async Task<PagedResponse<ProjectResponse>> GetAllProjects(ProjectSearchRequest? searchRequest = null)
         {
             IQueryable<Project> query = _context.Projects.Include(p => p.Images);
-            var result = new PagedResponse<ProjectResponse>();
+
+            PagedResponse<ProjectResponse> result = new();
+
 
             if (searchRequest != null && !string.IsNullOrWhiteSpace(searchRequest.ProjectLocation))
             {
                 query = query.Where(p => p.Location.Contains(searchRequest.ProjectLocation));
             }
 
+
+            if (!string.IsNullOrWhiteSpace(searchRequest?.SortBy))
+            {
+                query = searchRequest.SortBy.ToLower() switch
+                {
+                    "startdate" => query.OrderBy(p => p.StartDate),
+                    "startdate_desc" => query.OrderByDescending(p => p.StartDate),
+                    "enddate" => query.OrderBy(p => p.EndDate),
+                    "enddate_desc" => query.OrderByDescending(p => p.EndDate),
+                    "location" => query.OrderBy(p => p.Location),
+                    "location_desc" => query.OrderByDescending(p => p.Location),
+                    _ => query
+                };
+            }
+
+
             result.Count = await query.CountAsync();
+
 
             if (searchRequest?.Page.HasValue == true && searchRequest?.PageSize.HasValue == true)
             {
-                query = query.Skip((searchRequest.Page.Value - 1) * searchRequest.PageSize.Value).Take(searchRequest.PageSize.Value);
+                query = query
+                    .Skip((searchRequest.Page.Value - 1) * searchRequest.PageSize.Value)
+                    .Take(searchRequest.PageSize.Value);
             }
+
 
             var projects = await query.ToListAsync();
 
@@ -159,7 +181,7 @@ namespace backend.Services
                 EndDate = p.EndDate,
                 Description = p.Description,
                 Name = p.Name,
-                Images = p.Images.Select(i => i.ImgUrl).ToList()
+                Images = p.Images.OrderByDescending(i => i.Cover).Select(i => i.ImgUrl).ToList()
             }).ToList();
 
             return result;
