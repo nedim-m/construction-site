@@ -1,36 +1,47 @@
 
 .about-us-hero {
   position: relative;
-  background: url('/assets/aboutus-logo.jpg')  center/cover no-repeat;
-  height: 70vh;
-  text-align: center;
-  overflow: hidden;
+  background: url('https://jaric-storage.b-cdn.net/aboutus-logo.jpg')  center/cover no-repeat;
+  height: 70vh; 
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+  animation: scaleIn 1s ease-in-out;
 }
 
-.about-us-hero::after {
-  content: "";
+.about-us-hero .overlay{
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); 
-  z-index: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
 
 
 .about-us-hero .container {
   position: relative;
-  z-index: 1;
-  color: white; 
+  z-index: 2;
+  animation: fadeIn 1.5s ease-in-out;
 }
 
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes scaleIn {
-  from { transform: scale(1.1); opacity: 0; }
+  from { transform: scale(1.05); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
 
@@ -38,6 +49,15 @@
   animation: scaleIn 1.2s ease-in-out;
 }
 
+.animate-fade-in {
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.animate-slide-up {
+  opacity: 0;
+  animation: slideUp 1s ease-out forwards;
+  animation-delay: 0.5s;
+}
 
 .about-us-content {
   padding: 80px 0;
@@ -67,11 +87,11 @@
   transform: scale(1.05);
 }
 
-/* Responsivnost */
+
 @media (max-width: 768px) {
-  /*.about-us-hero {
+  .about-us-hero {
     height: 50vh;
-  }*/
+  }
   .animate-hero {
     animation: none !important;
   }

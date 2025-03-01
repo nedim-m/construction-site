@@ -1,6 +1,6 @@
 .services-hero {
   position: relative;
-  background: url('/assets/background-logo.jpg') center/cover no-repeat;
+  background: url('https://jaric-storage.b-cdn.net/background-logo.jpg') center/cover no-repeat;
   height: 70vh; /* Fiksna visina */
   display: flex;
   align-items: center;
@@ -120,5 +120,9 @@
     animation: none !important;
     opacity: 1 !important;
     transform: translateY(0) !important;
+   
+  }
+  .services-hero {
+    height: 50vh !important;
   }
 }

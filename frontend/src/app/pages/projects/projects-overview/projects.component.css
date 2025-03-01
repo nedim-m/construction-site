@@ -1,7 +1,7 @@
 
 .project-hero {
   position: relative;
-  background: url('/assets/projects-logo.jpg')  center/cover no-repeat;
+  background: url('https://jaric-storage.b-cdn.net/projects-logo.jpg')  center/cover no-repeat;
   height: 70vh; 
   display: flex;
   align-items: center;
@@ -110,5 +110,8 @@
       animation: none !important;
       opacity: 1 !important;
       transform: translateY(0) !important;
+    }
+    .project-hero {
+      height: 50vh !important;
     }
   }

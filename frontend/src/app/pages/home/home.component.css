@@ -1,5 +1,5 @@
 .hero {
-    background: url('/assets/background-logo2.jpg') no-repeat center center;
+    background: url('https://jaric-storage.b-cdn.net/background-logo2.jpg') no-repeat center center;
     background-size: cover;
     color: white;
     height: 70vh;
@@ -74,4 +74,27 @@
       height: 100%;
       border: none;
     }
+   
+    @media (max-width: 768px) {
+      .hero {
+          height: 50vh; 
+          display: flex;
+          flex-direction: column; 
+          justify-content: center; 
+          align-items: center; 
+          text-align: center;
+          background-position: center;
+          background-size: cover;
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
+      }
+  
+      .hero .container {
+          width: 100%;
+      }
+  }
+  
+  
+  
+  
     

@@ -1,6 +1,6 @@
 .contact-us-hero {
   position: relative;
-  background: url('/assets/contactus-logo.webp')  center/cover no-repeat;
+  background: url('https://jaric-storage.b-cdn.net/contactus-logo.webp')  center/cover no-repeat;
   height: 70vh;
   display: flex;
   align-items: center;
