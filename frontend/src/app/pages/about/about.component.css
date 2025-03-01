@@ -88,11 +88,16 @@
 }
 
 
+
 @media (max-width: 768px) {
+  .about-us-hero,
+  .about-us-hero .container,
+  .animate-hero,
+  .animate-fade-in,
+  .animate-slide-up {
+    animation: none !important;
+  }
   .about-us-hero {
     height: 50vh;
-  }
-  .animate-hero {
-    animation: none !important;
   }
 }

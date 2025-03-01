@@ -9,8 +9,20 @@
   color: white;
   overflow: hidden;
   animation: scaleIn 1s ease-in-out;
+  padding-top: 20px; 
 }
 
+h2.text-center.mb-4 {
+  margin-top: 40px; /* Povećaj razmak između sekcija */
+}
+
+.contact-us {
+  margin-top: 50px; /* Povećanje razmaka između hero sekcije i forme */
+}
+
+.contact-form {
+  padding-top: 20px; /* Dodatni razmak unutar forme */
+}
 
 .contact-us-hero .overlay {
   position: absolute;
@@ -27,6 +39,7 @@
   position: relative;
   z-index: 2;
   animation: fadeIn 1.5s ease-in-out;
+  padding-top: 20px; 
 }
 
 
@@ -97,6 +110,9 @@
     .animate-fade-in,
     .animate-slide-up {
       animation: none !important;
+    }
+    .contact-us-hero {
+      height: 50vh;
     }
   }
   
