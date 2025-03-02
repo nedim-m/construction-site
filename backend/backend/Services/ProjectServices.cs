@@ -133,7 +133,11 @@ namespace backend.Services
                 EndDate = project.EndDate,
                 Description = project.Description,
                 Name = project.Name,
-                Images = project.Images.Select(i => i.ImgUrl).ToList()
+                Images = project.Images
+                .OrderByDescending(i => i.Cover)
+                .Select(i => i.ImgUrl)
+                .ToList()
+
             };
         }
 
