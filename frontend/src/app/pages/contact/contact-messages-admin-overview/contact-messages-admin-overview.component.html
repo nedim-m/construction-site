@@ -8,7 +8,7 @@
  
 
   <p-table [value]="contactMessages" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'"
-    class="table-bordered">
+    class="table-bordered mt-4">
 
     <ng-template pTemplate="header">
       <tr>
@@ -23,13 +23,11 @@
       <tr>
         <td>{{ message.name }}</td>
         <td>{{ message.email }}</td>
-     
         <td [ngClass]="{'font-weight-bold': !message.read}" (click)="openMessage(message)" style="cursor: pointer;">
           {{ message.message.length > 50 ? message.message.substring(0, 50) + '...' : message.message }}
         </td>
-
-        <td>
-          <button pButton type="button" class="p-button-text p-button-sm" (click)="onDelete(message.id)">
+        <td class="text-nowrap">
+          <button pButton type="button" class="btn btn-danger" (click)="onDelete(message.id)">
             <i class="fa fa-trash"></i> Obriši
           </button>
         </td>

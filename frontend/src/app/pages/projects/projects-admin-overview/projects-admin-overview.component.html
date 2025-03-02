@@ -7,7 +7,7 @@
 <div class="container">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <!-- Dugme za dodavanje projekta -->
-    <button pButton type="button" class="p-button-success" (click)="navigateToAddProject()">
+    <button pButton type="button" class="btn btn-success" (click)="navigateToAddProject()">
       <i class="fa fa-plus"></i> Dodaj Projekat
     </button>
 
@@ -23,7 +23,7 @@
     [paginator]="true" 
     [rows]="10" 
     [responsiveLayout]="'scroll'"
-    class="table-bordered">
+    class="">
     
     <ng-template pTemplate="header">
       <tr>
@@ -41,12 +41,11 @@
         <td>{{ project.name }}</td>
         <td>{{ project.startDate | date: 'shortDate' }} - {{ project.endDate | date: 'shortDate' }}</td>
         <td>{{ project.location }}</td>
-        <td>
-          <button pButton type="button" class="p-button-text p-button-sm edit-btn" (click)="navigateToEdit(project.id)">
+        <td class="button-container text-nowrap">
+          <button pButton type="button" class="btn btn-primary me-2" (click)="navigateToEdit(project.id)">
             <i class="fa fa-pencil-alt"></i> Edit
           </button>
-          <button pButton type="button" class="p-button-text p-button-sm delete-btn"
-            (click)="onDelete(project.id)">
+          <button pButton type="button" class="btn btn-danger" (click)="onDelete(project.id)">
             <i class="fa fa-trash"></i> Obriši
           </button>
         </td>

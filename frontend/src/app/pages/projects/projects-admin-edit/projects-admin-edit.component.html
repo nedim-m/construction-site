@@ -59,9 +59,10 @@
                         <img [src]="image.imgUrl" class="img-thumbnail" alt="Project Image">
                     </div>
                     <div class="text-center mt-2">
-                        <button type="button" class="btn btn-danger btn-sm" (click)="deleteImage(image.id)">Obriši</button>
-                        <button type="button" class="btn btn-primary btn-sm" (click)="setAsCover( image.id)">Set</button>
+                        <button type="button" class="btn btn-danger btn-sm me-2" (click)="deleteImage(image.id)">Obriši</button>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="setAsCover(image.id)" [disabled]="image.cover">Set</button>
                     </div>
+                    
                 </div>
                 
                 
@@ -75,7 +76,7 @@
             </div>
           
             <div class="text-center mt-4">
-                <button type="button" class="btn btn-secondary" (click)="closeGallery()">Zatvori</button>
+                <button type="button" class="btn btn-secondary" (click)="closeGallery()">Zatvori Galeriju</button>
             </div>
         </div>
     </div>
