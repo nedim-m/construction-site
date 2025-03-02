@@ -5,7 +5,8 @@
         <div class="form-group mb-4">
             <label for="name">Naziv</label>
             <input type="text" id="name" formControlName="name" class="form-control">
-            <div *ngIf="editProjectForm.get('name')?.invalid && editProjectForm.get('name')?.touched" class="text-danger">
+            <div *ngIf="editProjectForm.get('name')?.invalid && editProjectForm.get('name')?.touched"
+                class="text-danger">
                 <small *ngIf="editProjectForm.get('name')?.errors?.['required']">Naziv je obavezan.</small>
             </div>
         </div>
@@ -13,7 +14,8 @@
         <div class="form-group mb-4">
             <label for="startDate">Datum početka</label>
             <input type="date" id="startDate" formControlName="startDate" class="form-control">
-            <div *ngIf="editProjectForm.get('startDate')?.invalid && editProjectForm.get('startDate')?.touched" class="text-danger">
+            <div *ngIf="editProjectForm.get('startDate')?.invalid && editProjectForm.get('startDate')?.touched"
+                class="text-danger">
                 <small *ngIf="editProjectForm.get('startDate')?.errors?.['required']">Datum početka je obavezan.</small>
             </div>
         </div>
@@ -21,7 +23,8 @@
         <div class="form-group mb-4">
             <label for="endDate">Datum završetka</label>
             <input type="date" id="endDate" formControlName="endDate" class="form-control">
-            <div *ngIf="editProjectForm.get('endDate')?.invalid && editProjectForm.get('endDate')?.touched" class="text-danger">
+            <div *ngIf="editProjectForm.get('endDate')?.invalid && editProjectForm.get('endDate')?.touched"
+                class="text-danger">
                 <small *ngIf="editProjectForm.get('endDate')?.errors?.['required']">Datum završetka je obavezan.</small>
             </div>
         </div>
@@ -29,7 +32,8 @@
         <div class="form-group mb-4">
             <label for="location">Lokacija</label>
             <input type="text" id="location" formControlName="location" class="form-control">
-            <div *ngIf="editProjectForm.get('location')?.invalid && editProjectForm.get('location')?.touched" class="text-danger">
+            <div *ngIf="editProjectForm.get('location')?.invalid && editProjectForm.get('location')?.touched"
+                class="text-danger">
                 <small *ngIf="editProjectForm.get('location')?.errors?.['required']">Lokacija je obavezna.</small>
             </div>
         </div>
@@ -37,7 +41,8 @@
         <div class="form-group mb-4">
             <label for="description">Opis</label>
             <textarea id="description" formControlName="description" class="form-control"></textarea>
-            <div *ngIf="editProjectForm.get('description')?.invalid && editProjectForm.get('description')?.touched" class="text-danger">
+            <div *ngIf="editProjectForm.get('description')?.invalid && editProjectForm.get('description')?.touched"
+                class="text-danger">
                 <small *ngIf="editProjectForm.get('description')?.errors?.['required']">Opis je obavezan.</small>
             </div>
         </div>
@@ -45,10 +50,11 @@
             <button type="button" class="btn btn-info" (click)="openGallery()">Galerija Slika</button>
         </div>
 
-        <div class="d-flex justify-content-between mt-4">
+        <div class="d-flex justify-content-between mt-auto mb-4">
             <button type="submit" class="btn btn-primary" [disabled]="editProjectForm.invalid">Sačuvaj</button>
             <button type="button" class="btn btn-secondary" (click)="goBack()">Nazad</button>
         </div>
+
     </form>
     <div *ngIf="isGalleryOpen" class="gallery-modal">
         <div class="gallery-content">
@@ -58,28 +64,38 @@
                     <div class="image-container">
                         <img [src]="image.imgUrl" class="img-thumbnail" alt="Project Image">
                     </div>
-                    <div class="text-center mt-2">
-                        <button type="button" class="btn btn-danger btn-sm me-2" (click)="deleteImage(image.id)">Obriši</button>
-                        <button type="button" class="btn btn-primary btn-sm" (click)="setAsCover(image.id)" [disabled]="image.cover">Set</button>
+                    <div class="d-flex justify-content-between mt-auto mb-4">
+                        <button type="button" class="btn btn-danger btn-sm me-2"
+                            (click)="deleteImage(image.id)">Obriši</button>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="setAsCover(image.id)"
+                            [disabled]="image.cover">Set</button>
                     </div>
-                    
+
                 </div>
-                
-                
-                
-                
+
+
+
+
             </div>
-            
-            <div class="text-center mt-3">
-                <input type="file" (change)="onFileChange($event)" #fileInput multiple>
-                <button type="button" class="btn btn-success mt-2" (click)="addImages()">Dodaj Slike</button>
+
+            <div class="form-group mb-4">
+                <label for="images">Slike</label>
+                <div class="d-flex align-items-center">
+                    <input type="file" id="images" (change)="onFileChange($event)" #fileInput multiple
+                        class="form-control me-2">
+                    <button type="button" class="btn btn-success" (click)="addImages()">Dodaj </button>
+                </div>
             </div>
-          
-            <div class="text-center mt-4">
+
+
+
+
+
+
+            <div class="d-flex justify-content-center mt-auto mb-4">
                 <button type="button" class="btn btn-secondary" (click)="closeGallery()">Zatvori Galeriju</button>
             </div>
         </div>
     </div>
-    
-</div>
 
+</div>
