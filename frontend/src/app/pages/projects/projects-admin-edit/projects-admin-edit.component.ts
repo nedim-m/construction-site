@@ -130,23 +130,37 @@ export class ProjectsAdminEditComponent implements OnInit {
   addImages() {
     if (this.selectedFiles.length === 0) return; 
   
+    // Pokrećemo SweetAlert sa spinnerom pre nego što pošaljemo slike
+    Swal.fire({
+      title: 'Dodavanje slika...',
+      text: 'Molimo vas, sačekajte.',
+      icon: 'info',
+      showConfirmButton: false, // Sakrivamo dugme za potvrdu
+      allowOutsideClick: false, // Onemogućavamo zatvaranje dok traje proces
+      didOpen: () => {
+        Swal.showLoading(); // Pokrećemo spinner
+      }
+    });
+  
     this.imageService.addImages(this.projectId, this.selectedFiles).subscribe(
       (response) => {
         this.loadProjectImages(); 
         this.selectedFiles = []; 
   
-        
         if (this.fileInput) {
           this.fileInput.nativeElement.value = ''; 
         }
   
+       
         Swal.fire('Uspjeh', 'Slike su uspješno dodate!', 'success');
       },
       (error) => {
+        
         Swal.fire('Greška', 'Dodavanje slika nije uspelo', 'error');
       }
     );
   }
+  
   
   setAsCover(imageId: number) {
   Swal.fire({

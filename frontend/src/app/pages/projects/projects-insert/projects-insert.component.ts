@@ -23,6 +23,7 @@ export class ProjectInsertComponent {
     description: '',
     images: []
   };
+  isLoading = false;
 
   @ViewChild('projectForm') projectForm!: NgForm;
   constructor(private service: ProjectsService,private router: Router) {}
@@ -30,6 +31,7 @@ export class ProjectInsertComponent {
   onFileChange(event: any) {
     const files = event.target.files;
     this.project.images = []; 
+    this.isLoading = true;
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -42,27 +44,41 @@ export class ProjectInsertComponent {
 
       reader.readAsDataURL(file); 
     }
+    
   }
 
   
   onSubmit() {
     if (this.projectForm.valid) {
+      
+      Swal.fire({
+        title: 'Dodavanje projekta...',
+        text: 'Molimo vas, sačekajte.',
+        icon: 'info',
+        showConfirmButton: false, 
+        allowOutsideClick: false, 
+        didOpen: () => {
+          Swal.showLoading(); 
+        }
+      });
+  
       this.service.addProject(this.project).subscribe(
         response => {
           console.log('Project added:', response);
+         
           Swal.fire({
             icon: 'success',
             title: 'Uspešno!',
             text: 'Projekat je uspešno dodat.',
             confirmButtonText: 'U redu'
           }).then(() => {
-            
             this.router.navigate(['/admin-projects']); 
           });
           this.projectForm.reset(); 
         },
         error => {
           console.error('Greška prilikom dodavanja projekta:', error);
+         
           Swal.fire({
             icon: 'error',
             title: 'Greška!',
@@ -73,4 +89,5 @@ export class ProjectInsertComponent {
       );
     }
   }
+  
 }
