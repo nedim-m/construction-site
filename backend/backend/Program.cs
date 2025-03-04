@@ -65,13 +65,24 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 //  CORS konfiguracija (dozvoljava Angular/React frontend)
-builder.Services.AddCors(options =>
+/*builder.Services.AddCors(options =>
 {
     options.AddPolicy("NgOrigins", policy =>
     {
         policy.WithOrigins("http://localhost:7233", "http://localhost:4200", "http://localhost:3000")
               .AllowAnyMethod()
               .AllowAnyHeader();
+    });
+});*/
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("NgOrigins", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials(); // Omoguæava slanje kolaèiæa i autorizacije
     });
 });
 
@@ -110,6 +121,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("NgOrigins");
+//app.UseCors("AllowAll");
+
 app.UseAuthentication();
 app.UseAuthorization();
 

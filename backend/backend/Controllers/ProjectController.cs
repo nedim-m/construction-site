@@ -1,5 +1,6 @@
 ﻿using backend.Models;
 using backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -15,6 +16,8 @@ namespace backend.Controllers
             _services=services;
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddProject(ProjectInsertRequest insert)
         {
@@ -60,7 +63,7 @@ namespace backend.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectUpdateRequest updateRequest)
         {
@@ -85,7 +88,7 @@ namespace backend.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {

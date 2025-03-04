@@ -41,7 +41,7 @@ namespace backend.Services
 
         public async Task<string?> LoginUserAsync(LoginModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.Username);
+            var user = await _userManager.FindByNameAsync(model.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
                 return null;
 

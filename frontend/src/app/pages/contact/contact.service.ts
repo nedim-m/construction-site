@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AppConfig } from '../../app.config.prod';
@@ -20,10 +20,20 @@ export class ContactService {
   }
 
   getAllMessages(): Observable<ContactMessageResponse[]> {
-    return this.http.get<ContactMessageResponse[]>(this.baseUrl);
+    const token = sessionStorage.getItem('auth_token');
+    
+    // Kreiraj headers sa Authorization header ako token postoji
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    // Napravi HTTP GET zahtjev sa zaglavljem
+    return this.http.get<ContactMessageResponse[]>(this.baseUrl, { headers });
   }
 
   getMessageById(id: number): Observable<ContactMessageResponse> {
+    
     return this.http.get<ContactMessageResponse>(`${this.baseUrl}/${id}`);
   }
 

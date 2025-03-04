@@ -33,7 +33,7 @@ namespace backend.Controllers
             var messages = await _contactMessageService.GetAllAsync();
             return Ok(messages);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -43,7 +43,7 @@ namespace backend.Controllers
 
             return Ok(message);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -53,7 +53,7 @@ namespace backend.Controllers
 
             return NoContent();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateStatus(int id, [FromBody] bool isRead)
         {
@@ -63,6 +63,7 @@ namespace backend.Controllers
 
             return NoContent();
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("unread-message-count")]
         public async Task<ActionResult<int>> GetUnreadMessageCount()
         {
