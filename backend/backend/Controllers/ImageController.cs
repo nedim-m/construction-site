@@ -1,4 +1,5 @@
 ﻿using backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -14,7 +15,7 @@ namespace backend.Controllers
         {
             _imageService = imageService;
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("{projectId}")]
         public async Task<IActionResult> AddImages(int projectId, [FromBody] List<string> images)
         {
@@ -28,7 +29,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Greška na serveru: {ex.Message}");
             }
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{projectId}")]
         public async Task<IActionResult> DeleteImages(int projectId, [FromBody] List<int> imageIds)
         {
@@ -43,6 +44,7 @@ namespace backend.Controllers
             }
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpGet("{projectId}")]
         public async Task<IActionResult> GetImagesByProjectId(int projectId)
         {
@@ -60,6 +62,7 @@ namespace backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost("{projectId}/SetCover/{imageId}")]
         public async Task<IActionResult> SetCoverImage(int projectId, int imageId)
         {
