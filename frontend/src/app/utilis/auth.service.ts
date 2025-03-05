@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  baseUrl = `${AppConfig.apiUrl}/login`;
+  baseUrl = `${AppConfig.apiUrl}/Auth/login`;
 
 
 
@@ -24,7 +24,7 @@ export class AuthService {
 
   saveToken(token: string): void {
     if (typeof window !== 'undefined') {
-      sessionStorage.setItem('auth_token', token); // Snimanje tokena u sessionStorage
+      sessionStorage.setItem('auth_token', token); 
     }
 
     var test=this.getToken();
@@ -34,18 +34,18 @@ export class AuthService {
 
   getToken(): string | null {
     if (typeof window !== 'undefined') {
-      return sessionStorage.getItem('auth_token'); // Dohvatanje tokena iz sessionStorage
+      return sessionStorage.getItem('auth_token'); 
     }
     return null;
   }
 
   clearToken(): void {
     if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('auth_token'); // Brisanje tokena iz sessionStorage
+      sessionStorage.removeItem('auth_token'); 
     }
   }
 
   isLoggedIn(): boolean {
-    return this.getToken() !== null; // Provera da li je korisnik ulogovan
+    return this.getToken() !== null; 
   }
 }

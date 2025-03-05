@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit {
   loadUnreadMessageCount(): void {
     this.contactService.getUnreadMessageCount().subscribe({
       next: (count) => {
-        console.log('Inicijalni broj poruka:', count);  // Proverite inicijalnu vrednost
+        console.log('Inicijalni broj poruka:', count);  
         this.unreadMessageCount$.next(count);  
       },
       error: (err) => console.error('Greška prilikom učitavanja broja poruka', err)
