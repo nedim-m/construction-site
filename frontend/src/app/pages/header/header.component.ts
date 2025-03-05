@@ -36,7 +36,10 @@ export class HeaderComponent implements OnInit {
         this.isLoggedIn = status;  
       }
     );
-    this.loadUnreadMessageCount();
+    if(this.isLoggedIn){
+      this.loadUnreadMessageCount();
+    }
+    
    
  
     
@@ -71,6 +74,7 @@ export class HeaderComponent implements OnInit {
   }
 
   refreshUnreadMessageCount(): void {
+    if (!this.isLoggedIn) return;
     this.contactService.getUnreadMessageCount().subscribe({
       next: (count) => {
         console.log('Osveženi broj poruka:', count);  
