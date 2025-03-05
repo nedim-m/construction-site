@@ -79,10 +79,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("NgOrigins", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4000")
               .AllowAnyMethod()
               .AllowAnyHeader()
-              .AllowCredentials(); // Omoguæava slanje kolaèiæa i autorizacije
+              .AllowCredentials(); 
     });
 });
 
