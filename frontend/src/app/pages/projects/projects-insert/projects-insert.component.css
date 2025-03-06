@@ -1,0 +1,15 @@
+
+.fullscreen{
+    height: 90vh;
+}
+
+@media screen and (max-width: 768px) {
+    .about-us-hero  {
+      height: 20vh; /* Na mobilnim uređajima koristimo 20% visine ekrana */
+    }
+   
+    .fullscreen{
+      height:auto ;
+    }
+  }
+  

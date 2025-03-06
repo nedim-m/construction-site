@@ -1,43 +1,30 @@
-<div *ngIf="project" class="container my-5">
-  <h1 class="text-center mb-4">{{ project.name }}</h1>
+<div class="fullscreen">
+  <div *ngIf="project" class="container my-5 header-project-details">
+    <h1 class="text-center mb-4">{{ project.name }}</h1>
+  </div>
 
-  <div class="row">
-    <div class="col-md-6 text-center">
-      <img 
-        [src]="project.images[0]" 
-        class="img-fluid img-thumbnail clickable-image" 
-        alt="{{ project.name }}" 
-        (click)="openModal(0)">
-      
-      <p *ngIf="project.images.length > 1" class="text-muted mt-2">
-        Ovaj projekat ima {{ project.images.length }} slika. Kliknite na sliku za pregled galerije.
-      </p>
-    </div>
-    
-    <div class="col-md-6 text-wrap word-break">
-      <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
-      <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
-      <p><strong>Lokacija:</strong> {{ project.location }}</p>
-      <p><strong>Opis projekta:</strong> <span class="description">{{ project.description }}</span></p>
+  <div *ngIf="project" class="container my-5">
+    <div class="row">
+      <div class="col-12 col-md-6 text-center">
+        <!-- Nova ngx-gallery galerija -->
+        <ngx-gallery class="gallery-height" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+
+        <p *ngIf="project.images.length > 1" class="text-muted mt-2">
+          Ovaj projekat ima {{ project.images.length }} slika. Kliknite na sliku za pregled galerije.
+        </p>
+      </div>
+
+      <div class="col-12 col-md-6 text-wrap word-break">
+        <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
+        <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
+        <p><strong>Lokacija:</strong> {{ project.location }}</p>
+        <p><strong>Opis projekta:</strong> <span class="description">{{ project.description }}</span></p>
+      </div>
     </div>
   </div>
 
-  <!-- Modal -->
-  <div class="modal" [ngClass]="{ 'show': isModalOpen }" (click)="closeModal()">
-    <span class="close" (click)="closeModal()">&times;</span>
 
-    <!-- Navigacija -->
-    <a class="prev" (click)="previousImage($event)">&#10094;</a>
-    <a class="next" (click)="nextImage($event)">&#10095;</a>
-
-    <!-- Glavna slika -->
-    <div class="modal-content">
-      <img class="modal-image" [src]="currentImage" alt="Slika {{ currentIndex + 1 }} od {{ project.images.length }}">
-      <p class="image-counter">{{ currentIndex + 1 }} od {{ project.images.length }}</p>
-    </div>
+  <div *ngIf="!project" class="container my-5">
+    <p class="text-center">Projekat nije pronađen.</p>
   </div>
-</div>
-
-<div *ngIf="!project" class="container my-5">
-  <p class="text-center">Projekat nije pronađen.</p>
 </div>

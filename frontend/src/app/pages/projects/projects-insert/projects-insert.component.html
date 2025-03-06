@@ -1,79 +1,82 @@
-<section class="about-us-hero bg-light text-center py-5">
-  <div class="container">
-    <h1 class="display-4">Unos projekata</h1>
+<div class="fullscreen">
+  <section class="about-us-hero bg-light text-center py-5">
+    <div class="container">
+      <h1 class="display-4">Unos projekata</h1>
+    </div>
+  </section>
+
+  <div class="container mt-5">
+
+
+    <form (ngSubmit)="onSubmit()" #projectForm="ngForm" novalidate>
+      <!-- Naziv projekta -->
+      <div class="form-group mb-4">
+        <label for="name">Naziv</label>
+        <input type="text" id="name" [(ngModel)]="project.name" name="name" class="form-control" required minlength="3"
+          #name="ngModel">
+        <div *ngIf="name.invalid && name.touched" class="text-danger">
+          <small *ngIf="name.errors?.['required']">Naziv je obavezan.</small>
+          <small *ngIf="name.errors?.['minlength']">Naziv mora imati najmanje 3 slova.</small>
+        </div>
+      </div>
+
+      <!-- Datum početka -->
+      <div class="form-group mb-4">
+        <label for="startDate">Datum početka</label>
+        <input type="date" id="startDate" [(ngModel)]="project.startDate" name="startDate" class="form-control" required
+          #startDate="ngModel">
+
+
+        <div *ngIf="startDate.invalid && startDate.touched" class="text-danger">
+          <small *ngIf="startDate.errors?.['required']">Datum početka je obavezan.</small>
+        </div>
+      </div>
+
+
+      <!-- Datum završetka -->
+      <div class="form-group mb-4">
+        <label for="endDate">Datum završetka</label>
+        <input type="date" id="endDate" [(ngModel)]="project.endDate" name="endDate" class="form-control" required
+          #endDate="ngModel">
+        <div *ngIf="endDate.invalid && endDate.touched" class="text-danger">
+          <small *ngIf="endDate.errors?.['required']">Datum završetka je obavezan.</small>
+        </div>
+      </div>
+
+      <!-- Lokacija -->
+      <div class="form-group mb-4">
+        <label for="location">Lokacija</label>
+        <input type="text" id="location" [(ngModel)]="project.location" name="location" class="form-control" required
+          minlength="2" #location="ngModel">
+        <div *ngIf="location.invalid && location.touched" class="text-danger">
+          <small *ngIf="location.errors?.['required']">Lokacija je obavezna.</small>
+          <small *ngIf="location.errors?.['minlength']">Lokacija mora imati najmanje 2 slova.</small>
+        </div>
+      </div>
+
+      <!-- Opis -->
+      <div class="form-group mb-4">
+        <label for="description">Opis</label>
+        <textarea id="description" [(ngModel)]="project.description" name="description" class="form-control" required
+          minlength="10" #description="ngModel"></textarea>
+        <div *ngIf="description.invalid && description.touched" class="text-danger">
+          <small *ngIf="description.errors?.['required']">Opis je obavezan.</small>
+          <small *ngIf="description.errors?.['minlength']">Opis mora imati najmanje 10 slova.</small>
+        </div>
+      </div>
+
+      <!-- Slike -->
+      <div class="form-group mb-4">
+        <label for="images">Slike</label>
+        <input type="file" id="images" (change)="onFileChange($event)" multiple class="form-control">
+      </div>
+
+      <!-- Submit dugme -->
+      <div class="text-center mt-4 mb-4">
+        <button type="submit" class="btn btn-primary btn-lg w-100" [disabled]="projectForm.invalid">Unesite
+          projekat</button>
+      </div>
+
+    </form>
   </div>
-</section>
-
-<div class="container mt-5">
-
-
-  <form (ngSubmit)="onSubmit()" #projectForm="ngForm" novalidate>
-    <!-- Naziv projekta -->
-    <div class="form-group mb-4">
-      <label for="name">Naziv</label>
-      <input type="text" id="name" [(ngModel)]="project.name" name="name" class="form-control"
-             required minlength="3" #name="ngModel">
-      <div *ngIf="name.invalid && name.touched" class="text-danger">
-        <small *ngIf="name.errors?.['required']">Naziv je obavezan.</small>
-        <small *ngIf="name.errors?.['minlength']">Naziv mora imati najmanje 3 slova.</small>
-      </div>
-    </div>
-
-    <!-- Datum početka -->
-    <div class="form-group mb-4">
-  <label for="startDate">Datum početka</label>
-  <input type="date" id="startDate" [(ngModel)]="project.startDate" name="startDate" class="form-control"
-         required #startDate="ngModel">
-  
-  
-  <div *ngIf="startDate.invalid && startDate.touched" class="text-danger">
-    <small *ngIf="startDate.errors?.['required']">Datum početka je obavezan.</small>
-  </div>
-</div>
-
-
-    <!-- Datum završetka -->
-    <div class="form-group mb-4">
-      <label for="endDate">Datum završetka</label>
-      <input type="date" id="endDate" [(ngModel)]="project.endDate" name="endDate" class="form-control"
-             required #endDate="ngModel" >
-      <div *ngIf="endDate.invalid && endDate.touched" class="text-danger">
-        <small *ngIf="endDate.errors?.['required']">Datum završetka je obavezan.</small>
-      </div>
-    </div>
-
-    <!-- Lokacija -->
-    <div class="form-group mb-4">
-      <label for="location">Lokacija</label>
-      <input type="text" id="location" [(ngModel)]="project.location" name="location" class="form-control"
-             required minlength="2" #location="ngModel">
-      <div *ngIf="location.invalid && location.touched" class="text-danger">
-        <small *ngIf="location.errors?.['required']">Lokacija je obavezna.</small>
-        <small *ngIf="location.errors?.['minlength']">Lokacija mora imati najmanje 2 slova.</small>
-      </div>
-    </div>
-
-    <!-- Opis -->
-    <div class="form-group mb-4">
-      <label for="description">Opis</label>
-      <textarea id="description" [(ngModel)]="project.description" name="description" class="form-control"
-                required minlength="10" #description="ngModel"></textarea>
-      <div *ngIf="description.invalid && description.touched" class="text-danger">
-        <small *ngIf="description.errors?.['required']">Opis je obavezan.</small>
-        <small *ngIf="description.errors?.['minlength']">Opis mora imati najmanje 10 slova.</small>
-      </div>
-    </div>
-
-    <!-- Slike -->
-    <div class="form-group mb-4">
-      <label for="images">Slike</label>
-      <input type="file" id="images" (change)="onFileChange($event)" multiple class="form-control">
-    </div>
-
-    <!-- Submit dugme -->
-    <div class="text-center mt-4 mb-4">
-      <button type="submit" class="btn btn-primary btn-lg w-100" [disabled]="projectForm.invalid">Unesite projekat</button>
-    </div>
-    
-  </form>
 </div>

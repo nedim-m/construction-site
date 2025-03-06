@@ -3,21 +3,20 @@ import { ProjectResponse } from '../projects.model';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectsService } from '../projects.service';
 import { CommonModule } from '@angular/common';
-
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryModule } from '@kolkov/ngx-gallery';
 
 @Component({
   selector: 'app-projects-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxGalleryModule],
   templateUrl: './projects-details.component.html',
   styleUrl: './projects-details.component.css'
 })
 export class ProjectsDetailsComponent implements OnInit {
 
   project: ProjectResponse | null = null;
-  isModalOpen = false; // Kontrolira prikaz modal-a
-  currentImage: string = ''; // Trenutna slika koja je uvećana
-  currentIndex: number = 0; // Trenutni indeks slike
+  galleryOptions: NgxGalleryOptions[] = [];
+  galleryImages: NgxGalleryImage[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -29,39 +28,37 @@ export class ProjectsDetailsComponent implements OnInit {
     if (projectId) {
       this.projectsService.getProjectById(+projectId).subscribe((data) => {
         this.project = data;
-        // Postavi prvu sliku na početku
         if (this.project && this.project.images.length > 0) {
-          this.currentImage = this.project.images[0];
+          this.setupGallery();
         }
       });
     }
   }
 
-  openModal(index: number): void {
-    if (this.project && this.project.images.length > 0) {
-      this.currentImage = this.project.images[index];
-      this.currentIndex = index;
-      this.isModalOpen = true;
-    }
-  }
+  private setupGallery(): void {
+    this.galleryOptions = [
+      {
+        width: '100%',
+        height: '500px',
+        thumbnails: true,
+        imageAnimation: 'zoom',
+        preview: true, // Omogućava modalni prikaz
+        previewFullscreen: true, // Omogućava fullscreen pregled
+        previewCloseOnClick: true, // Zatvaranje modala klikom van slike
+        previewKeyboardNavigation: true // Omogućava strelice na tastaturi
+      },
+      {
+        breakpoint: 600,
+        width: '100%',
+        height: '300px',
+        thumbnailsColumns: 2
+      }
+    ];
 
-  closeModal(): void {
-    this.isModalOpen = false;
-  }
-
-  nextImage(event: Event): void {
-    event.stopPropagation(); // Spriječi zatvaranje modala na klik
-    if (this.project && this.currentIndex < this.project.images.length - 1) {
-      this.currentIndex++;
-      this.currentImage = this.project.images[this.currentIndex];
-    }
-  }
-
-  previousImage(event: Event): void {
-    event.stopPropagation(); // Spriječi zatvaranje modala na klik
-    if (this.project && this.currentIndex > 0) {
-      this.currentIndex--;
-      this.currentImage = this.project.images[this.currentIndex];
-    }
+    this.galleryImages = this.project!.images.map(img => ({
+      small: img,
+      medium: img,
+      big: img
+    }));
   }
 }
