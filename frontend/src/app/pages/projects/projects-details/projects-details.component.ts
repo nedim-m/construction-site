@@ -42,10 +42,10 @@ export class ProjectsDetailsComponent implements OnInit {
         height: '500px',
         thumbnails: true,
         imageAnimation: 'zoom',
-        preview: true, // Omogućava modalni prikaz
-        previewFullscreen: true, // Omogućava fullscreen pregled
-        previewCloseOnClick: true, // Zatvaranje modala klikom van slike
-        previewKeyboardNavigation: true // Omogućava strelice na tastaturi
+        preview: true, 
+        previewFullscreen: true, 
+        previewCloseOnClick: true, 
+        previewKeyboardNavigation: true 
       },
       {
         breakpoint: 600,

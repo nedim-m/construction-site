@@ -1,5 +1,5 @@
 .header-project-details {
-  height: 10vh; /* Na desktopu 10% visine ekrana */
+  height: 10vh; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,6 +19,28 @@
   overflow: hidden;
 }
 
+.about-project {
+  height: 60vh; 
+  overflow: hidden; 
+}
+
+.about-project .row {
+  height: 100%; 
+}
+
+.text-wrap {
+  height: 100%;
+  overflow-y: auto; 
+  padding-right: 10px; 
+}
+
+.gallery-height {
+  height: 100%; 
+}
+
+
+
+
 /* Klikabilne slike */
 .clickable-image {
   cursor: pointer;
@@ -35,11 +57,12 @@
 /* Prilagodba za mobilne uređaje */
 @media screen and (max-width: 768px) {
   .header-project-details {
-    height: 20vh; /* Na mobilnim uređajima koristimo 20% visine ekrana */
+    height: 20vh; 
   }
   .gallery-height {
-    height: 30vh; /* Ako želite da visina galerije bude veća na manjim ekranima */
+    height: 30vh; 
   }
+  
   .fullscreen{
     height:auto ;
   }
