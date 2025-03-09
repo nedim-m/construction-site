@@ -1,7 +1,13 @@
 <div class="fullscreen">
   <div *ngIf="project" class="container my-5 header-project-details">
-    <h1 class="text-center mb-4">{{ project.name }}</h1>
+    <section class="bg-light text-center py-5">
+      <div class="container admin-title">
+        <h1 class="text-center mb-4">{{ project.name }}</h1>
+      </div>
+    </section>
   </div>
+
+ 
 
   <div *ngIf="!mobile">
     <div *ngIf="project" class="container my-5 about-project">

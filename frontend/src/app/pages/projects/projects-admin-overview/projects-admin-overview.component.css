@@ -1,3 +1,7 @@
+
+
+
+
 .table-bordered {
     border: 1px solid #dee2e6; /* Granica tabele */
   }
@@ -52,9 +56,20 @@
   padding: 5px;
 }
 
+
+
+
 .button-container {
   display: flex;              
   justify-content: center;    
   gap: 10px;                  
   align-items: center;        
+}
+@media (max-width: 768px) {
+  .bg-light {
+    display: block;  /* Osigurava da sekcija bude prikazana na malim ekranima */
+  }
+  .admin-title{
+    padding-top: 20%;
+  }
 }
