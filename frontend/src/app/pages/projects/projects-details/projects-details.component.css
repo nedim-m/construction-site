@@ -37,11 +37,28 @@
 .gallery-height {
   height: 100%; 
 }
+.mobile-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.mobile-gallery {
+  width: 100%; 
+  height: auto;
+}
+
+.mobile-text {
+  width: 100%;
+  
+  
+}
 
 
 
 
-/* Klikabilne slike */
+
 .clickable-image {
   cursor: pointer;
   transition: transform 0.3s;
@@ -54,13 +71,14 @@
 .fullscreen{
   height: 90vh;
 }
-/* Prilagodba za mobilne uređaje */
+
 @media screen and (max-width: 768px) {
   .header-project-details {
     height: 20vh; 
   }
   .gallery-height {
-    height: 30vh; 
+    min-height: 200px;
+    max-height: 300px;
   }
   
   .fullscreen{

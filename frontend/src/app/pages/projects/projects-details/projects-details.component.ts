@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ProjectResponse } from '../projects.model';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectsService } from '../projects.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryModule } from '@kolkov/ngx-gallery';
 
 @Component({
@@ -17,13 +17,17 @@ export class ProjectsDetailsComponent implements OnInit {
   project: ProjectResponse | null = null;
   galleryOptions: NgxGalleryOptions[] = [];
   galleryImages: NgxGalleryImage[] = [];
+  mobile:boolean =false;
 
   constructor(
     private route: ActivatedRoute,
-    private projectsService: ProjectsService
+    private projectsService: ProjectsService,
+    @Inject(PLATFORM_ID) private platformId: any
   ) {}
 
   ngOnInit(): void {
+
+    this.checkScreenSize();
     const projectId = this.route.snapshot.paramMap.get('id');
     if (projectId) {
       this.projectsService.getProjectById(+projectId).subscribe((data) => {
@@ -33,6 +37,7 @@ export class ProjectsDetailsComponent implements OnInit {
         }
       });
     }
+    
   }
 
   private setupGallery(): void {
@@ -48,10 +53,10 @@ export class ProjectsDetailsComponent implements OnInit {
         previewKeyboardNavigation: true 
       },
       {
-        breakpoint: 600,
+        breakpoint: 768,
         width: '100%',
         height: '300px',
-        thumbnailsColumns: 2
+        thumbnailsColumns: 3
       }
     ];
 
@@ -60,5 +65,12 @@ export class ProjectsDetailsComponent implements OnInit {
       medium: img,
       big: img
     }));
+  }
+
+  @HostListener('window:resize', [])
+  checkScreenSize() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.mobile = window.innerWidth <= 768;
+    }
   }
 }

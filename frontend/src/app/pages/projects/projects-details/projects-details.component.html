@@ -3,18 +3,30 @@
     <h1 class="text-center mb-4">{{ project.name }}</h1>
   </div>
 
-  <div *ngIf="project" class="container my-5 about-project">
-    <div class="row">
-      <div class="col-12 col-md-6 text-center">
-        <!-- Nova ngx-gallery galerija -->
-        <ngx-gallery class="gallery-height" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
-
-        <p *ngIf="project.images.length > 1" class="text-muted mt-2">
-          Ovaj projekat ima {{ project.images.length }} slika. Kliknite na sliku za pregled galerije.
-        </p>
+  <div *ngIf="!mobile">
+    <div *ngIf="project" class="container my-5 about-project">
+      <div class="row">
+        <div class="col-12 col-md-6 text-center">
+          <ngx-gallery class="gallery-height" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+        </div>
+        <div class="col-12 col-md-6 text-wrap word-break">
+          <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
+          <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
+          <p><strong>Lokacija:</strong> {{ project.location }}</p>
+          <p><strong>Opis projekta:</strong> <span class="description">{{ project.description }}</span></p>
+        </div>
       </div>
-
-      <div class="col-12 col-md-6 text-wrap word-break">
+    </div>
+  </div>
+  
+  
+  <div *ngIf="mobile">
+    <div *ngIf="project" class="container mobile-layout">
+      
+      <ngx-gallery class="mobile-gallery" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+  
+      
+      <div class="mobile-text text-wrap word-break">
         <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
         <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
         <p><strong>Lokacija:</strong> {{ project.location }}</p>
@@ -22,7 +34,6 @@
       </div>
     </div>
   </div>
-
 
   <div *ngIf="!project" class="container my-5">
     <p class="text-center">Projekat nije pronađen.</p>
