@@ -27,7 +27,7 @@
           {{ message.message.length > 50 ? message.message.substring(0, 50) + '...' : message.message }}
         </td>
         <td class="text-nowrap">
-          <button pButton type="button" class="btn btn-danger" (click)="onDelete(message.id)">
+          <button pButton type="button" class="btn btn-danger btn-sm" (click)="onDelete(message.id)">
             <i class="fa fa-trash"></i> Obriši
           </button>
         </td>

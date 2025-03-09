@@ -99,5 +99,6 @@
   }
   .about-us-hero {
     height: 50vh;
+    padding-top: 70px !important;
   }
 }

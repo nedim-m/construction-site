@@ -9,7 +9,7 @@
   color: white;
   overflow: hidden;
   animation: scaleIn 1s ease-in-out;
-  padding-top: 20px; 
+  
 }
 
 h2.text-center.mb-4 {
@@ -113,6 +113,7 @@ h2.text-center.mb-4 {
     }
     .contact-us-hero {
       height: 50vh;
+      padding-top: 70px !important;
     }
   }
   

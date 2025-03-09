@@ -93,6 +93,25 @@
           width: 100%;
       }
   }
+
+  @media (max-width: 768px) {
+    .hero {
+        height: 50vh; 
+        display: flex;
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center; 
+        text-align: center;
+        background-position: center;
+        background-size: cover;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    
+    .hero .container {
+        width: 100%;
+    }
+}
   
   
   
