@@ -54,6 +54,20 @@
         </div>
       </div>
 
+      <div class="form-group mb-4">
+        <label class="d-block">Novi klijent</label>
+        <div class="d-flex align-items-center">
+          <label class="me-3">
+            <input type="radio" [(ngModel)]="project.newClient" [value]="true" name="newClient" checked> DA
+          </label>
+          <label>
+            <input type="radio" [(ngModel)]="project.newClient" [value]="false" name="newClient"> NE
+          </label>
+        </div>
+      </div>
+      
+      
+
       <!-- Opis -->
       <div class="form-group mb-4">
         <label for="description">Opis</label>

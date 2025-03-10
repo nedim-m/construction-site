@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppConfig } from '../../app.config.prod';
-import { PagedResponse, Project, ProjectResponse } from './projects.model';
+import { PagedResponse, Project, ProjectAndCustomerNumber, ProjectResponse } from './projects.model';
 import { Observable } from 'rxjs';
 import { HttpHeadersHelper } from '../../utilis/httpheadershelper';
 
@@ -53,9 +53,9 @@ updateProject(id: number, project: Project): Observable<Project> {
     return this.http.put<Project>(`${this.baseUrl}/${id}`, project, { headers });
 }
 
-getProjectNumber(): Observable<number> {
+getProjectNumber(): Observable<ProjectAndCustomerNumber> {
   const headers = HttpHeadersHelper.getAuthHeaders();
-    return this.http.get<number>(`${this.baseUrl}/projectNumber`, { headers });
+    return this.http.get<ProjectAndCustomerNumber>(`${this.baseUrl}/projectNumber`, { headers });
 }
 
 

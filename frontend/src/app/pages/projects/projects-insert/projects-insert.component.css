@@ -1,6 +1,6 @@
 
 .fullscreen{
-    height: 90vh;
+    height: auto;
 }
 
 @media screen and (max-width: 768px) {

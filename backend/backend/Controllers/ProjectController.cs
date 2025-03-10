@@ -98,22 +98,19 @@ namespace backend.Controllers
             return Ok(new { Message = "Project deleted successfully" });
         }
         [HttpGet("projectNumber")]
-        public async Task<ActionResult<int>> GetProjectNumber()
+        public async Task<ActionResult<ProjectAndCustomerNumber>> GetProjectNumber()
         {
             try
             {
-                
-                int projectCount = await _services.GetProjectNumber();
-
-                
-                return Ok(projectCount);
+                var projectData = await _services.GetProjectNumber();
+                return Ok(projectData);
             }
             catch (Exception ex)
             {
-                
-                return StatusCode(500, $"Greška pri dobijanju broja projekata: {ex.Message}");
+                return StatusCode(500, new { Message = "Greška pri dobijanju broja projekata.", Error = ex.Message });
             }
         }
+
 
 
 

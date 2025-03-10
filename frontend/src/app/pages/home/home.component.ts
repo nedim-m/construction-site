@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   projectCount: number = 0;
   yearsOfExpirience=0;
   todayYear= new Date().getFullYear();
-  happyCustomer=0;
+  happyCustomer :number=0;
 
   latitude = 43.66028; 
   longitude = 17.76167;
@@ -28,9 +28,9 @@ export class HomeComponent implements OnInit {
     this.isBrowser = typeof window !== 'undefined';
 
     this.projectService.getProjectNumber().subscribe(
-      (count) => {
-        this.projectCount = count; 
-        this.happyCustomer=this.projectCount;
+      (data) => {
+        this.projectCount = data.numberOfProjects || 0; 
+        this.happyCustomer=data.numberOfClients || 0;
         
       }
     );

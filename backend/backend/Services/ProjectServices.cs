@@ -32,6 +32,7 @@ namespace backend.Services
                 Location = insert.Location,
                 Description = insert.Description,
                 Name = insert.Name,
+                NewClient=insert.NewClient
             };
 
             _context.Projects.Add(project);
@@ -90,6 +91,7 @@ namespace backend.Services
                 EndDate = project.EndDate,
                 Description = project.Description,
                 Name = project.Name,
+                NewClient=project.NewClient,
                 Images = project.Images.Select(i => i.ImgUrl).ToList()
             };
         }
@@ -133,6 +135,7 @@ namespace backend.Services
                 EndDate = project.EndDate,
                 Description = project.Description,
                 Name = project.Name,
+                NewClient= project.NewClient,
                 Images = project.Images
                 .OrderByDescending(i => i.Cover)
                 .Select(i => i.ImgUrl)
@@ -190,6 +193,7 @@ namespace backend.Services
                 EndDate = p.EndDate,
                 Description = p.Description,
                 Name = p.Name,
+                NewClient= p.NewClient,
                 Images = p.Images.OrderByDescending(i => i.Cover).Select(i => i.ImgUrl).ToList()
             }).ToList();
 
@@ -209,6 +213,7 @@ namespace backend.Services
             project.Location = update.Location;
             project.Description = update.Description;
             project.Name = update.Name;
+            project.NewClient= update.NewClient;
 
             await _context.SaveChangesAsync();
 
@@ -220,14 +225,25 @@ namespace backend.Services
                 EndDate = project.EndDate,
                 Description = project.Description,
                 Name = project.Name,
+               NewClient= project.NewClient,
                 Images = project.Images.Select(i => i.ImgUrl).ToList()
             };
         }
 
-        public async Task<int> GetProjectNumber()
+        public async Task<ProjectAndCustomerNumber> GetProjectNumber()
         {
-            return await _context.Projects.CountAsync();
+            var numberOfProjects = await _context.Projects.CountAsync();
+            var numberOfClients = await _context.Projects
+                .Where(x => x.NewClient)
+                .CountAsync();
+
+            return new ProjectAndCustomerNumber
+            {
+                NumberOfClients = numberOfClients,
+                NumberOfProjects = numberOfProjects
+            };
         }
+
 
     }
 }
