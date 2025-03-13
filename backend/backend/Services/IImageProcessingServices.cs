@@ -2,7 +2,7 @@
 {
     public interface IImageProcessingServices
     {
-        byte[] OptimizeImage(byte[] imageBytes);
+        byte[] OptimizeImage(byte[] imageBytes, bool convertToWebP = true);
 
     }
 }
