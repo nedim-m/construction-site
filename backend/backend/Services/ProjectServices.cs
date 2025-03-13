@@ -11,13 +11,24 @@ namespace backend.Services
         private readonly DataContext _context;
         private readonly HttpClient _httpClient;
         private readonly IImageProcessingServices _imageProcessingServices;
-        private const string BunnyCdnStorageZone = "jaric-storage"; // testni
-        private const string BunnyCdnApiKey = "27700f23-8334-4a95-bb85901c637b-6bf8-43ef"; // testni
-        private const string BunnyCdnBaseUrl = "https://storage.bunnycdn.com/jaric-storage/"; //testni
+        private readonly string BunnyCdnStorageZone;
+        private readonly string BunnyCdnApiKey;
+        private readonly string BunnyCdnBaseUrl;
 
         public ProjectServices(DataContext context, HttpClient httpClient, IImageProcessingServices imageProcessingServices)
         {
             _context = context;
+            BunnyCdnStorageZone = Environment.GetEnvironmentVariable("CDN__StorageZone")
+      ?? throw new Exception("Bunny CDN Storage Zone is missing in environment variables!");
+
+            BunnyCdnApiKey = Environment.GetEnvironmentVariable("CDN__ApiKey")
+                ?? throw new Exception("Bunny CDN API Key is missing in environment variables!");
+
+            BunnyCdnBaseUrl = Environment.GetEnvironmentVariable("CDN__BaseUrl")
+                ?? throw new Exception("Bunny CDN Base URL is missing in environment variables!");
+
+
+
             _httpClient = httpClient;
             _httpClient.DefaultRequestHeaders.Add("AccessKey", BunnyCdnApiKey);
             _imageProcessingServices=imageProcessingServices;

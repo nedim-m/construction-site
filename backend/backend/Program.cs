@@ -11,8 +11,8 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 //  Uèitaj tajni kljuè za JWT (baci grešku ako ne postoji)
-var jwtKey = builder.Configuration.GetValue<string>("Jwt:Key")
-    ?? throw new Exception("JWT key is missing in appsettings!");
+var jwtKey = Environment.GetEnvironmentVariable("JWT__Key")
+    ?? throw new Exception("JWT key is missing in environment variables!");
 
 //  Dodaj servise u kontejner
 builder.Services.AddControllers();
@@ -70,12 +70,22 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("NgOrigins", policy =>
     {
-        policy.WithOrigins("http://localhost:4000","https://localhost:4200","http://localhost:4200")
+        policy.WithOrigins("http://jaric.runasp.net", "https://jaric.runasp.net")
               .AllowAnyMethod()
               .AllowAnyHeader()
-              .AllowCredentials(); 
+              .AllowCredentials();
     });
 });
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowAll",
+//        builder => builder.AllowAnyOrigin()
+//                          .AllowAnyMethod()
+//                          .AllowAnyHeader());
+//});
+
+
+
 
 //  Registracija servisa
 builder.Services.AddTransient<IProjectServices, ProjectServices>();
@@ -86,8 +96,12 @@ builder.Services.AddTransient<IAuthServices, AuthServices>();
 builder.Services.AddHttpClient();
 
 //  Registracija baze podataka
+/*builder.Services.AddDbContext<DataContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));*/
+
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 //  Identity konfiguracija (BEZ cookie autentifikacije!)
 builder.Services.AddIdentityCore<ApplicationUser>()
@@ -104,11 +118,12 @@ builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 var app = builder.Build();
 
 //  Middleware pipeline
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
 
 app.UseHttpsRedirection();
 app.UseCors("NgOrigins");

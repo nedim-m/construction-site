@@ -13,12 +13,23 @@ namespace backend.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _config;
+        private readonly string _keyString;
+        private readonly string _issuer;
+        private readonly string _audience;
 
         public AuthServices(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration config)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _config = config;
+            _keyString = Environment.GetEnvironmentVariable("JWT__Key")
+         ?? throw new Exception("JWT Key is missing in environment variables!");
+
+            _issuer = Environment.GetEnvironmentVariable("JWT__Issuer")
+                ?? throw new Exception("JWT Issuer is missing in environment variables!");
+
+            _audience = Environment.GetEnvironmentVariable("JWT__Audience")
+                ?? throw new Exception("JWT Audience is missing in environment variables!");
         }
 
         public async Task<bool> RegisterUserAsync(RegisterModel model)
@@ -55,7 +66,7 @@ namespace backend.Services
             authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             // Proveri da li ključ postoji i da li je dovoljno dugačak
-            var keyString = _config["Jwt:Key"];
+            var keyString = _keyString;
             if (string.IsNullOrEmpty(keyString) || keyString.Length < 32)
             {
                 throw new Exception("JWT Key is too short! It must be at least 32 characters.");
@@ -64,8 +75,8 @@ namespace backend.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
 
             var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
+                issuer: _issuer,
+                audience: _audience,
                 expires: DateTime.UtcNow.AddHours(3),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256),
                 claims: authClaims
