@@ -2,7 +2,8 @@
 .about-us-hero {
   position: relative;
   background: url('https://jaric-storage.b-cdn.net/aboutus-logo.webp')  center/cover no-repeat;
-  height: 70vh; 
+  height: 50vh; 
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,6 +101,9 @@
   }
   .about-us-hero {
     height: 50vh;
-    padding-top: 70px !important;
+    
+  }
+  .about-us-image{
+    margin-top: 2%;
   }
 }

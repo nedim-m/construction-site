@@ -1,6 +1,6 @@
 import { Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ProjectResponse } from '../projects.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from '../projects.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryModule } from '@kolkov/ngx-gallery';
@@ -21,8 +21,9 @@ export class ProjectsDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private projectsService: ProjectsService,
+    private projectsService: ProjectsService,private router: Router,
     @Inject(PLATFORM_ID) private platformId: any
+
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +45,7 @@ export class ProjectsDetailsComponent implements OnInit {
     this.galleryOptions = [
       {
         width: '100%',
-        height: '500px',
+        height: '50vh',
         thumbnails: true,
         imageAnimation: 'zoom',
         preview: true, 
@@ -55,7 +56,7 @@ export class ProjectsDetailsComponent implements OnInit {
       {
         breakpoint: 768,
         width: '100%',
-        height: '300px',
+        height: '50vh',
         thumbnailsColumns: 3
       }
     ];
@@ -72,5 +73,10 @@ export class ProjectsDetailsComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.mobile = window.innerWidth <= 768;
     }
+  }
+
+
+  navigateToProjects() {
+    this.router.navigate(['projects']);
   }
 }

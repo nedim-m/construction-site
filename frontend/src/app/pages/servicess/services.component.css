@@ -1,7 +1,7 @@
 .services-hero {
   position: relative;
   background: url('https://jaric-storage.b-cdn.net/background-logo.webp') center/cover no-repeat;
-  height: 70vh; /* Fiksna visina */
+  height: 50vh; /* Fiksna visina */
   display: flex;
   align-items: center;
   justify-content: center;

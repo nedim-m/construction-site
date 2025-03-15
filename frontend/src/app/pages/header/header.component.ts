@@ -59,7 +59,7 @@ export class HeaderComponent implements OnInit {
     this.menuValue = !this.menuValue;
     this.menu_icon = this.menuValue ? 'bi bi-x' : 'bi bi-list';
     this.refreshUnreadMessageCount();
-    console.log("Ispis iz openMenu!!");
+    
    
   }
 

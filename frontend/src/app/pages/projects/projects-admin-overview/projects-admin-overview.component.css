@@ -69,7 +69,5 @@
   .bg-light {
     display: block;  /* Osigurava da sekcija bude prikazana na malim ekranima */
   }
-  .admin-title{
-    padding-top: 20%;
-  }
+  
 }

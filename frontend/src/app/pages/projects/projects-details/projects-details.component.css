@@ -44,6 +44,7 @@
 }
 
 .mobile-text {
+  margin-top: 5%;
   width: 100%;
   
   
@@ -68,7 +69,7 @@
 
 @media screen and (max-width: 768px) {
   .header-project-details {
-    height: 20vh; 
+    height: 10vh; 
   }
   .gallery-height {
     min-height: 200px;
@@ -78,7 +79,5 @@
   .fullscreen{
     height:auto ;
   }
-  .admin-title{
-    padding-top: 20%;
-  }
+ 
 }
