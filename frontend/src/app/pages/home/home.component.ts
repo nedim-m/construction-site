@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { gsap } from 'gsap';
 import { ProjectsService } from '../projects/projects.service';
-import { count } from 'console';
+
 
 @Component({
   selector: 'app-home',
