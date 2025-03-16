@@ -5,26 +5,44 @@
         <h1 class="text-center mb-4">{{ project.name }}</h1>
       </div>
     </section>
-    <button *ngIf="!mobile" class="btn btn-sm btn-success" (click)="navigateToProjects()">
-      <i class="fas fa-arrow-left"></i> Nazad
-    </button>
-  </div>
+  
+    <div  *ngIf="!mobile" class="col-12 col-md-6 d-flex justify-content-between">
  
+      <button  class="btn btn-sm btn-success" (click)="navigateToProjects()">
+        <i class="fas fa-arrow-left"></i> Nazad
+      </button>
+    
+      
+      <div class="d-flex justify-content-end mx-3 ">
+        <button class="btn btn-sm btn-primary me-3" (click)="shareOnFacebook()">
+          <i class="fab fa-facebook-f"></i> 
+        </button>
+    
+        <button class="btn btn-sm btn-secondary " (click)="copyLink()">
+          <i class="fas fa-link"></i> 
+        </button>
+      </div>
+    </div>
+    
 
+   
+  </div>
 
-  <div *ngIf="!mobile" >
+  <div *ngIf="!mobile">
     <div *ngIf="project" class="container my-2 about-project mb-5">
       <div class="row">
         <div class="col-12 col-md-6 text-center">
           <ngx-gallery class="gallery-height" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
         </div>
-        <div class="col-12 col-md-6 text-wrap word-break ">
+        <div class="col-12 col-md-6 text-wrap word-break">
           <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
           <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
           <p><strong>Lokacija:</strong> {{ project.location }}</p>
           <p><strong>Opis projekta:</strong> <span class="description">{{ project.description }}</span></p>
         </div>
       </div>
+
+      
     </div>
   </div>
   
@@ -38,9 +56,10 @@
         <p><strong>Lokacija:</strong> {{ project.location }}</p>
         <p><strong>Opis projekta:</strong> <span class="description">{{ project.description }}</span></p>
       </div>
+
+      
     </div>
   </div>
-  
 
   <div *ngIf="!project" class="container my-5">
     <p class="text-center">Projekat nije pronađen.</p>

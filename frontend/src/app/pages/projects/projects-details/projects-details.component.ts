@@ -79,4 +79,20 @@ export class ProjectsDetailsComponent implements OnInit {
   navigateToProjects() {
     this.router.navigate(['projects']);
   }
+
+
+  shareOnFacebook() {
+    const url = window.location.href; 
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    window.open(facebookUrl, '_blank');
+  }
+
+  copyLink() {
+    const url = window.location.href;  
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Link je kopiran!');
+    }).catch(err => {
+      console.error('Greška prilikom kopiranja: ', err);
+    });
+  }
 }
