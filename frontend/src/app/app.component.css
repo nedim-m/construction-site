@@ -24,9 +24,12 @@ router-outlet {
 footer {
     background-color: #363435;
     color: white; 
-    height: 5vh;
+    height: 7vh;
     font-size: 0.8rem;
-   
+  
+  }
+  @media (max-width: 768px) {
+    
   }
   
   
