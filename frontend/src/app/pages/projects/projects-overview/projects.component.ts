@@ -20,7 +20,7 @@ export class ProjectsComponent implements OnInit {
   pageSize = 6;
   totalProjects: number = 0;
   totalPages: number = 0;
-  sortBy: string = 'startdate';
+  sortBy: string = 'startdate_desc';
 
   constructor(private projectService: ProjectsService) {}
   ngOnInit(): void {

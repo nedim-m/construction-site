@@ -5,7 +5,7 @@
         <h1 class="text-center mb-4">{{ project.name }}</h1>
       </div>
     </section>
-    <button class="btn btn-sm btn-success" (click)="navigateToProjects()">
+    <button *ngIf="!mobile" class="btn btn-sm btn-success" (click)="navigateToProjects()">
       <i class="fas fa-arrow-left"></i> Nazad
     </button>
   </div>
