@@ -10,9 +10,7 @@ header {
   .logo:hover {
     cursor: pointer;
   }
-  .desktop_menu {
-    margin-top: 24px;
-  }
+  
   .desktop_menu ul {
     padding: 0;
     margin: 0;
@@ -20,6 +18,10 @@ header {
 
   li a{
     font-size: 15px;
+  }
+  header .row {
+    display: flex;
+    align-items: center;
   }
  
   .desktop_menu ul li  {
