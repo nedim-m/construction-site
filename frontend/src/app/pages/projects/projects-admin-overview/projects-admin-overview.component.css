@@ -31,7 +31,11 @@
   .p-button-success{
     color: #008000 ;
   }
-
+  .fullscreen {
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh; 
+  }
 
   /* Stil za input i dugme da budu u istom redu */
 .d-flex {
