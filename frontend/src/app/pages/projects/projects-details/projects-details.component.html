@@ -1,3 +1,5 @@
+
+
 <div class="fullscreen">
   <div *ngIf="project" class="container my-4 header-project-details">
     <section class="bg-light text-center py-5">
@@ -49,7 +51,16 @@
   <div *ngIf="mobile">
     <div *ngIf="project" class="container mobile-layout mb-5">
       <ngx-gallery class="mobile-gallery" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
-  
+      <div class="row mobile-share-buttons">
+        <button class="btn btn-sm btn-primary mobile-share-btn" (click)="shareOnFacebook()">
+          <i class="fab fa-facebook-f"></i> 
+        </button>
+      
+        <button class="btn btn-sm btn-secondary mobile-share-btn" (click)="copyLink()">
+          <i class="fas fa-link"></i> 
+        </button>
+      </div>
+      
       <div class="mobile-text text-wrap word-break">
         <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
         <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>

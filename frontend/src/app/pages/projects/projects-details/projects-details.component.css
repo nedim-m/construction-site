@@ -81,3 +81,41 @@
   }
  
 }
+
+/* Mobilna dugmadi postavljena u red, okrugla sa razmakom */
+.mobile-share-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;  /* Razmak između dugmadi */
+  margin-top: 10px;
+}
+
+/* Stil za okrugla dugmadi */
+.mobile-share-btn {
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+/* Facebook dugme */
+.mobile-share-btn.btn-primary {
+  background-color: #3b5998;  /* Facebook plava */
+  color: white;
+}
+
+/* Sekundarno dugme (kopiraj link) */
+.mobile-share-btn.btn-secondary {
+  background-color: #555555;
+  color: white;
+}
+
+/* Promjena boje na hover (ako želiš) */
+.mobile-share-btn:hover {
+  opacity: 0.8;
+}
+
