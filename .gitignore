@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+# Ignore database dump file
+dump-mydatabase-202412312321.sql
