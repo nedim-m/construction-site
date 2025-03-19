@@ -32,8 +32,8 @@ import { RouterModule } from '@angular/router';
 })
 export class ContactMessagesAdminOverviewComponent implements OnInit{
   contactMessages: ContactMessageResponse[] = [];
-  selectedMessage: ContactMessageResponse | null = null; // Za odabranu poruku
-  messageDialogVisible: boolean = false; // Kontrola vidljivosti dijaloga
+  selectedMessage: ContactMessageResponse | null = null; 
+  messageDialogVisible: boolean = false; 
 
   constructor(
     private contactService: ContactService,

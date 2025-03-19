@@ -5,6 +5,7 @@ export interface Project {
     description: string;
     images: string[];  
     name:string;
+    newClient:boolean;
   }
 
   export interface ProjectResponse {
@@ -15,14 +16,21 @@ export interface Project {
     description: string;
     images: string[];  
     name:string;
+    newClient:boolean;
   }
   export interface ImageResponse {
     id: number;
     mimeType: string;
-    img: string; 
+    imgUrl: string; 
     cover:boolean;
 }
 export interface PagedResponse<T> {
   result: T[];
   count: number;
+}
+export interface ProjectAndCustomerNumber {
+
+  numberOfProjects:number;
+  numberOfClients:number;
+
 }

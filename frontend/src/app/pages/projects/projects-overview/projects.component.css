@@ -1,3 +1,72 @@
+
+.project-hero {
+  position: relative;
+  background: url('https://jaric-storage.b-cdn.net/projects-logo.webp')  center/cover no-repeat;
+  height: 50vh; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+  animation: scaleIn 1s ease-in-out;
+}
+
+
+.project-hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+
+.project-hero .container {
+  position: relative;
+  z-index: 2;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(1.05); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.animate-hero {
+  animation: scaleIn 1.2s ease-in-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.animate-slide-up {
+  opacity: 0;
+  animation: slideUp 1s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+
+
+
+
+
+
+
 .project-image {
     height: 200px;
     object-fit: cover;
@@ -29,4 +98,21 @@
   .sort-dropdown select {
     max-width: 250px;           
     padding: 5px;               
+  }
+
+  @media (max-width: 768px) {
+    /* Isključivanje animacije na mobilnim uređajima */
+    .project-hero,
+    .project-hero .container,
+    .animate-hero,
+    .animate-fade-in,
+    .animate-slide-up {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+    .project-hero {
+      height: 50vh !important;
+      
+    }
   }

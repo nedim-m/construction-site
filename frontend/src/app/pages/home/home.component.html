@@ -1,8 +1,9 @@
 <section class="hero bg-light text-center py-5">
   <div class="container">
-    <h1 class="display-4 animate"> Dobrodošli na stranicu Jaric d.o.o.</h1>
+    <h1 class="display-6 animate"> Dobrodošli na stranicu Jaric d.o.o.</h1>
     <p class="lead text-muted mt-3 animate">Kombinujemo tradiciju i inovacije za vrhunske rezultate u građevinskoj industriji.</p>
-    <a routerLink="/services" class="btn btn-primary btn-lg mt-4 animate">Pogledajte naše usluge</a>
+    <a routerLink="/services" class="btn btn-primary btn-sm d-md-none  mt-4 animate routerBtn">Pogledajte naše usluge</a>
+    <a routerLink="/services" class="btn btn-primary btn-lg d-none d-md-inline-block  mt-4 animate routerBtn">Pogledajte naše usluge</a>
   </div>
 </section>
 
@@ -94,8 +95,19 @@
         </div>
       </div>
       <div class="col-md-6 animate">
-        <div id="map" style="height: 400px;"></div>
+        <div class="map-container">
+          <iframe
+            width="100%"
+            height="400"
+            style="border:0;"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=43.66028,17.76167&output=embed">
+          </iframe>
+        </div>
       </div>
     </div>
   </div>
 </section>
+

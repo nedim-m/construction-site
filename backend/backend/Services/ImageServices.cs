@@ -1,18 +1,44 @@
 ﻿using backend.Data;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
-using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using System.Collections.Generic;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace backend.Services
 {
     public class ImageServices : IImageServices
     {
         private readonly DataContext _context;
+        private readonly HttpClient _httpClient;
+        private readonly IImageProcessingServices _imageProcessingServices;
+        private readonly string BunnyCdnStorageZone;
+        private readonly string BunnyCdnApiKey;
+        private readonly string BunnyCdnBaseUrl; 
 
-        public ImageServices(DataContext context)
+
+        public ImageServices(DataContext context, IImageProcessingServices imageProcessingServices)
         {
             _context = context;
+            
+
+            BunnyCdnStorageZone = Environment.GetEnvironmentVariable("CDN__StorageZone")
+       ?? throw new Exception("Bunny CDN Storage Zone is missing in environment variables!");
+
+            BunnyCdnApiKey = Environment.GetEnvironmentVariable("CDN__ApiKey")
+                ?? throw new Exception("Bunny CDN API Key is missing in environment variables!");
+
+            BunnyCdnBaseUrl = Environment.GetEnvironmentVariable("CDN__BaseUrl")
+                ?? throw new Exception("Bunny CDN Base URL is missing in environment variables!");
+
+            _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Add("AccessKey", BunnyCdnApiKey);
+            _imageProcessingServices=imageProcessingServices;
+
+
+
         }
 
         public async Task<bool> AddImages(int projectId, List<string> images)
@@ -27,46 +53,47 @@ namespace backend.Services
             {
                 if (string.IsNullOrWhiteSpace(img))
                 {
-                    throw new ArgumentException("Jedna ili više slika su prazne ili nevalidne.");
+                    throw new ArgumentException("Jedna ili više slika je prazna ili nevalidna.");
                 }
 
                 try
                 {
-                    var mimeType = img.Substring(5, img.IndexOf(";") - 5);
                     var base64Data = img.Substring(img.IndexOf(",") + 1);
                     byte[] imageBytes = Convert.FromBase64String(base64Data);
 
+                    byte[] optimizedImage = _imageProcessingServices.OptimizeImage(imageBytes);
 
-                    using (var image = SixLabors.ImageSharp.Image.Load(imageBytes))
+
+                    string fileName = $"{Guid.NewGuid()}.jpg";
+                    string uploadUrl = BunnyCdnBaseUrl + fileName;
+
+                    using (var content = new ByteArrayContent(optimizedImage))
                     {
+                        content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+                        var response = await _httpClient.PutAsync(uploadUrl, content);
 
-                        image.Mutate(x => x.Resize(1920, 1024));
-
-
-                        using (var ms = new MemoryStream())
+                        if (!response.IsSuccessStatusCode)
                         {
-                            image.SaveAsJpeg(ms);
-                            var resizedImageBytes = ms.ToArray();
-
-                            var imageEntity = new Data.Image
-                            {
-                                Img = resizedImageBytes,
-                                MimeType = mimeType,
-                                Project = project
-                            };
-
-                            _context.Images.Add(imageEntity);
+                            throw new Exception("Greška prilikom otpremanja slike na BunnyCDN.");
                         }
                     }
+
+                    var imageEntity = new Data.Image
+                    {
+                        ImgUrl = $"https://{BunnyCdnStorageZone}.b-cdn.net/{fileName}",
+                        Project = project
+                    };
+
+                    _context.Images.Add(imageEntity);
                 }
                 catch (FormatException ex)
                 {
-                    throw new Exception($"Slika nije validan Base64 format: {img}", ex);
+                    throw new Exception("Slika nije validan Base64 format.", ex);
                 }
             }
 
             await _context.SaveChangesAsync();
-            return true; // Vraća true ako su slike uspešno dodate
+            return true;
         }
 
         public async Task<bool> DeleteImages(int projectId, List<int> imageIds)
@@ -78,22 +105,23 @@ namespace backend.Services
             }
 
             var imagesToDelete = project.Images.Where(i => imageIds.Contains(i.Id)).ToList();
-            if (imagesToDelete.Count == 0)
+            if (!imagesToDelete.Any())
             {
                 throw new Exception("Nema slika za brisanje.");
             }
 
-            _context.Images.RemoveRange(imagesToDelete);
+            foreach (var image in imagesToDelete)
+            {
+                var fileName = image.ImgUrl.Split('/').Last();
+                var deleteUrl = BunnyCdnBaseUrl + fileName;
+                var request = new HttpRequestMessage(HttpMethod.Delete, deleteUrl);
+                request.Headers.Add("AccessKey", BunnyCdnApiKey);
+                await _httpClient.SendAsync(request);
+            }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-                return true; // Vraća true ako su slike uspešno obrisane
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Greška prilikom brisanja slika: {ex.Message}", ex);
-            }
+            _context.Images.RemoveRange(imagesToDelete);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<List<ImageResponse>> GetImagesByProjectId(int projectId)
@@ -103,8 +131,8 @@ namespace backend.Services
                 .Select(img => new ImageResponse
                 {
                     Id = img.Id,
-                    MimeType = img.MimeType,
-                    Img = $"data:{img.MimeType};base64,{Convert.ToBase64String(img.Img)}"
+                    ImgUrl = img.ImgUrl,
+                    Cover=img.Cover
                 })
                 .ToListAsync();
 
@@ -113,40 +141,29 @@ namespace backend.Services
 
         public async Task<bool> SetAsCover(int projectId, int imageId)
         {
-            var images = await _context.Images
-                .Where(i => i.ProjectId == projectId)
-                .ToListAsync();
-
-            if (!images.Any())
-                throw new Exception("Nema slika za navedeni projekat.");
-
-            // Resetovanje Cover statusa na false za sve slike
-            foreach (var image in images)
-            {
-                image.Cover = false;
-            }
-
-            // Pronađi sliku koja treba da postane naslovna
-            var coverImage = images.FirstOrDefault(i => i.Id == imageId);
+            var coverImage = await _context.Images
+                .FirstOrDefaultAsync(i => i.ProjectId == projectId && i.Id == imageId);
 
             if (coverImage == null)
                 throw new Exception("Slika sa datim ID-jem nije pronađena.");
 
-            // Postavljanje Cover na true
+            await _context.Images
+                .Where(i => i.ProjectId == projectId)
+                .ExecuteUpdateAsync(setters => setters.SetProperty(i => i.Cover, false));
+
             coverImage.Cover = true;
 
-            // Snimanje promena u bazu podataka
             try
             {
                 await _context.SaveChangesAsync();
-                return true; // Vraćanje true ako je uspešno sačuvano
+                return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false; // Ako dođe do greške prilikom snimanja, vraća false
+                Console.WriteLine($"Greška pri čuvanju: {ex.Message}");
+                return false;
             }
         }
-
 
     }
 }

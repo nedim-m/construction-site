@@ -6,13 +6,12 @@ namespace backend.Data
     {
         public int Id { get; set; }
 
-        public required byte[] Img { get; set; }
+        public string ImgUrl { get; set; }
 
-        public bool Cover { get; set; }=false;
+        public bool Cover { get; set; } = false;
 
 
-        [MaxLength(50)]  
-        public required string MimeType { get; set; } 
+
 
         public int ProjectId { get; set; }
         public virtual Project Project { get; set; }

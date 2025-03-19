@@ -1,67 +1,175 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, PLATFORM_ID, TransferState,makeStateKey } from '@angular/core';
 import { ProjectResponse } from '../projects.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from '../projects.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryModule } from '@kolkov/ngx-gallery';
+import { Meta, Title } from '@angular/platform-browser';
 
+
+const META_STATE_KEY = makeStateKey('metaTags');
 
 @Component({
   selector: 'app-projects-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxGalleryModule],
   templateUrl: './projects-details.component.html',
   styleUrl: './projects-details.component.css'
 })
 export class ProjectsDetailsComponent implements OnInit {
 
   project: ProjectResponse | null = null;
-  isModalOpen = false; // Kontrolira prikaz modal-a
-  currentImage: string = ''; // Trenutna slika koja je uvećana
-  currentIndex: number = 0; // Trenutni indeks slike
+  galleryOptions: NgxGalleryOptions[] = [];
+  galleryImages: NgxGalleryImage[] = [];
+  mobile: boolean = false;
+  private defaultTitle: string = 'Jaric d.o.o';
 
   constructor(
     private route: ActivatedRoute,
-    private projectsService: ProjectsService
+    private projectsService: ProjectsService, 
+    private router: Router,
+    private meta: Meta,  
+    private title: Title,
+    private state: TransferState, 
+    @Inject(PLATFORM_ID) private platformId: any 
   ) {}
 
   ngOnInit(): void {
+    this.checkScreenSize();
     const projectId = this.route.snapshot.paramMap.get('id');
+
     if (projectId) {
       this.projectsService.getProjectById(+projectId).subscribe((data) => {
         this.project = data;
-        // Postavi prvu sliku na početku
+        
+
         if (this.project && this.project.images.length > 0) {
-          this.currentImage = this.project.images[0];
+          this.setupGallery();
         }
+        
+        this.updateMetaTags(); 
       });
     }
   }
 
-  openModal(index: number): void {
-    if (this.project && this.project.images.length > 0) {
-      this.currentImage = this.project.images[index];
-      this.currentIndex = index;
-      this.isModalOpen = true;
+  
+  private updateMetaTags(): void {
+    if (!this.project) return;
+  
+    const imageUrl = this.project.images.length > 0 
+      ? this.project.images[0] 
+      : 'https://default-image-url.com/default.jpg';
+  
+    const projectUrl = `https://jaric.runasp.net/project/${this.project.id}`;
+
+    this.defaultTitle = this.title.getTitle();  
+  
+    this.title.setTitle(this.project.name);
+  
+
+    const tags: { property?: string; name?: string; content: string }[] = [
+      { name: 'title', content: this.project.name }, 
+      { name: 'description', content: this.project.description },
+      { property: 'og:title', content: this.project.name },
+      { property: 'og:description', content: this.project.description },
+      { property: 'og:image', content: imageUrl },
+      { property: 'og:url', content: projectUrl },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:image:alt', content: 'Project image' }
+    ];
+  
+
+    tags.forEach(tag => {
+      if (tag.property) {
+        this.meta.updateTag({ property: tag.property, content: tag.content });
+      } else if (tag.name) {
+        this.meta.updateTag({ name: tag.name, content: tag.content });
+      }
+    });
+  
+  
+  }
+
+
+
+  private setupGallery(): void {
+    this.galleryOptions = [
+      {
+        width: '100%',
+        height: '50vh',
+        thumbnails: true,
+        imageAnimation: 'zoom',
+        preview: true, 
+        previewFullscreen: true, 
+        previewCloseOnClick: true, 
+        previewKeyboardNavigation: true 
+      },
+      {
+        breakpoint: 768,
+        width: '100%',
+        height: '50vh',
+        thumbnailsColumns: 3,
+        preview: false
+      }
+    ];
+
+    this.galleryImages = this.project!.images.map(img => ({
+      small: img,
+      medium: img,
+      big: img
+    }));
+  }
+
+
+  @HostListener('window:resize', [])
+  checkScreenSize() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.mobile = window.innerWidth <= 768;
     }
   }
 
-  closeModal(): void {
-    this.isModalOpen = false;
+
+  navigateToProjects() {
+    this.router.navigate(['projects']);
   }
 
-  nextImage(event: Event): void {
-    event.stopPropagation(); // Spriječi zatvaranje modala na klik
-    if (this.project && this.currentIndex < this.project.images.length - 1) {
-      this.currentIndex++;
-      this.currentImage = this.project.images[this.currentIndex];
+
+  shareOnFacebook() {
+    const url = window.location.href;
+  
+    if (this.mobile) {
+     
+      const facebookAppUrl = `fb://facewebmodal/share?href=${encodeURIComponent(url)}`;
+  
+      
+      const appWindow = window.open(facebookAppUrl, '_blank');
+  
+      
+      if (!appWindow || appWindow.closed || typeof appWindow.closed === 'undefined') {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+      }
+    } else {
+      
+      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+      window.open(facebookUrl, '_blank');
     }
   }
+  
+  
+  
 
-  previousImage(event: Event): void {
-    event.stopPropagation(); // Spriječi zatvaranje modala na klik
-    if (this.project && this.currentIndex > 0) {
-      this.currentIndex--;
-      this.currentImage = this.project.images[this.currentIndex];
-    }
+
+  copyLink() {
+    const url = window.location.href;  
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Link je kopiran!');
+    }).catch(err => {
+      console.error('Greška prilikom kopiranja: ', err);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.title.setTitle(this.defaultTitle);
+    console.log('Naslov resetovan prilikom napuštanja komponente:', this.defaultTitle);
   }
 }

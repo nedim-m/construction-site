@@ -1,8 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AppConfig } from '../../app.config.prod';
 import { ContactMessage, ContactMessageResponse } from './contact-message.model';
+import { HttpHeadersHelper } from '../../utilis/httpheadershelper';
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +15,8 @@ export class ContactService {
 
   baseUrl = `${AppConfig.apiUrl}/contactmessage`;
 
+   
+
   private unreadMessageCountSubject = new BehaviorSubject<number>(0);
   unreadMessageCount$ = this.unreadMessageCountSubject.asObservable();
 
@@ -20,39 +25,49 @@ export class ContactService {
   }
 
   getAllMessages(): Observable<ContactMessageResponse[]> {
-    return this.http.get<ContactMessageResponse[]>(this.baseUrl);
+    const token = sessionStorage.getItem('auth_token');
+    
+    const headers = HttpHeadersHelper.getAuthHeaders();
+
+    
+    return this.http.get<ContactMessageResponse[]>(this.baseUrl, { headers });
   }
 
   getMessageById(id: number): Observable<ContactMessageResponse> {
-    return this.http.get<ContactMessageResponse>(`${this.baseUrl}/${id}`);
+    const headers = HttpHeadersHelper.getAuthHeaders();
+    return this.http.get<ContactMessageResponse>(`${this.baseUrl}/${id}`,{ headers });
   }
 
   deleteMessage(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    const headers = HttpHeadersHelper.getAuthHeaders();
+    return this.http.delete<void>(`${this.baseUrl}/${id}`,{ headers });
   }
 
   updateMessageStatus(id: number, isRead: boolean): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${id}/status`, isRead);
+    const headers = HttpHeadersHelper.getAuthHeaders();
+    return this.http.put<void>(`${this.baseUrl}/${id}/status`, isRead,{ headers });
   }
 
   getUnreadMessageCount(): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/unread-message-count`).pipe(
+    const headers = HttpHeadersHelper.getAuthHeaders();
+    return this.http.get<number>(`${this.baseUrl}/unread-message-count`, { headers }).pipe(
       tap(count => {
-        this.unreadMessageCountSubject.next(count);
-        // Provjera da li se kod pokreće u browseru
+        const safeCount = count ?? 0; 
+        this.unreadMessageCountSubject.next(safeCount);
+        
         if (typeof window !== 'undefined' && window.localStorage) {
-          localStorage.setItem('unreadMessageCount', count.toString());
+          localStorage.setItem('unreadMessageCount', safeCount.toString());
         }
       })
     );
-  }
+}
 
   refreshUnreadMessageCount(): void {
     this.getUnreadMessageCount().subscribe();
   }
 
   loadUnreadCountFromStorage(): void {
-    // Provjera da li je kod u browseru prije nego što pristupite localStorage
+    
     if (typeof window !== 'undefined' && window.localStorage) {
       const storedCount = localStorage.getItem('unreadMessageCount');
       if (storedCount !== null) {

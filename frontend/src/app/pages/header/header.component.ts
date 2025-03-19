@@ -36,7 +36,10 @@ export class HeaderComponent implements OnInit {
         this.isLoggedIn = status;  
       }
     );
-    this.loadUnreadMessageCount();
+    if(this.isLoggedIn){
+      this.loadUnreadMessageCount();
+    }
+    
    
  
     
@@ -56,14 +59,14 @@ export class HeaderComponent implements OnInit {
     this.menuValue = !this.menuValue;
     this.menu_icon = this.menuValue ? 'bi bi-x' : 'bi bi-list';
     this.refreshUnreadMessageCount();
-    console.log("Ispis iz openMenu!!");
+    
    
   }
 
   loadUnreadMessageCount(): void {
     this.contactService.getUnreadMessageCount().subscribe({
       next: (count) => {
-        console.log('Inicijalni broj poruka:', count);  // Proverite inicijalnu vrednost
+        console.log('Inicijalni broj poruka:', count);  
         this.unreadMessageCount$.next(count);  
       },
       error: (err) => console.error('Greška prilikom učitavanja broja poruka', err)
@@ -71,6 +74,7 @@ export class HeaderComponent implements OnInit {
   }
 
   refreshUnreadMessageCount(): void {
+    if (!this.isLoggedIn) return;
     this.contactService.getUnreadMessageCount().subscribe({
       next: (count) => {
         console.log('Osveženi broj poruka:', count);  

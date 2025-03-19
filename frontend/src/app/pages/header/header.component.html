@@ -16,13 +16,14 @@
             <li><a routerLink="aboutus" (click)=" handleMenuClick();closeMenu()">O nama</a></li>
             <li><a routerLink="projects" (click)=" handleMenuClick();closeMenu()">Projekti</a></li>
             <li><a routerLink="services" (click)=" handleMenuClick();closeMenu()">Usluge</a></li>
+            <li><a routerLink="contact-us" (click)=" handleMenuClick();closeMenu()">Kontakt</a></li>
             <li *ngIf="isLoggedIn">
               <a routerLink="admin-projects" (click)=" handleMenuClick();closeMenu()">Evidencija projekata</a>
             </li>
-            <li><a routerLink="contact-us" (click)=" handleMenuClick();closeMenu()">Kontakt</a></li>
+           
             <!-- header.component.html -->
             <li *ngIf="isLoggedIn">
-              <a routerLink="admin-messages" (click)=" handleMenuClick();closeMenu()">Evidencija Poruka
+              <a routerLink="admin-messages" (click)=" handleMenuClick();closeMenu()">Poruke
                 <span *ngIf="unreadMessageCount$ | async as unreadMessageCount" 
           class="notification-badge">
       {{ unreadMessageCount }}
@@ -32,7 +33,7 @@
 
 
             <li *ngIf="isLoggedIn">
-              <a (click)="logout();  handleMenuClick();closeMenu()">Logout</a>
+              <a (click)="logout();  handleMenuClick();closeMenu()">Odjavi se</a>
             </li>
           </ul>
         </div>

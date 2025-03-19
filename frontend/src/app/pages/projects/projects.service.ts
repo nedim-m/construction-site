@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppConfig } from '../../app.config.prod';
-import { PagedResponse, Project, ProjectResponse } from './projects.model';
+import { PagedResponse, Project, ProjectAndCustomerNumber, ProjectResponse } from './projects.model';
 import { Observable } from 'rxjs';
+import { HttpHeadersHelper } from '../../utilis/httpheadershelper';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,13 @@ export class ProjectsService {
   
 
   addProject(project: Project): Observable<Project> {
-    return this.http.post<Project>(this.baseUrl, project);
+    const headers = HttpHeadersHelper.getAuthHeaders(); 
+    return this.http.post<Project>(this.baseUrl, project, { headers });
   }
 
   getAllProjects(location?: string, page?: number, pageSize?: number,sortBy?: string): Observable<PagedResponse<ProjectResponse>> {
     let params = new HttpParams();
+    const headers = HttpHeadersHelper.getAuthHeaders();
   
     if (location) {
       params = params.append('location', location);
@@ -31,24 +34,28 @@ export class ProjectsService {
     if(sortBy){
       params=params.append('sortBy',sortBy);
     }  
-    return this.http.get<PagedResponse<ProjectResponse>>(this.baseUrl, { params });
+    return this.http.get<PagedResponse<ProjectResponse>>(this.baseUrl, { params,headers });
   }
   
   
 
   getProjectById(id: number): Observable<ProjectResponse> {
-    return this.http.get<ProjectResponse>(`${this.baseUrl}/${id}`);
+    const headers = HttpHeadersHelper.getAuthHeaders(); 
+    return this.http.get<ProjectResponse>(`${this.baseUrl}/${id}`, { headers });
   }
 
   deleteProject(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    const headers = HttpHeadersHelper.getAuthHeaders(); 
+    return this.http.delete<any>(`${this.baseUrl}/${id}`, { headers });
 }
 updateProject(id: number, project: Project): Observable<Project> {
-  return this.http.put<Project>(`${this.baseUrl}/${id}`, project);
+  const headers = HttpHeadersHelper.getAuthHeaders(); 
+    return this.http.put<Project>(`${this.baseUrl}/${id}`, project, { headers });
 }
 
-getProjectNumber(): Observable<number> {
-  return this.http.get<number>(`${this.baseUrl}/projectNumber`);
+getProjectNumber(): Observable<ProjectAndCustomerNumber> {
+  const headers = HttpHeadersHelper.getAuthHeaders();
+    return this.http.get<ProjectAndCustomerNumber>(`${this.baseUrl}/projectNumber`, { headers });
 }
 
 

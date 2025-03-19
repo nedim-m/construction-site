@@ -1,0 +1,135 @@
+/* Animacije */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes scaleIn {
+    from { transform: scale(1.05); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  
+  /* Animacije za elemente */
+  .animate-hero {
+    animation: scaleIn 1.2s ease-in-out;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 1.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    opacity: 0;
+    animation: slideUp 1s ease-out forwards;
+    animation-delay: 0.5s;
+  }
+  
+  /* Overlay za hero sekcije */
+  .hero-section {
+    position: relative;
+    height: 70vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    animation: scaleIn 1s ease-in-out;
+  }
+  
+  .hero-section .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .hero-section .container {
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 1.5s ease-in-out;
+  }
+  
+  /* Smanjenje animacija za mobilne uređaje */
+  @media (max-width: 768px) {
+    .hero-section,
+    .hero-section .container,
+    .animate-hero,
+    .animate-fade-in,
+    .animate-slide-up {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+    
+    .hero-section {
+      height: 50vh !important;
+      padding-top: 20% !important;
+    }
+  }
+  
+  /* Poboljšan izgled slika */
+  .responsive-image {
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .responsive-image:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Stilovi za kartice */
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  /* Stilovi za dropdown meni */
+  .sort-dropdown {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .sort-dropdown label {
+    margin-right: 10px;
+  }
+  
+  .sort-dropdown select {
+    max-width: 250px;
+    padding: 5px;
+  }
+  
+
+  @media (max-width: 768px) {
+    .responsive-btn {
+      padding: 0.5rem 1rem; 
+      font-size: 0.875rem; /* Veličina teksta kao btn-sm */
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .responsive-btn {
+      padding: 1rem 2rem;
+      font-size: 1.25rem; /* Veličina teksta kao btn-lg */
+    }
+  }
+  

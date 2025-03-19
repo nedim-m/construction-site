@@ -1,7 +1,33 @@
+/* Osnovni stilovi */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+app-header {
+  height: 8vh;  
+  background-color: #333;  
+}
+
+router-outlet {
+  flex-grow: 1;  
+  overflow-y: auto;  
+}
+
+
 footer {
     background-color: #363435;
     color: white; 
-    padding: 20px 0;
+    height: 7vh;
+    font-size: 0.8rem;
+  
   }
+ 
   
   

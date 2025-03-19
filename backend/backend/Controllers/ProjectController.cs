@@ -1,5 +1,6 @@
 ﻿using backend.Models;
 using backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -15,6 +16,8 @@ namespace backend.Controllers
             _services=services;
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddProject(ProjectInsertRequest insert)
         {
@@ -60,7 +63,7 @@ namespace backend.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectUpdateRequest updateRequest)
         {
@@ -85,7 +88,7 @@ namespace backend.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {
@@ -95,22 +98,19 @@ namespace backend.Controllers
             return Ok(new { Message = "Project deleted successfully" });
         }
         [HttpGet("projectNumber")]
-        public async Task<ActionResult<int>> GetProjectNumber()
+        public async Task<ActionResult<ProjectAndCustomerNumber>> GetProjectNumber()
         {
             try
             {
-                
-                int projectCount = await _services.GetProjectNumber();
-
-                
-                return Ok(projectCount);
+                var projectData = await _services.GetProjectNumber();
+                return Ok(projectData);
             }
             catch (Exception ex)
             {
-                
-                return StatusCode(500, $"Greška pri dobijanju broja projekata: {ex.Message}");
+                return StatusCode(500, new { Message = "Greška pri dobijanju broja projekata.", Error = ex.Message });
             }
         }
+
 
 
 

@@ -1,37 +1,78 @@
-<div *ngIf="project" class="container my-5">
-    <h1 class="text-center mb-4">{{ project.name }}</h1>
-  
-    <div class="row">
-      <div class="col-md-6">
-   
-        <img [src]="project.images[0]" class="img-fluid img-thumbnail" alt="{{ project.name }}" (click)="openModal(0)">
-        <p *ngIf="project.images.length > 1" class="text-muted mt-2">
-          Ovaj projekat ima {{ project.images.length }} slike. Kliknite na sliku za pregled galerije.
-        </p>
+
+
+<div class="fullscreen my-5">
+  <div *ngIf="project" class="container my-4 header-project-details">
+    <section class="bg-light text-center py-5">
+      <div class="container admin-title">
+        <h1 class="text-center mb-4">{{ project.name }}</h1>
       </div>
+    </section>
+  
+    <div  *ngIf="!mobile" class="col-12 col-md-6 d-flex justify-content-between">
+ 
+      <button  class="btn btn-sm btn-success" (click)="navigateToProjects()">
+        <i class="fas fa-arrow-left"></i> Nazad
+      </button>
+    
       
-      <div class="col-md-6">
-       
-        <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
-        <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
-        <p><strong>Lokacija:</strong> {{ project.location }}</p>
-        <p>{{ project.description }}</p>
+      <div class="d-flex justify-content-end mx-3 ">
+        <button class="btn btn-sm btn-primary me-3" (click)="shareOnFacebook()">
+          <i class="fab fa-facebook-f"></i> 
+        </button>
+    
+        <button class="btn btn-sm btn-secondary " (click)="copyLink()">
+          <i class="fas fa-link"></i> 
+        </button>
       </div>
     </div>
     
-   
-    <div class="modal" [ngClass]="{ 'show': isModalOpen }" (click)="closeModal()">
-      <span class="close" (click)="closeModal()">&times;</span>
-      <img class="modal-image" [src]="currentImage" alt="Slika {{ currentIndex + 1 }}">
-  
 
-      <a class="prev" (click)="previousImage($event)">&#10094;</a>
-      <a class="next" (click)="nextImage($event)">&#10095;</a>
+   
+  </div>
+
+  <div *ngIf="!mobile">
+    <div *ngIf="project" class="container my-2 about-project mb-5">
+      <div class="row">
+        <div class="col-12 col-md-6 text-center">
+          <ngx-gallery class="gallery-height" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+        </div>
+        <div class="col-12 col-md-6 text-wrap word-break">
+          <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
+          <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
+          <p><strong>Lokacija:</strong> {{ project.location }}</p>
+          <p><strong>Opis projekta:</strong> <span class="description">{{ project.description }}</span></p>
+        </div>
+      </div>
+
+      
     </div>
   </div>
   
+  <div *ngIf="mobile">
+    <div *ngIf="project" class="container mobile-layout mb-5">
+      <ngx-gallery class="mobile-gallery" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+      <div class="row mobile-share-buttons">
+        <button class="btn btn-sm btn-primary mobile-share-btn" (click)="shareOnFacebook()">
+          <i class="fab fa-facebook-f"></i> 
+        </button>
+      
+        <button class="btn btn-sm btn-secondary mobile-share-btn" (click)="copyLink()">
+          <i class="fas fa-link"></i> 
+        </button>
+      </div>
+      
+      <div class="mobile-text text-wrap word-break">
+        <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
+        <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
+        <p><strong>Lokacija:</strong> {{ project.location }}</p>
+        <p><strong>Opis projekta:</strong> <span class="description">{{ project.description }}</span></p>
+      </div>
+
+      
+    </div>
+  </div>
 
   <div *ngIf="!project" class="container my-5">
     <p class="text-center">Projekat nije pronađen.</p>
   </div>
-  
+</div>

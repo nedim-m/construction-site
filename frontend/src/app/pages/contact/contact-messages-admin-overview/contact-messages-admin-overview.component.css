@@ -38,5 +38,18 @@
     background-color: #004085; 
     transform: translateY(1px); 
   }
+  .fullscreen {
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh; /* Osigurava da zauzme cijelu visinu ekrana */
+    box-sizing: border-box;
+  }
   
-  
+  @media (max-width: 768px) {
+    .bg-light {
+      display: block;  
+    }
+    .admin-title{
+      padding-top: 20%;
+    }
+  }

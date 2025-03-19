@@ -7,5 +7,6 @@
         public required string Location { get; set; }
         public string? Description { get; set; }
         public required string Name { get; set; }
+        public bool NewClient { get; set; }
     }
 }

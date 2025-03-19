@@ -1,5 +1,6 @@
 ﻿using backend.Models;
 using backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -10,10 +11,10 @@ namespace backend.Controllers
     [Route("[controller]")]
     public class ContactMessageController : ControllerBase
     {
-        private readonly IContactMessageService _contactMessageService;
+        private readonly IContactMessageServices _contactMessageService;
 
 
-        public ContactMessageController(IContactMessageService contactMessageService)
+        public ContactMessageController(IContactMessageServices contactMessageService)
         {
             _contactMessageService = contactMessageService;
         }
@@ -25,13 +26,14 @@ namespace backend.Controllers
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var messages = await _contactMessageService.GetAllAsync();
             return Ok(messages);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -41,7 +43,7 @@ namespace backend.Controllers
 
             return Ok(message);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -51,7 +53,7 @@ namespace backend.Controllers
 
             return NoContent();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateStatus(int id, [FromBody] bool isRead)
         {
@@ -61,6 +63,7 @@ namespace backend.Controllers
 
             return NoContent();
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("unread-message-count")]
         public async Task<ActionResult<int>> GetUnreadMessageCount()
         {

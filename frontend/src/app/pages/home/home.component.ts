@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { gsap } from 'gsap';
 import { ProjectsService } from '../projects/projects.service';
-import { count } from 'console';
+
 
 @Component({
   selector: 'app-home',
@@ -16,7 +16,11 @@ export class HomeComponent implements OnInit {
   projectCount: number = 0;
   yearsOfExpirience=0;
   todayYear= new Date().getFullYear();
-  happyCustomer=0;
+  happyCustomer :number=0;
+
+  latitude = 43.66028; 
+  longitude = 17.76167;
+
 
   constructor(private projectService : ProjectsService){}
 
@@ -24,25 +28,23 @@ export class HomeComponent implements OnInit {
     this.isBrowser = typeof window !== 'undefined';
 
     this.projectService.getProjectNumber().subscribe(
-      (count) => {
-        this.projectCount = count; 
-        this.happyCustomer=this.projectCount;
+      (data) => {
+        this.projectCount = data.numberOfProjects || 0; 
+        this.happyCustomer=data.numberOfClients || 0;
         
       }
     );
     this.yearsOfExpirience=this.todayYear-2023;
     
+
+
+    if (this.isBrowser && window.innerWidth > 900) {
+      this.animateElements();
+    }
+    
+  
     
 
-    if (this.isBrowser) {
-      
-      this.animateElements();
-
-     
-      setTimeout(() => {
-        this.initializeMap();
-      }, 2000); 
-    }
   }
   
    private animateElements(): void {
@@ -56,16 +58,7 @@ export class HomeComponent implements OnInit {
   }
 
  
-  private initializeMap(): void {
-    import('leaflet').then(L => {
-      const map = L.map('map').setView([43.515678, 18.307556], 13);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-
-      const marker = L.marker([43.515678, 18.307556]).addTo(map);
-      marker.bindPopup("<b>Jaric d.o.o.</b><br>Naša firma se nalazi ovde.").openPopup();
-    });
+  get mapUrl(): string {
+    return `https://www.google.com/maps?q=${this.latitude},${this.longitude}&output=embed`;
   }
 }

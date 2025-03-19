@@ -32,7 +32,7 @@ export class LoginComponent {
       (response) => {
         console.log('response:', response);
       
-        this.authService.saveToken(response.accessToken);
+        this.authService.saveToken(response.token);
         this.userStatusService.updateLoginStatus(); 
         this.router.navigate(['/']);  
       },

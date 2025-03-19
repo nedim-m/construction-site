@@ -10,7 +10,7 @@ namespace backend.Models
         public required string Location { get; set; }
         public string? Description { get; set; }
         public  string Name { get; set; }
-
+        public bool NewClient { get; set; }
         public List<string> Images { get; set; } = [];
     }
 }

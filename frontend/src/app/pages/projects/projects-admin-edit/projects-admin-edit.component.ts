@@ -40,7 +40,8 @@ export class ProjectsAdminEditComponent implements OnInit {
       endDate: ['', Validators.required],
       location: ['', Validators.required],
       description: ['', Validators.required],
-    });
+      newClient: [false, Validators.required],
+    }, { validator: this.dateValidator });
   }
 
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -60,6 +61,7 @@ export class ProjectsAdminEditComponent implements OnInit {
           endDate: this.formatDate(project.endDate),
           location: project.location,
           description: project.description,
+          newClient:project.newClient
         });
       });
   }
@@ -86,16 +88,24 @@ export class ProjectsAdminEditComponent implements OnInit {
   }
 
   onSave() {
-    if (this.editProjectForm.valid) {
-      const projectData = this.editProjectForm.value;
-      this.projectsService
-        .updateProject(this.projectId, projectData)
-        .subscribe((response) => {
-          console.log('Project updated:', response);
-          this.router.navigate(['/projects']);
-        });
+    if (this.editProjectForm.invalid) {
+      Swal.fire('Greška', 'Molimo popunite sva obavezna polja ispravno.', 'error');
+      return;
     }
+
+    const projectData = this.editProjectForm.value;
+    this.projectsService.updateProject(this.projectId, projectData).subscribe(
+      (response) => {
+        console.log('Project updated:', response);
+        Swal.fire('Uspješno!', 'Projekat je uspješno izmijenjen.', 'success')
+          .then(() => this.router.navigate(['/projects']));
+      },
+      (error) => {
+        Swal.fire('Greška', 'Došlo je do greške prilikom ažuriranja projekta.', 'error');
+      }
+    );
   }
+
 
   goBack() {
     this.router.navigate(['/admin-projects']);
@@ -130,23 +140,37 @@ export class ProjectsAdminEditComponent implements OnInit {
   addImages() {
     if (this.selectedFiles.length === 0) return; 
   
+  
+    Swal.fire({
+      title: 'Dodavanje slika...',
+      text: 'Molimo vas, sačekajte.',
+      icon: 'info',
+      showConfirmButton: false, 
+      allowOutsideClick: false, 
+      didOpen: () => {
+        Swal.showLoading(); 
+      }
+    });
+  
     this.imageService.addImages(this.projectId, this.selectedFiles).subscribe(
       (response) => {
         this.loadProjectImages(); 
         this.selectedFiles = []; 
   
-        
         if (this.fileInput) {
           this.fileInput.nativeElement.value = ''; 
         }
   
+       
         Swal.fire('Uspjeh', 'Slike su uspješno dodate!', 'success');
       },
       (error) => {
+        
         Swal.fire('Greška', 'Dodavanje slika nije uspelo', 'error');
       }
     );
   }
+  
   
   setAsCover(imageId: number) {
   Swal.fire({
@@ -213,6 +237,13 @@ export class ProjectsAdminEditComponent implements OnInit {
     });
 }
 
+private dateValidator(group: FormGroup) {
+  const startDate = new Date(group.get('startDate')?.value);
+  const endDate = new Date(group.get('endDate')?.value);
 
+  return startDate && endDate && startDate > endDate
+    ? { invalidDateRange: true }
+    : null;
+}
 
 }
