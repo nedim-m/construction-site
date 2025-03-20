@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from '../projects.service';
 import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryModule } from '@kolkov/ngx-gallery';
-import { Meta, Title } from '@angular/platform-browser';
+import { DomSanitizer, Meta, SafeHtml, Title } from '@angular/platform-browser';
 
 
 const META_STATE_KEY = makeStateKey('metaTags');
@@ -24,6 +24,7 @@ export class ProjectsDetailsComponent implements OnInit {
   mobile: boolean = false;
   private defaultTitle: string = 'Jaric d.o.o';
 
+  safeDescription!: SafeHtml;
   constructor(
     private route: ActivatedRoute,
     private projectsService: ProjectsService, 
@@ -31,7 +32,8 @@ export class ProjectsDetailsComponent implements OnInit {
     private meta: Meta,  
     private title: Title,
     private state: TransferState, 
-    @Inject(PLATFORM_ID) private platformId: any 
+    @Inject(PLATFORM_ID) private platformId: any,
+    private sanitizer: DomSanitizer 
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +48,7 @@ export class ProjectsDetailsComponent implements OnInit {
         if (this.project && this.project.images.length > 0) {
           this.setupGallery();
         }
-        
+        this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(this.project.description); 
         this.updateMetaTags(); 
       });
     }

@@ -40,7 +40,8 @@
           <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
           <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
           <p><strong>Lokacija:</strong> {{ project.location }}</p>
-          <p><strong>Opis projekta:</strong> <span class="description">{{ project.description }}</span></p>
+          <p><strong>Opis projekta:</strong> <span class="description" [innerHTML]="safeDescription"></span></p>
+
         </div>
       </div>
 
@@ -65,7 +66,7 @@
         <p><strong>Početak radova:</strong> {{ project.startDate | date }}</p>
         <p><strong>Završetak radova:</strong> {{ project.endDate | date }}</p>
         <p><strong>Lokacija:</strong> {{ project.location }}</p>
-        <p><strong>Opis projekta:</strong> <span class="description">{{ project.description }}</span></p>
+        <p><strong>Opis projekta:</strong> <span class="description" [innerHTML]="safeDescription"></span></p>
       </div>
 
       

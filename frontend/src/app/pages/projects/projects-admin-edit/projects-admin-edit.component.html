@@ -55,7 +55,8 @@
 
         <div class="form-group mb-4">
             <label for="description">Opis</label>
-            <textarea id="description" formControlName="description" class="form-control"></textarea>
+            <quill-editor formControlName="description" [modules]="quillModules"></quill-editor>
+
             <div *ngIf="editProjectForm.get('description')?.invalid && editProjectForm.get('description')?.touched"
                 class="text-danger">
                 <small *ngIf="editProjectForm.get('description')?.errors?.['required']">Opis je obavezan.</small>

@@ -68,16 +68,15 @@
       
       
 
-      <!-- Opis -->
-      <div class="form-group mb-4">
-        <label for="description">Opis</label>
-        <textarea id="description" [(ngModel)]="project.description" name="description" class="form-control" required
-          minlength="10" #description="ngModel"></textarea>
-        <div *ngIf="description.invalid && description.touched" class="text-danger">
-          <small *ngIf="description.errors?.['required']">Opis je obavezan.</small>
-          <small *ngIf="description.errors?.['minlength']">Opis mora imati najmanje 10 slova.</small>
-        </div>
-      </div>
+    <!-- Opis -->
+<div class="form-group mb-4">
+  <label for="description">Opis</label>
+  <quill-editor [(ngModel)]="project.description" name="description" class="form-control" >
+  </quill-editor>
+  <div *ngIf="!project.description && projectForm.submitted" class="text-danger">
+    <small>Opis je obavezan.</small>
+  </div>
+</div>
 
       <!-- Slike -->
       <div class="form-group mb-4">

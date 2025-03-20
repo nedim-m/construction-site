@@ -11,16 +11,30 @@ import { ProjectsService } from '../projects.service';
 import { CommonModule } from '@angular/common';
 import { ImageResponse, ProjectResponse } from '../projects.model';
 import { ImagesService } from '../images.service';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-projects-admin-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,QuillModule],
   templateUrl: './projects-admin-edit.component.html',
   styleUrl: './projects-admin-edit.component.css',
 })
 export class ProjectsAdminEditComponent implements OnInit {
   editProjectForm: FormGroup;
+
+
+  quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      ['link'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ align: [] }],
+      [{ color: [] }, { background: [] }],
+      ['clean'],
+    ],
+  };
+
   isGalleryOpen = false;
   projectImages: ImageResponse[] = [];
 

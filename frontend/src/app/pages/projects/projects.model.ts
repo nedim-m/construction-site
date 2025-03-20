@@ -1,3 +1,5 @@
+import { SafeHtml } from "@angular/platform-browser";
+
 export interface Project {
     startDate: Date;
     endDate: Date;
@@ -17,6 +19,7 @@ export interface Project {
     images: string[];  
     name:string;
     newClient:boolean;
+    safeDescription?:SafeHtml;
   }
   export interface ImageResponse {
     id: number;

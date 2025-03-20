@@ -6,6 +6,8 @@ import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/c
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { registerLocaleData } from '@angular/common';
+
+import { QuillModule } from 'ngx-quill';
 import localeBs from '@angular/common/locales/bs';
 
 
@@ -21,6 +23,8 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     importProvidersFrom(NgxGalleryModule),
     { provide: LOCALE_ID, useValue: 'bs' },
+
+    importProvidersFrom(QuillModule)
  
   ]
 };

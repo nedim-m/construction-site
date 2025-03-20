@@ -5,11 +5,12 @@ import { Project } from '../projects.model';
 import { ProjectsService } from '../projects.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { QuillEditorComponent } from 'ngx-quill';
 
 @Component({
   selector: 'app-project-insert',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,QuillEditorComponent],
   templateUrl: './projects-insert.component.html',
   styleUrl: './projects-insert.component.css'
 })
